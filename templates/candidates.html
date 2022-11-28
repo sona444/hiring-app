@@ -1,0 +1,511 @@
+{% extends "layout/base.html" %}
+
+{% block title %}HIREUP{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}<style>
+label{
+  color:#E20074;
+}
+</style>{% endblock stylesheets %}
+
+{% block body_class %} landing-page {% endblock body_class %}
+
+{% block content %}
+
+<main>
+<div class="info">
+      <table class="roles">
+      <tr>
+      <th>TSIN ID</th>
+      <th>Role</th>
+      <th>Chapter</th>
+      <th>Squad</th>
+      <th>On Resume Screening</th>
+      <th>On L1 Interview</th>
+      <th>On L2 Interview</th>
+      <th>On L3 Interview</th>
+      <th>On Offer Rollout</th>
+      <th>On Buddy Assignment</th>
+      <th>On Candidate Joining</th>
+      </tr>
+      
+      {% for i in roles %}
+      <tr class="accordion">
+        <td>{{i[0]}}</td>
+        <td>{{i[1]}}</td>
+        <td>{{i[2]}}</td>
+        <td>{{i[3]}}</td>
+        <td>{{nums[i[0]]['stage1']}}</td>
+        <td>{{nums[i[0]]['stage2']}}</td>
+        <td>{{nums[i[0]]['stage3']}}</td>
+        <td>{{nums[i[0]]['stage4']}}</td>
+        <td>{{nums[i[0]]['stage5']}}</td>
+        <td>{{nums[i[0]]['stage6']}}</td>
+        <td>{{nums[i[0]]['stage7']}}</td>
+      </tr>
+      <tr>
+      <td colspan=12>
+        <table style="width:100%;">
+      <tr>
+        <th>Name</th>
+        <th>Current Stage</th>
+        <th>Profile</th>
+        <th>Update Stage</th>
+        <th>View Stage</th>
+      </tr>
+      
+          {% for j in candidates[" "+i[0]+" "] %}
+          <tr>
+            <td>{{j['candidate_name']}}</td>
+            <td>{{j['current_stage']}}</td>
+            <td><button class="resume-upload">Update Profile</button><button class="view-profile">View Profile</button></td>
+            <td><button class="stage-update">Update Stage</button></td>
+            <td><button class="candidate-row">View Status</button></td>
+          </tr>
+          <tr class="panel" style="width:100%;">
+            <td colspan=5 >
+              <form class="form-container" id="profile" action = "upload-profile" method = "POST" enctype = "multipart/form-data">
+                <input type="hidden" value="{{j['id']}}" id="candidate_id" name="candidate_id">
+                <label for="phone"><b>Phone number</b></label>
+                <input type="text" id="phone" pattern="[789][0-9]{9}" value="{{j['phone']}}" placeholder="Enter Candidate's phone" name="phone" required>
+
+                <label for="company"><b>Current Company</b></label>
+                <input type="text" id="company" placeholder="Enter Candidate's current company" value="{{j['current_company']}}"name="company" required>
+
+                <label for="experience"><b>Years of Experience</b></label>
+                <input type="text" id="experience" placeholder="Enter Candidate's experience (in years)" value="{{j['experience']}}" name="experience" required>
+
+                <label for="resume"><b>Current Location</b></label>
+                <input type="text" id="location" placeholder="Enter Candidate's current location" value="{{j['current_location']}}" name="location" required>
+
+                <label for="resume"><b>Upload Resume</b></label>
+                <input type="file" id="resume" name="resume" accept=".pdf" style="text-align:center;border: 1px dashed #E20074; padding:10px;color:#E20074;"><br><br>
+ 
+                <button type="submit" id="submit-resume" class="btn">Submit</button>
+              </form>
+              
+            <div>
+              <div class="card">
+                <div class="container">
+                  <h4><b>{{j['candidate_name']}}</b></h4>
+                  <p><b>Phone</b>: {{j['phone']}}</p>
+                  <p><b>Current Company</b>: {{j['current_company']}}</p>
+                  <p><b>Total Experience</b>: {{j['experience']}}</p>
+                  <p><b>Current Location</b>: {{j['current_location']}}</p>
+                  <button id="download_resume" name="{{j['id']}}">Download Resume</button>
+                </div>
+              </div>
+            </div>
+            {% if j['current_stage'].strip() =='Resume Screened for Interview' %}
+            <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                    <li class="mno">Stage 2 - L1 Interview in Process </li>
+                    <li class="mno">Stage 3 - L2 Interview in Process</li>
+                    <li class="mno">Stage 4 - L3 Interview in Process </li>
+                    <li class="mno">Stage 5 - Offer RollOut  </li>
+                    <li class="mno">Stage 6 - Buddy Assignment </li>
+                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
+                <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                    <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                    <li class="mno">Stage 3 - L2 Interview in Process</li>
+                    <li class="mno">Stage 4 - L3 Interview in Process </li>
+                    <li class="mno">Stage 5 - Offer RollOut  </li>
+                    <li class="mno">Stage 6 - Buddy Assignment </li>
+                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
+                <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                    <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                    <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                    <li class="mno">Stage 4 - L3 Interview in Process </li>
+                    <li class="mno">Stage 5 - Offer RollOut  </li>
+                    <li class="mno">Stage 6 - Buddy Assignment </li>
+                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                <li class="mno active">Stage 4 - L3 Interview in Process </li>
+                <li class="mno">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Offer RollOut' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                <li class="mno active">Stage 4 - L3 Interview in Process </li>
+                <li class="mno active">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                <li class="mno active">Stage 4 - L3 Interview in Process </li>
+                <li class="mno active">Stage 5 - Offer RollOut  </li>
+                <li class="mno active">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                <li class="mno active">Stage 4 - L3 Interview in Process </li>
+                <li class="mno active">Stage 5 - Offer RollOut  </li>
+                <li class="mno active">Stage 6 - Buddy Assignment </li>
+                {% if j['current_stage'].strip() == 'Candidate Dropout' %}
+                <li class="mno active dropout">Stage 7 - Candidate Joined / DropOut</li>
+                {% elif j['current_stage'].strip() == 'Candidate Joined' %}
+                <li class="mno active">Stage 7 - Candidate Joined / DropOut</li>
+                {% endif %}
+            </ul>
+            {% elif j['current_stage'].strip() == 'Resume Rejected' %}
+            <ul class="progressbar">
+                <li class="mno">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno">Stage 2 - L1 Interview in Process </li>
+                <li class="mno">Stage 3 - L2 Interview in Process</li>
+                <li class="mno">Stage 4 - L3 Interview in Process </li>
+                <li class="mno">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+            {% endif %}
+        <div class="card">
+            <div class="container">
+                  <form class="form-container" id="updatestage" action = "update-stage" method = "POST" enctype = "multipart/form-data" style="text-align:left;">
+                <input type="hidden" value="{{j['id']}}" id="cid" name="candidate_id">
+                <input type="hidden" id="date_of_event" name="datetime">
+                
+                {% if j['current_stage'].strip() =='Resume Screened for Interview' %}
+                  <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : L1 Interview</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" type="hidden">
+                  <label for="remarks"> Results of L1 Interview:</label><br>
+                  <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
+                  <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
+                  
+                  <label for="li_interviewer"> L2 Interviewer Name</label>
+                  <input type="text" id="l2_interviewer_name" name="l2_interviewer_name" style="width:270px;"><br>
+                  <label for="li_interviewer"> L2 Interview Date</label>
+                  <input type="date" id="l2_interview_date" name="l2_interview_date" style="width:270px;"><br>
+
+                {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
+                <input type="checkbox" class="stageupdation" id="stage2" name="stage2">
+                  <label for="stage2"> Complete Stage : L2 Interview</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" type="hidden">
+                  <label for="remarks"> Results of L2 Interview:</label><br>
+                  <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
+                  <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
+                  
+                  <label for="li_interviewer"> L3 Interviewer Name</label>
+                  <input type="text" id="l1_interviewer_name" name="l3_interviewer_name" style="width:270px;"><br>
+                  <label for="li_interviewer"> L3 Interview Date</label>
+                  <input type="date" id="l1_interviewer_name" name="l3_interview_date" style="width:270px;"><br>
+                {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
+                <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : L3 Interview</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" type="hidden">
+                  <label for="remarks"> Results of L3 Interview:</label><br>
+                  <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
+                  <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
+                  
+                {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
+                  <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : Offer RollOut</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" type="hidden">
+                  <label for="li_interviewer"> Joining Date</label>
+                  <input type="date" id="l1_interviewer_name" name="joining_date" style="width:270px;"><br>
+                  
+                {% elif j['current_stage'].strip() == 'Offer RollOut' %}
+                <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : Buddy Assignment</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" type="hidden"> 
+                  <label for="li_interviewer"> Buddy Name</label>
+                  <input type="text" id="l1_interviewer_name" name="buddy_name" style="width:270px;"><br>
+                {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
+                {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
+                {% elif j['current_stage'].strip() == 'Resume Rejected ' %}
+                {% endif %}
+                
+                <button type="submit" id="stage-update" class="btn">Submit</button>
+              </form>
+            </div>
+        </div>
+        
+            </td>
+          </tr>
+          {% endfor %}
+          </table>
+        </td>
+      </tr>
+      <tr class="panel" style="width:100%;">
+        <td colspan=8 >
+        {% if i[5] =='Resume Screened for Interview ' %}
+        <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno">Stage 2 - L1 Interview in Process </li>
+                <li class="mno">Stage 3 - L2 Interview in Process</li>
+                <li class="mno">Stage 4 - L3 Interview in Process </li>
+                <li class="mno">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+        {% elif i[5] == 'L1 Interview Complete ' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno">Stage 3 - L2 Interview in Process</li>
+                <li class="mno">Stage 4 - L3 Interview in Process </li>
+                <li class="mno">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+        {% elif i[5] == 'L2 Interview Complete ' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+                <li class="mno active">Stage 2 - L1 Interview in Process </li>
+                <li class="mno active">Stage 3 - L2 Interview in Process</li>
+                <li class="mno">Stage 4 - L3 Interview in Process </li>
+                <li class="mno">Stage 5 - Offer RollOut  </li>
+                <li class="mno">Stage 6 - Buddy Assignment </li>
+                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+            </ul>
+        {% elif i[5] == 'L3 Interview Complete' %}
+        <ul class="progressbar">
+            <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+            <li class="mno active">Stage 2 - L1 Interview in Process </li>
+            <li class="mno active">Stage 3 - L2 Interview in Process</li>
+            <li class="mno active">Stage 4 - L3 Interview in Process </li>
+            <li class="mno">Stage 5 - Offer RollOut  </li>
+            <li class="mno">Stage 6 - Buddy Assignment </li>
+            <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+        </ul>
+        {% elif i[5] == 'Offer RollOut ' %}
+        <ul class="progressbar">
+            <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+            <li class="mno active">Stage 2 - L1 Interview in Process </li>
+            <li class="mno active">Stage 3 - L2 Interview in Process</li>
+            <li class="mno active">Stage 4 - L3 Interview in Process </li>
+            <li class="mno active">Stage 5 - Offer RollOut  </li>
+            <li class="mno">Stage 6 - Buddy Assignment </li>
+            <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+        </ul>
+        {% elif i[5] == 'Buddy Assignment ' %}
+        <ul class="progressbar">
+            <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+            <li class="mno active">Stage 2 - L1 Interview in Process </li>
+            <li class="mno active">Stage 3 - L2 Interview in Process</li>
+            <li class="mno active">Stage 4 - L3 Interview in Process </li>
+            <li class="mno active">Stage 5 - Offer RollOut  </li>
+            <li class="mno active">Stage 6 - Buddy Assignment </li>
+            <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+        </ul>
+        {% elif i[5] == 'Candidate Joined' or i[5] == 'Candidate Dropout' %}
+        <ul class="progressbar">
+            <li class="mno active">Stage 1 - Resume Screened for Interview </li>
+            <li class="mno active">Stage 2 - L1 Interview in Process </li>
+            <li class="mno active">Stage 3 - L2 Interview in Process</li>
+            <li class="mno active">Stage 4 - L3 Interview in Process </li>
+            <li class="mno active">Stage 5 - Offer RollOut  </li>
+            <li class="mno active">Stage 6 - Buddy Assignment </li>
+            {% if i[5] == 'Candidate Dropout' %}
+            <li class="mno active dropout">Stage 7 - Candidate Joined / DropOut</li>
+            {% elif i[5] == 'Candidate Joined' %}
+            <li class="mno active">Stage 7 - Candidate Joined / DropOut</li>
+            {% endif %}
+        </ul>
+        {% elif i[5] == 'Resume Rejected ' %}
+        <ul class="progressbar">
+            <li class="mno">Stage 1 - Resume Screened for Interview </li>
+            <li class="mno">Stage 2 - L1 Interview in Process </li>
+            <li class="mno">Stage 3 - L2 Interview in Process</li>
+            <li class="mno">Stage 4 - L3 Interview in Process </li>
+            <li class="mno">Stage 5 - Offer RollOut  </li>
+            <li class="mno">Stage 6 - Buddy Assignment </li>
+            <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+        </ul>
+        {% endif %}
+        </td>
+      </tr>
+    <!--<tr>
+      <ul class="progressbar">
+        <li class="active">Step 1</li>
+        <li>Step 2</li>
+        <li>Step 3</li>
+      </ul></tr>-->
+      
+      {% endfor %} 
+      </table>
+    </div>
+
+</main>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var acc2= document.getElementsByClassName("candidate-row");
+var btn=document.getElementsByClassName("view-profile");
+var profile=document.getElementsByClassName("resume-upload");
+var stage=document.getElementsByClassName("stage-update");
+var updateEvent=document.getElementsByClassName("stageupdation");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    console.log(panel);
+    if (panel.style.display === "table-row") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "table-row";
+    }
+  });
+}
+for (i = 0; i < acc2.length; i++) {
+  acc2[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+
+    var panel2 = this.parentNode.parentNode.nextElementSibling;
+    var panel3 = panel2.firstChild.nextElementSibling.childNodes[5];
+    var panel4= panel2.firstChild.nextElementSibling.childNodes[1];
+    var panel5= panel2.firstChild.nextElementSibling.childNodes[3];
+    var panel6= panel2.firstChild.nextElementSibling.childNodes[7];
+    console.log(panel2);
+    if (panel2.style.display === "table-row") {
+      panel2.style.display = "none";
+      $('.resume-upload').style.display="none";
+
+    } else {
+      panel2.style.display = "table-row";
+      panel3.style.display="block";
+      panel4.style.display="none";
+      panel5.style.display="none";
+      panel6.style.display="none";
+    }
+  });
+}
+for (i = 0; i < profile.length; i++) {
+  profile[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+
+    var panel2 = this.parentNode.parentNode.nextElementSibling;
+    var panel3 = panel2.firstChild.nextElementSibling.childNodes[5];
+    var panel4= panel2.firstChild.nextElementSibling.childNodes[1];
+    var panel5= panel2.firstChild.nextElementSibling.childNodes[3];
+    var panel6= panel2.firstChild.nextElementSibling.childNodes[7];
+    if (panel2.style.display === "table-row") {
+      panel2.style.display = "none";
+
+    } else {
+      panel2.style.display = "table-row";
+      panel3.style.display="none";
+      panel4.style.display="block";
+      panel5.style.display="none";
+      panel6.style.display="none";
+    }
+  });
+}
+for (i = 0; i < btn.length; i++) {
+  btn[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    var panel2 = this.parentNode.parentNode.nextElementSibling;
+    var panel3 = panel2.firstChild.nextElementSibling.childNodes[5];
+    var panel4= panel2.firstChild.nextElementSibling.childNodes[1];
+    var panel5= panel2.firstChild.nextElementSibling.childNodes[3];
+    var panel6= panel2.firstChild.nextElementSibling.childNodes[7];
+    if (panel2.style.display === "table-row") {
+      panel2.style.display = "none";
+
+    } else {
+      panel2.style.display = "table-row";
+      panel3.style.display="none";
+      panel4.style.display="none";
+      panel5.style.display="block";
+      panel6.style.display="none";
+    }
+  });
+}
+for (i = 0; i < stage.length; i++) {
+  stage[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    var panel2 = this.parentNode.parentNode.nextElementSibling;
+    var panel3 = panel2.firstChild.nextElementSibling.childNodes[5];
+    var panel4= panel2.firstChild.nextElementSibling.childNodes[1];
+    var panel5= panel2.firstChild.nextElementSibling.childNodes[3];
+    var panel6= panel2.firstChild.nextElementSibling.childNodes[7];
+    if (panel2.style.display === "table-row") {
+      panel2.style.display = "none";
+
+    } else {
+      panel2.style.display = "table-row";
+      panel3.style.display="none";
+      panel4.style.display="none";
+      panel5.style.display="none";
+      panel6.style.display="block";
+    }
+  });
+}
+for (i = 0; i < updateEvent.length; i++) {
+  updateEvent[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    var panel2 = this.nextElementSibling.nextElementSibling.nextElementSibling;
+    var panel3 = this.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling;
+    var now = new Date();
+    /*now.format("dd/MM/yyyy hh:mm TT");*/
+    console.log(panel3)
+    if(this.checked) {
+            panel2.innerHTML="<b>Updated at </b>"+String(now)+"<br>";
+            panel3.value=String(now);
+        }
+    else{
+      panel2.innerHTML="";
+      panel3.value="";
+    }        
+    });
+   
+}
+download_button= document.getElementById("download_resume");
+download_button.addEventListener("click", function() {
+  jsondata={"id":download_button.name}
+  $.ajax({
+      type: "POST",
+      data: jsondata,
+      url:"/download-resume",
+      dataType: "json" 
+      }).done(function( response ) {
+            console.log(response.responseText)
+            response.setContentType( "application/pdf" );
+        });
+});
+</script>
+
+{% endblock content %}

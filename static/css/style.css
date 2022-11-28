@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.header{
+  background-color:white;
+}
+.navbar-brand{
+  text-align:center;
+  font-weight:800; 
+  color:#E20074;
+  font-size:41px !important;
+  padding-top: 25px !important;
+}
+section.register-form{
+  /* padding-top: 15%;
+  padding-left:33.3%; */
+  height: 50vh;
+  width:100%;
+}
+form#upload-form{
+  text-align:center;
+  width:100%;
+}
+#upload{
+  font-weight: 800;
+    background-color: white;
+    border: 0;
+    padding: 7px;
+    color: #e20074;
+    border-radius: 8px;
+}
+input#file-upload-button{
+  font-weight: 800;
+    background-color: white;
+    border: 0;
+    padding: 7px;
+    color: #e20074;
+    border-radius: 8px;
+}
+
+body {
+background-color: #242F3F;
+}
+
+.loader-wrapper{
+  background-color:#E20074;
+  height: 100vh;
+  width: 100vw;
+  visibility:none;
+}
+
+.loader {
+display: inline-block;
+width: 30px;
+height: 30px;
+position: relative;
+border: 4px solid #Fff;
+top: 50%;
+animation: loader 2s infinite ease;
+}
+
+.loader1 {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border: 4px solid #Fff;
+  top: 50%;
+  animation: loader 2s infinite ease;
+  }
+
+  .loader2 {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border: 4px solid #Fff;
+    top: 50%;
+    animation: loader 2s infinite ease;
+    }
+
+.loader-inner {
+vertical-align: top;
+display: inline-block;
+width: 100%;
+background-color: #fff;
+animation: loader-inner 2s infinite ease-in;
+}
+
+@keyframes loader {
+0% {
+  transform: rotate(0deg);
+}
+
+25% {
+  transform: rotate(180deg);
+}
+
+50% {
+  transform: rotate(180deg);
+}
+
+75% {
+  transform: rotate(360deg);
+}
+
+100% {
+  transform: rotate(360deg);
+}
+}
+
+@keyframes loader-inner {
+0% {
+  height: 0%;
+}
+
+25% {
+  height: 0%;
+}
+
+50% {
+  height: 100%;
+}
+
+75% {
+  height: 100%;
+}
+
+100% {
+  height: 0%;
+}
+}
+.roles{
+  width:100%;
+}
+.roles tr{
+  border:1px solid #E20074;
+  padding:5px;
+  text-align:center;
+}
+.roles td{
+  padding:10px;
+}
+.roles th{
+  padding:20px;
+  text-align:center;
+  height:20px;
+}
+.container {
+  width: 100%;
+}
+
+.progressbar {
+  counter-reset: step;
+}
+.progressbar li {
+  list-style: none;
+  display: inline-block;
+  width: 30.33%;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  z-index:0;
+}
+.progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 30px;
+  height: 30px;
+  line-height : 30px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  background-color: #fff;
+}
+.progressbar li:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #ddd;
+  top: 15px;
+  left: -48%;
+  z-index : -1;
+}
+.progressbar li:first-child:after {
+  content: none;
+}
+.progressbar li.active.dropout {
+  color: red !important;
+}
+.progressbar li.active.dropout:before{
+border-color:red;
+}
+.progressbar li.active {
+  color: green;
+}
+.progressbar li.active:before {
+  border-color: green;
+} 
+.progressbar li.active + li:after {
+  background-color: green !important;
+}
+
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+.mno.active{
+  background-color:transparent;
+}
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+}
+.resume-upload, .stage-update, .candidate-row, #download_resume{
+  background-color:white;
+  color:#E20074;
+  border:1px solid #E20074;
+  padding:10px;
+}
+.view-profile{
+  background-color:#E20074;
+  color:white;
+  border:0;
+  padding:10px;
+  margin:5px;
+}
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  /* position: fixed;
+  bottom: 0;
+  right: 15px; */
+  border: 3px solid #E20074;
+  z-index: 9;
+  position: fixed; 
+  top:10%;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  border-radius:10px;
+}
+
+/* Add styles to the form container */
+.form-container {
+  border-radius:10px;
+  overflow:auto;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width:500px;
+  margin:0 auto;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
