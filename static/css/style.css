@@ -234,11 +234,18 @@ border-color:red;
   display: none;
   overflow: hidden;
 }
-.resume-upload, .stage-update, .candidate-row, #download_resume{
+.resume-upload, .stage-update, .candidate-row, #download_resume, .new_tsin{
   background-color:white;
   color:#E20074;
   border:1px solid #E20074;
   padding:10px;
+}
+.new_tsin{
+  border-radius: 10px;
+}
+.reg-form{
+  width:100%;
+  margin-top:70px !important;
 }
 .view-profile{
   background-color:#E20074;

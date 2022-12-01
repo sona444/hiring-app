@@ -44,7 +44,7 @@ label{
         <td>{{nums[i[0]]['stage6']}}</td>
         <td>{{nums[i[0]]['stage7']}}</td>
       </tr>
-      <tr>
+      <tr style="display:none;">
       <td colspan=12>
         <table style="width:100%;">
       <tr>
@@ -97,89 +97,109 @@ label{
                 </div>
               </div>
             </div>
-            {% if j['current_stage'].strip() =='Resume Screened for Interview' %}
+            {% if j['current_stage'].strip() =='Profile Upload' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                    <li class="mno">Stage 2 - L1 Interview in Process </li>
-                    <li class="mno">Stage 3 - L2 Interview in Process</li>
-                    <li class="mno">Stage 4 - L3 Interview in Process </li>
-                    <li class="mno">Stage 5 - Offer RollOut  </li>
-                    <li class="mno">Stage 6 - Buddy Assignment </li>
-                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>In Process</b></li>ed_date'].strip()}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 2 - Resume Screened for Interview <br>&nbsp;</li>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br>&nbsp;</li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
+                </ul>
+            {% elif j['current_stage'].strip() =='Resume Screened for Interview' %}
+            <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
                 </ul>
             {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                    <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                    <li class="mno">Stage 3 - L2 Interview in Process</li>
-                    <li class="mno">Stage 4 - L3 Interview in Process </li>
-                    <li class="mno">Stage 5 - Offer RollOut  </li>
-                    <li class="mno">Stage 6 - Buddy Assignment </li>
-                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process  <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
                 </ul>
             {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                    <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                    <li class="mno active">Stage 3 - L2 Interview in Process</li>
-                    <li class="mno">Stage 4 - L3 Interview in Process </li>
-                    <li class="mno">Stage 5 - Offer RollOut  </li>
-                    <li class="mno">Stage 6 - Buddy Assignment </li>
-                    <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>{{j['l2_interview_date'].strip()}}</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date'].strip()}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut  </li>
+                    <li class="mno">Stage 7 - Buddy Assignment </li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
                 </ul>
             {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                <li class="mno active">Stage 3 - L2 Interview in Process</li>
-                <li class="mno active">Stage 4 - L3 Interview in Process </li>
-                <li class="mno">Stage 5 - Offer RollOut  </li>
-                <li class="mno">Stage 6 - Buddy Assignment </li>
-                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>{{j['l2_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date'].strip()}}</b> - <b>{{j['l3_interview_date'].strip()}}</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br><b>{{j['l3_interview_date'].strip()}}</b> - <b> In Process</b></li>
+                    <li class="mno">Stage 7 - Buddy Assignment </li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Offer RollOut' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                <li class="mno active">Stage 3 - L2 Interview in Process</li>
-                <li class="mno active">Stage 4 - L3 Interview in Process </li>
-                <li class="mno active">Stage 5 - Offer RollOut  </li>
-                <li class="mno">Stage 6 - Buddy Assignment </li>
-                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>{{j['l2_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date'].strip()}}</b> - <b>{{j['l3_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date'].strip()}}</b> - <b> {{j['offer_rollout_date'].strip()}}</b> </li>
+                <li class="mno">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date'].strip()}}</b> - <b> In Process</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                <li class="mno active">Stage 3 - L2 Interview in Process</li>
-                <li class="mno active">Stage 4 - L3 Interview in Process </li>
-                <li class="mno active">Stage 5 - Offer RollOut  </li>
-                <li class="mno active">Stage 6 - Buddy Assignment </li>
-                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>{{j['l2_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date'].strip()}}</b> - <b>{{j['l3_interview_date'].strip()}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date'].strip()}}</b> - <b> {{j['offer_rollout_date'].strip()}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date'].strip()}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut<br><b>{{j['buddy_assignment_date'].strip()}}</b> - <b> In Process</b></li>
             </ul>
             {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Resume Screened for Interview </li>
-                <li class="mno active">Stage 2 - L1 Interview in Process </li>
-                <li class="mno active">Stage 3 - L2 Interview in Process</li>
-                <li class="mno active">Stage 4 - L3 Interview in Process </li>
-                <li class="mno active">Stage 5 - Offer RollOut  </li>
-                <li class="mno active">Stage 6 - Buddy Assignment </li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
+                <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date'].strip()}}</b> - <b>{{j['resume_screened_date'].strip()}}</b></li>
+                <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date'].strip()}}</b> - <b>{{j['l1_interview_date'].strip()}}</b></li>
+                <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date'].strip()}}</b> - <b>{{j['l2_interview_date'].strip()}}</b></li>
+                <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date'].strip()}}</b> - <b>{{j['l3_interview_date'].strip()}}</b></li>
+                <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date'].strip()}}</b> - <b> {{j['offer_rollout_date'].strip()}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date'].strip()}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
                 {% if j['current_stage'].strip() == 'Candidate Dropout' %}
-                <li class="mno active dropout">Stage 7 - Candidate Joined / DropOut</li>
+                <li class="mno active dropout">Stage 8 - Candidate Joined / DropOut</li>
                 {% elif j['current_stage'].strip() == 'Candidate Joined' %}
-                <li class="mno active">Stage 7 - Candidate Joined / DropOut</li>
+                <li class="mno active">Stage 8 - Candidate Joined / DropOut</li>
                 {% endif %}
             </ul>
             {% elif j['current_stage'].strip() == 'Resume Rejected' %}
             <ul class="progressbar">
-                <li class="mno">Stage 1 - Resume Screened for Interview </li>
-                <li class="mno">Stage 2 - L1 Interview in Process </li>
-                <li class="mno">Stage 3 - L2 Interview in Process</li>
-                <li class="mno">Stage 4 - L3 Interview in Process </li>
-                <li class="mno">Stage 5 - Offer RollOut  </li>
-                <li class="mno">Stage 6 - Buddy Assignment </li>
-                <li class="mno">Stage 7 - Candidate Joined / DropOut</li>
+                <li class="mno">Stage 1 - Profile Added </li>
+                <li class="mno">Stage 2 - Resume Screened for Interview </li>
+                <li class="mno">Stage 3 - L1 Interview in Process </li>
+                <li class="mno">Stage 4 - L2 Interview in Process</li>
+                <li class="mno">Stage 5 - L3 Interview in Process </li>
+                <li class="mno">Stage 6 - Offer RollOut  </li>
+                <li class="mno">Stage 7 - Buddy Assignment </li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
             </ul>
             {% endif %}
         <div class="card">
@@ -189,62 +209,92 @@ label{
                 <input type="hidden" id="date_of_event" name="datetime">
                 
                 {% if j['current_stage'].strip() =='Resume Screened for Interview' %}
+                  <input type="hidden" name="stage" value="l1complete">
                   <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
                   <label for="stage1"> Complete Stage : L1 Interview</label><br>
                   <span class="update-time"></span>
-                  <input class="stageupdatetime" type="hidden">
-                  <label for="remarks"> Results of L1 Interview:</label><br>
+                  <input class="stageupdatetime" name="stageupdatetime" type="hidden">
+                  <label for="result"> Results of L1 Interview:</label><br>
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
-                  
-                  <label for="li_interviewer"> L2 Interviewer Name</label>
+                  <label for="l1_remarks"> Remarks/Comments:</label><br>
+                  <textarea id="l1_remarks" name="l1_remarks" rows="4" cols="50"></textarea>
+                  <label for="l2_interviewer"> L2 Interviewer Name</label>
                   <input type="text" id="l2_interviewer_name" name="l2_interviewer_name" style="width:270px;"><br>
-                  <label for="li_interviewer"> L2 Interview Date</label>
+                  <label for="l2_interview_date"> L2 Interview Date</label>
                   <input type="date" id="l2_interview_date" name="l2_interview_date" style="width:270px;"><br>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
+                  <input type="hidden" name="stage" value="l2complete">
                 <input type="checkbox" class="stageupdation" id="stage2" name="stage2">
                   <label for="stage2"> Complete Stage : L2 Interview</label><br>
                   <span class="update-time"></span>
-                  <input class="stageupdatetime" type="hidden">
-                  <label for="remarks"> Results of L2 Interview:</label><br>
+                  <input class="stageupdatetime" name="stageupdatetime" type="hidden">
+                  <label for="result"> Results of L2 Interview:</label><br>
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
-                  
-                  <label for="li_interviewer"> L3 Interviewer Name</label>
-                  <input type="text" id="l1_interviewer_name" name="l3_interviewer_name" style="width:270px;"><br>
-                  <label for="li_interviewer"> L3 Interview Date</label>
-                  <input type="date" id="l1_interviewer_name" name="l3_interview_date" style="width:270px;"><br>
+                  <label for="l2_remarks"> Remarks/Comments:</label><br>
+                  <textarea id="l2_remarks" name="l2_remarks" rows="4" cols="50"></textarea>
+                  <label for="l3_interviewer"> L3 Interviewer Name</label>
+                  <input type="text" id="l3_interviewer_name" name="l3_interviewer_name" style="width:270px;"><br>
+                  <label for="l3_interviewer"> L3 Interview Date</label>
+                  <input type="date" id="l3_interview_date" name="l3_interview_date" style="width:270px;"><br>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
                 {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
+                  <input type="hidden" name="stage" value="l3complete">
                 <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
                   <label for="stage1"> Complete Stage : L3 Interview</label><br>
                   <span class="update-time"></span>
-                  <input class="stageupdatetime" type="hidden">
+                  <input class="stageupdatetime" name="stageupdatetime" type="hidden">
                   <label for="remarks"> Results of L3 Interview:</label><br>
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
-                  
+                  <label for="l3_remarks"> Remarks/Comments:</label><br>
+                  <textarea id="l3_remarks" name="l3_remarks" rows="4" cols="50"></textarea>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
                 {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
+                  <input type="hidden" name="stage" value="offer">
                   <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
                   <label for="stage1"> Complete Stage : Offer RollOut</label><br>
                   <span class="update-time"></span>
-                  <input class="stageupdatetime" type="hidden">
+                  <input class="stageupdatetime" name="stageupdatetime" type="hidden">
                   <label for="li_interviewer"> Joining Date</label>
-                  <input type="date" id="l1_interviewer_name" name="joining_date" style="width:270px;"><br>
-                  
+                  <input type="date" id="joining_date" name="joining_date" style="width:270px;"><br>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
+
                 {% elif j['current_stage'].strip() == 'Offer RollOut' %}
+                  <input type="hidden" name="stage" value="buddy">
                 <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
                   <label for="stage1"> Complete Stage : Buddy Assignment</label><br>
                   <span class="update-time"></span>
-                  <input class="stageupdatetime" type="hidden"> 
-                  <label for="li_interviewer"> Buddy Name</label>
-                  <input type="text" id="l1_interviewer_name" name="buddy_name" style="width:270px;"><br>
+                  <input class="stageupdatetime" name="stageupdatetime" type="hidden"> 
+                  <label for="buddy_name"> Buddy Name</label>
+                  <input type="text" id="buddy_name" name="buddy_name" style="width:270px;"><br>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
                 {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
+                  <input type="hidden" name="stage" value="finalcandidate">
+                <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : Candidate Joined</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" name="joiningstageupdatetime" type="hidden">
+                  <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
+                  <label for="stage1"> Complete Stage : Candidate Dropout</label><br>
+                  <span class="update-time"></span>
+                  <input class="stageupdatetime" name="dropoutstageupdatetime" type="hidden"> 
+                  <label for="dropout_reason"> Dropout Reason</label>
+                  <input type="text" id="dropout_reason" name="dropout_reason" style="width:270px;"><br>
+                <button type="submit" id="stage-update" class="btn">Submit</button>
                 {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
+                  {% if j['current_stage'].strip() == 'Candidate Joined'%}
+                    Candidate has joined 
+                  {% elif j['current_stage'].strip() == 'Candidate Dropout' %}
+                    Candidate has Dropped out due to {{j['candidate_dropout_reason']}}
+                  {% endif %}
                 {% elif j['current_stage'].strip() == 'Resume Rejected ' %}
+                Candidate's Resume has been rejected
                 {% endif %}
                 
-                <button type="submit" id="stage-update" class="btn">Submit</button>
               </form>
             </div>
         </div>

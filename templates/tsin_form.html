@@ -1,0 +1,42 @@
+{% extends "layout/base.html" %}
+
+{% block title %}HIREUP{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block body_class %} landing-page {% endblock body_class %}
+
+{% block content %}
+
+<main>
+<section class="register-form">
+    <div class="container form">
+    <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
+    <h1 style="color: #E20074; text-align:center;">Add New Position</h1>
+      <form id="upload-form" name="tsinform"  action = "/new-tsin" method = "POST" enctype = "multipart/form-data">
+        
+        <label for="tsinid"> Enter a Unique TSIN ID:</label><br>
+        <input type="text" id="tsinid" name="tsinid" style="width:270px;"><br>
+        <label for="chapter"> Enter Chapter:</label><br>
+        <input type="text" id="chapter" name="chapter" style="width:270px;"><br>
+        <label for="role">Enter Role: </label><br>
+        <input type="text" id="role" name="role" style="width:270px;"><br>
+        <label for="squad">Enter Squad: </label><br>
+        <input type="text" id="squad" name="squad" style="width:270px;"><br>
+        <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
+      </form>
+    </div>
+    
+  </div>
+  
+</section>
+</main>
+<script>
+
+    $(".loader").css("visibility","hidden");
+$(document).on('click', '#upload', function(e){
+    $(".loader").css("visibility","visible");
+});
+</script>
+{% endblock content %}

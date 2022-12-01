@@ -200,14 +200,33 @@ def candidates():
     print(nums)
     return render_template('candidates.html', roles=result, candidates=d, nums=nums)
 
-# @app.route('/update-stage', methods=['GET','POST'])
-# def profileUpload():
-#     cand_id=request.form['candidate_id']
-#     phone=request.form['phone']
-#     company=request.form['company']
-#     experience=request.form['experience']
-#     location=request.form['location']
-#     resume=request.files['resume']
+@app.route('/update-stage', methods=['GET','POST'])
+def updateStage():
+    con=sqlite3.connect('data.db') #connecting to the database
+    cursor=con.cursor()
+    cand_id=request.form['candidate_id']
+    stage=request.form['stage']
+    update_time=request.form['stageupdatetime']
+    result=request.form['result']
+    l1_remarks=request.form['l1_remarks']
+    l2_interviewer_name=request.form['l2_interviewer_name']
+    l2_interview_date=request.form['l2_interview_date']
+    l2_remarks=request.form['l2_remarks']
+    l3_interviewer_name=request.form['l3_interviewer_name']
+    l3_interview_date=request.form['l3_interview_date']
+    l3_remarks=request.form['l3_remarks']
+    joining_date=request.form['joining_date']
+    buddy_name=request.form['buddy_name']
+    joining_stage_time=request.form['joiningstageupdatetime']
+    dropout_stage_time=request.form['dropoutstageupdatetime']
+    dropout_reason=request.form['dropout_reason']
+    if stage == 'l1complete':
+        cursor.execute("UPDATE candidates SET l1_interview_result = '"+ result +"', l1_interview_remarks = '"+ l1_remarks +"', l2_interviewer_name='"+ l2_interviewer_name +"', l2_interview_date = '"+ l2_interview_date +"' WHERE id= '"+ cand_id+"';")
+        con.commit()    
+    elif stage == 'l2complete':
+        cursor.execute("UPDATE candidates SET l2_interview_result = '"+ result +"', l2_interview_remarks = '"+ l2_remarks +"', l3_interviewer_name='"+ l3_interviewer_name +"', l3_interview_date = '"+ l3_interview_date +"' WHERE id= '"+ cand_id+"';")
+        con.commit() 
+
 
 @app.route('/new-position', methods=['GET','POST'])
 def newposition():
