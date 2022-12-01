@@ -306,6 +306,19 @@ def tsinform():
         final.append(i[0])
     return render_template('tsin_form.html', final=final)
 
+@app.route('/detailed-view', methods=['GET','POST'])
+def detailed():
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    role_dict={}
+    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
+    result = cursor.fetchall()
+    for i in result:
+        role_dict[i[0]]=[i[1],i[2],i[3]]
+    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
+    result2=cursor.fetchall()
+    return render_template('detailed.html', roles=role_dict,cands=result2)
+
 @app.route('/new-position', methods=['GET','POST'])
 def newposition():
     tsinid=request.form['tsinid']
