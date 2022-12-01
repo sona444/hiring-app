@@ -13,11 +13,11 @@
 <section class="register-form">
     <div class="container form">
     <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
-    <h1 style="color: #E20074; text-align:center;">Add New Position</h1>
+    <h1 style="color: #E20074; text-align:center; font-size:30px;">Add New Position</h1><br>
       <form id="upload-form" name="tsinform"  action = "/new-position" method = "POST" enctype = "multipart/form-data">
         
         <label for="tsinid"> Enter a Unique TSIN ID:</label>
-        <input type="text" id="tsinid" name="tsinid" style="width:270px;"><br><br>
+        <input type="text" id="tsinid" name="tsinid" style="width:270px;" onchange="checktsin({{final}}, this);"><br><br>
         <label for="chapter"> Enter Chapter:</label>
         <input type="text" id="chapter" name="chapter" style="width:270px;"><br><br>
         <label for="role">Enter Role: </label>
@@ -33,7 +33,14 @@
 </section>
 </main>
 <script>
-
+function checktsin(el, el2){
+  for(var i=0;i<el.length;i++){
+    console.log(el2.value);
+    if (el[i]==el2.value){
+      alert("TSIN ID already exists");
+    }
+  }
+}
     $(".loader").css("visibility","hidden");
 $(document).on('click', '#upload', function(e){
     $(".loader").css("visibility","visible");

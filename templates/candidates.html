@@ -28,6 +28,7 @@ label{
       <th>On Offer Rollout</th>
       <th>On Buddy Assignment</th>
       <th>On Candidate Joining</th>
+      <th>On Resume Rejected</th>
       </tr>
       
       {% for i in roles %}
@@ -43,6 +44,7 @@ label{
         <td>{{nums[i[0]]['stage5']}}</td>
         <td>{{nums[i[0]]['stage6']}}</td>
         <td>{{nums[i[0]]['stage7']}}</td>
+        <td>{{nums[i[0]]['stage8']}}</td>
       </tr>
       <tr style="display:none;">
       <td colspan=12>
@@ -241,6 +243,7 @@ label{
                   <label for="l3_interviewer"> L3 Interview Date</label>
                   <input type="date" id="l3_interview_date" name="l3_interview_date" style="width:270px;"><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
+
                 {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
                   <input type="hidden" name="stage" value="l3complete">
                 <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
@@ -252,7 +255,8 @@ label{
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
                   <label for="l3_remarks"> Remarks/Comments:</label><br>
                   <textarea id="l3_remarks" name="l3_remarks" rows="4" cols="50"></textarea>
-                <button type="submit" id="stage-update" class="btn">Submit</button>
+                <button type="submit" id="stage-update" class="btn">Submit</button
+                >
                 {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
                   <input type="hidden" name="stage" value="offer">
                   <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
@@ -272,6 +276,7 @@ label{
                   <label for="buddy_name"> Buddy Name</label>
                   <input type="text" id="buddy_name" name="buddy_name" style="width:270px;"><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
+
                 {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
                   <input type="hidden" name="stage" value="finalcandidate">
                 <input type="checkbox" class="stageupdation" id="stage1" name="stage1">
@@ -285,6 +290,7 @@ label{
                   <label for="dropout_reason"> Dropout Reason</label>
                   <input type="text" id="dropout_reason" name="dropout_reason" style="width:270px;"><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
+
                 {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
                   {% if j['current_stage'].strip() == 'Candidate Joined'%}
                     Candidate has joined 
