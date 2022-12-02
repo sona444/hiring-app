@@ -3,7 +3,12 @@
 {% block title %}HIREUP{% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}<style>
+label{
+  width:15%;
+  text-align:right;
+}
+</style>{% endblock stylesheets %}
 
 {% block body_class %} landing-page {% endblock body_class %}
 
@@ -17,13 +22,13 @@
       <form id="upload-form" name="tsinform"  action = "/new-position" method = "POST" enctype = "multipart/form-data">
         
         <label for="tsinid"> Enter a Unique TSIN ID:</label>
-        <input type="text" id="tsinid" name="tsinid" style="width:270px;" onchange="checktsin({{final}}, this);"><br><br>
+        <input type="text" id="tsinid" name="tsinid" style="width:270px;" onchange="checktsin({{final}}, this);" required><br><br>
         <label for="chapter"> Enter Chapter:</label>
-        <input type="text" id="chapter" name="chapter" style="width:270px;"><br><br>
+        <input type="text" id="chapter" name="chapter" style="width:270px;" required><br><br>
         <label for="role">Enter Role: </label>
-        <input type="text" id="role" name="role" style="width:270px;"><br><br>
+        <input type="text" id="role" name="role" style="width:270px;" required><br><br>
         <label for="squad">Enter Squad: </label>
-        <input type="text" id="squad" name="squad" style="width:270px;"><br><br>
+        <input type="text" id="squad" name="squad" style="width:270px;" required><br><br>
         <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
       </form>
     </div>
