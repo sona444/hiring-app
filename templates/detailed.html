@@ -38,6 +38,47 @@
       <th>Candidate Dropout</th>
       <th>Dropout Reason</th>
       </tr>
+      <tr>
+      <td><select id='selUser' style='width: 200px;'>
+      <option value='none'>--None--</option>
+      {% set tsin = [] %}
+      {% for i in cands %}
+        {% if i[0] not in tsin %}
+          {{ tsin.append( i[0] ) }}
+          <option value='{{i[0]}}'>{{i[0]}}</option> 
+        {% endif %}
+      {% endfor %}
+      </select>
+      <br/>
+      <div id='result'></div>
+      </td>
+      <td><select id='selUser2' style='width: 200px;'>
+      <option value='none'>--None--</option>
+      {% set role = [] %}
+      {% for i in cands %}
+        {% if i[1] not in role %}
+          {{ tsin.append( i[1] ) }}
+          <option value='{{i[1]}}'>{{i[1]}}</option> 
+        {% endif %}
+      {% endfor %}
+      </select>
+      <br/>
+      <div id='result'></div></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      </tr>
       {% for i in cands %}
       <tr>
       <td>{{i[0]}}</td>
@@ -62,6 +103,25 @@
 </div>
 </main>
 <script>
+$(document).ready(function(){
+    // Initialize select2
+    $("#selUser").select2();
+    $("#selUser2").select2();
+    // Read selected option
+    $('#but_read').click(function(){
+        var username = $('#selUser option:selected').text();
+        var userid = $('#selUser').val();
 
+        $('#result').html("id : " + userid + ", name : " + username);
+
+    });
+    $('#but_read').click(function(){
+        var username = $('#selUser2 option:selected').text();
+        var userid = $('#selUser2').val();
+
+        $('#result').html("id : " + userid + ", name : " + username);
+
+    });
+});
 </script>
 {% endblock content %}

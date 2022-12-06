@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from openpyxl import load_workbook
 import sqlite3
 import pandas as pd
 from minio import Minio
+
+app = Flask(__name__)
 
 client = Minio(
         "play.min.io",
@@ -17,20 +19,22 @@ else:
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
+def get_abstract_data():
     con=sqlite3.connect('db/data.db') #connecting to the database
     cursor=con.cursor()
     
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
+    cursor.execute('SELECT tsin_id, role, chapter, squad, demand_type, Tribe, snow_id from roles;')
     result = cursor.fetchall()
     nums={}
     for i in result:
-        nums[i[0]]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
+        nums[i[0].strip()]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
     print(nums)
     print(result)
     cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
     result2=cursor.fetchall()
+    list_of_phone=[]
+    for i in result2:
+        list_of_phone.append(i[22])
     con.close()
     d={}
     for i in result2:
@@ -56,11 +60,16 @@ def hello_world():
             d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
     print(d)
     print(nums)
-    return render_template('candidates.html', roles=result, candidates=d, nums=nums)
+    return result, d, nums, list_of_phone
+
+@app.route('/')
+def main():
+    result, d,nums, phones=get_abstract_data()
+    return render_template('candidates.html', roles=result, candidates=d, nums=nums, phones=phones)
 
 
 @app.route('/upload-dataset', methods=['GET','POST'])
-def main():
+def uploadDs():
     f = request.files['file'] #File input
     if not f:
         return "No file attached"
@@ -104,40 +113,7 @@ def main():
             cursor.execute(query)
             con.commit()
     print('added to db')
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
-    result = cursor.fetchall()
-    print(result)
-
-    nums={}
-    for i in result:
-        nums[i[0]]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
-    con.close()
-    d={}
-    for i in result2:
-        if i[4].strip()=='Resume Screened for Interview':
-            nums[i[0].strip()]['stage1']+=1
-        elif i[4].strip()=='L1 Interview Complete':
-            nums[i[0].strip()]['stage2']+=1
-        elif i[4].strip()=='L2 Interview Complete':
-            nums[i[0].strip()]['stage3']+=1
-        elif i[4].strip()=='L3 Interview Complete':
-            nums[i[0].strip()]['stage4']+=1
-        elif i[4].strip()=='Offer RollOut':
-            nums[i[0].strip()]['stage5']+=1
-        elif i[4].strip()=='Buddy Assignment':
-            nums[i[0].strip()]['stage6']+=1
-        elif i[4].strip()=='Candidate Joined' or i[4].strip()=='Candidate Dropout':
-            nums[i[0].strip()]['stage7']+=1
-        elif i[4].strip()=='Resume Rejected':
-            nums[i[0].strip()]['stage8']+=1
-        if i[0] in d:
-            d[i[0]].append({'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
-        else:
-            d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
-    print(d)
-    return render_template('candidates.html', roles=result, candidates=d, nums=nums)
+    return redirect(url_for('main'))
 
 @app.route('/upload-profile', methods=['GET','POST'])
 def profileUpload():
@@ -147,55 +123,25 @@ def profileUpload():
     experience=request.form['experience']
     location=request.form['location']
     resume=request.files['resume']
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    cursor.execute("SELECT candidate_name from candidates where id = '"+ cand_id +"';")
+    result2=cursor.fetchall()
+    print(result2)
     if resume:
         resume.save('static/resume')
         client.fput_object(
-            "resume", "resume"+str(cand_id), "static/resume",
+            "resume", "resume"+str(result2[0][0]), "static/resume",
         )
         print(
             "resume is successfully uploaded as "
-            "object 'resume"+str(cand_id)+"' to bucket 'resume'."
+            "object 'resume"+str(result2[0][0])+"' to bucket 'resume'."
         )
-    con=sqlite3.connect('db/data.db') #connecting to the database
-    cursor=con.cursor()
+    
     cursor.execute("UPDATE candidates SET phone = '"+ phone +"', current_location = '"+ location +"', current_company='"+ company +"', experience = '"+ experience +"' WHERE id= '"+ cand_id+"';")
     con.commit()    
 
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
-    result = cursor.fetchall()
-    nums={}
-    for i in result:
-        nums[i[0]]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
-    print(nums)
-    print(result)
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
-    con.close()
-    d={}
-    for i in result2:
-        if i[4].strip()=='Resume Screened for Interview':
-            nums[i[0].strip()]['stage1']+=1
-        elif i[4].strip()=='L1 Interview Complete':
-            nums[i[0].strip()]['stage2']+=1
-        elif i[4].strip()=='L2 Interview Complete':
-            nums[i[0].strip()]['stage3']+=1
-        elif i[4].strip()=='L3 Interview Complete':
-            nums[i[0].strip()]['stage4']+=1
-        elif i[4].strip()=='Offer RollOut':
-            nums[i[0].strip()]['stage5']+=1
-        elif i[4].strip()=='Buddy Assignment':
-            nums[i[0].strip()]['stage6']+=1
-        elif i[4].strip()=='Candidate Joined' or i[4].strip()=='Candidate Dropout':
-            nums[i[0].strip()]['stage7']+=1
-        elif i[4].strip()=='Resume Rejected':
-            nums[i[0].strip()]['stage8']+=1
-        if i[0] in d:
-            d[i[0]].append({'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
-        else:
-            d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
-    print(d)
-    print(nums)
-    return render_template('candidates.html', roles=result, candidates=d, nums=nums)
+    return redirect(url_for('main'))
 
 @app.route('/download-resume', methods=['GET','POST'])
 def downloadresume():
@@ -258,41 +204,7 @@ def updateStage():
         elif dropout_stage_time:
             cursor.execute("UPDATE candidates SET current_stage = 'Candidate Dropout', candidate_dropout_date = '"+ dropout_stage_time +"', candidate_dropout_reason = '"+ dropout_reason+"' WHERE id= '"+ cand_id+"';")
         con.commit()
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
-    result = cursor.fetchall()
-    nums={}
-    for i in result:
-        nums[i[0]]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
-    print(nums)
-    print(result)
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
-    con.close()
-    d={}
-    for i in result2:
-        if i[4].strip()=='Resume Screened for Interview':
-            nums[i[0].strip()]['stage1']+=1
-        elif i[4].strip()=='L1 Interview Complete':
-            nums[i[0].strip()]['stage2']+=1
-        elif i[4].strip()=='L2 Interview Complete':
-            nums[i[0].strip()]['stage3']+=1
-        elif i[4].strip()=='L3 Interview Complete':
-            nums[i[0].strip()]['stage4']+=1
-        elif i[4].strip()=='Offer RollOut':
-            nums[i[0].strip()]['stage5']+=1
-        elif i[4].strip()=='Buddy Assignment':
-            nums[i[0].strip()]['stage6']+=1
-        elif i[4].strip()=='Candidate Joined' or i[4].strip()=='Candidate Dropout':
-            nums[i[0].strip()]['stage7']+=1
-        elif i[4].strip()=='Resume Rejected':
-            nums[i[0].strip()]['stage8']+=1
-        if i[0] in d:
-            d[i[0]].append({'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
-        else:
-            d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
-    print(d)
-    print(nums)
-    return render_template('candidates.html', roles=result, candidates=d, nums=nums)
+    return redirect(url_for('main'))
 
 @app.route('/add-tsin', methods=['GET','POST'])
 def tsinform():
@@ -319,59 +231,66 @@ def detailed():
     result2=cursor.fetchall()
     return render_template('detailed.html', roles=role_dict,cands=result2)
 
+@app.route('/delete-role/<tsin>', methods=['GET','POST'])
+def delete_role(tsin):
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    cursor.execute("DELETE from roles where tsin_id= '"+tsin+"' ;")
+    con.commit()
+    return redirect(url_for('main'))
+
 @app.route('/new-position', methods=['GET','POST'])
 def newposition():
-    tsinid=request.form['tsinid']
-    role=request.form['role']
-    chapter=request.form['chapter']
-    squad=request.form['squad']
+    tsinid=request.form.get('tsinid')
+    role=request.form.get('role')
+    chapter=request.form.get('chapter')
+    squad=request.form.get('squad')
+    snow_id=request.form.get('snow_id')
+    tribe=request.form.get('tribe')
+    demandtype=request.form.get('demandtype')
     con=sqlite3.connect('db/data.db') #connecting to the database
     cursor=con.cursor()
     
-    cursor.execute('SELECT tsin_id from roles;')
+    cursor.execute('SELECT tsin_id, snow_id from roles;')
     result = cursor.fetchall()
     for i in result:
         print(i[0])
         if tsinid.strip()==i[0].strip():
             return "TSIN ID already exists"
-    cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad) VALUES ('"+tsinid+"','"+role+"','"+ chapter+"','"+ squad+"');")
+        if snow_id:
+            if snow_id.strip()==i[1].strip():
+                return "SNOW ID already exists"
+    cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad, demand_type, Tribe, snow_id) VALUES ('"+tsinid+"','"+role+"','"+ chapter+"','"+ squad+"','"+ demandtype+"','"+ tribe+"','"+ snow_id+"');")
     con.commit()
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
-    result = cursor.fetchall()
-    nums={}
-    for i in result:
-        nums[i[0]]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
-    print(nums)
-    print(result)
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
-    con.close()
-    d={}
-    for i in result2:
-        if i[4].strip()=='Resume Screened for Interview':
-            nums[i[0].strip()]['stage1']+=1
-        elif i[4].strip()=='L1 Interview Complete':
-            nums[i[0].strip()]['stage2']+=1
-        elif i[4].strip()=='L2 Interview Complete':
-            nums[i[0].strip()]['stage3']+=1
-        elif i[4].strip()=='L3 Interview Complete':
-            nums[i[0].strip()]['stage4']+=1
-        elif i[4].strip()=='Offer RollOut':
-            nums[i[0].strip()]['stage5']+=1
-        elif i[4].strip()=='Buddy Assignment':
-            nums[i[0].strip()]['stage6']+=1
-        elif i[4].strip()=='Candidate Joined' or i[4].strip()=='Candidate Dropout':
-            nums[i[0].strip()]['stage7']+=1
-        elif i[4].strip()=='Resume Rejected':
-            nums[i[0].strip()]['stage8']+=1
-        if i[0] in d:
-            d[i[0]].append({'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
-        else:
-            d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
-    print(d)
-    print(nums)
-    return render_template('candidates.html', roles=result, candidates=d, nums=nums)
+    return redirect(url_for('main'))
 
-
+@app.route('/add-new-profile',methods=['GET','POST'])
+def newprofile():
+    tsin=request.form['tsin_id']
+    phone=request.form['phone']
+    name=request.form['name']
+    email=request.form['email']
+    pan=request.form['pan']
+    company=request.form['company']
+    experience=request.form['experience']
+    location=request.form['location']
+    resume=request.files['resume']
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    query='''INSERT INTO candidates (tsin_id, candidate_name, pan, candidate_email, current_stage, phone, current_location, current_company, experience) VALUES (' '''+tsin+''' ',' '''+ name+''' ',' ''' +pan+''' ',' '''+ email+''' ','Profile Added ',' '''+ phone+''' ',' '''+ location+''' ',' '''+ company+''' ',' '''+ experience+''' ');'''
+    print(query)
+    cursor.execute(query)
+    con.commit()
+    
+    if resume:
+        resume.save('static/resume')
+        client.fput_object(
+            "resume", "resume"+str(name), "static/resume",
+        )
+        print(
+            "resume is successfully uploaded as "
+            "object 'resume"+str(name)+"' to bucket 'resume'."
+        )
+    return redirect(url_for('main'))   
 if __name__ == '__main__':
     app.run()

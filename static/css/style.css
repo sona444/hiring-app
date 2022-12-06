@@ -13,7 +13,14 @@
   font-weight:800; 
   color:#E20074;
   font-size:41px !important;
-  padding-top: 25px !important;
+  /* padding-top: 25px !important; */
+}
+.loginbtn{
+  background-color:white;
+  color:#E20074;
+  border:1px solid #E20074;
+  padding:8px;
+  border-radius: 10px;
 }
 section.register-form{
   /* padding-top: 15%;
@@ -146,7 +153,7 @@ animation: loader-inner 2s infinite ease-in;
   padding:10px;
 }
 .roles th{
-  padding:20px;
+  padding:10px;
   text-align:center;
   height:20px;
 }
@@ -209,17 +216,18 @@ border-color:red;
 }
 
 .accordion {
-  background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 18px;
   width: 100%;
   text-align: left;
   border: none;
   outline: none;
   transition: 0.4s;
 }
-
+#updatestage{
+  width:50%;
+  margin:0 auto;
+}
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .accordion:hover {
   background-color: #ccc;
@@ -234,7 +242,7 @@ border-color:red;
   display: none;
   overflow: hidden;
 }
-.resume-upload, .stage-update, .candidate-row, #download_resume, .new_tsin{
+/* .resume-upload, .stage-update, .candidate-row, #download_resume, .new_tsin{
   background-color:white;
   color:#E20074;
   border:1px solid #E20074;
@@ -242,10 +250,21 @@ border-color:red;
 }
 .new_tsin{
   border-radius: 10px;
+} */
+.resume-upload, .stage-update, .candidate-row, #download_resume, .new_tsin{
+  color:#E20074;
+  border:0;
+  background-color:white;
 }
 .reg-form{
   width:100%;
   margin-top:70px !important;
+}
+.navbar-brand.active button{
+  text-decoration: underline;
+}
+.navbar-brand.active{
+  background-color:transparent;
 }
 .view-profile{
   background-color:#E20074;
@@ -293,14 +312,17 @@ border-color:red;
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+.form-container input[type=text], .form-container input[type=password], .form-container input[type=email] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
 }
-
+.topbar{
+  background-color: #E20074;
+  padding-left:50px;
+}
 /* When the inputs get focus, do something */
 .form-container input[type=text]:focus, .form-container input[type=password]:focus {
   background-color: #ddd;

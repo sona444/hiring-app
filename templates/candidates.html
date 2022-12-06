@@ -18,9 +18,12 @@ label{
       <table class="roles">
       <tr>
       <th>TSIN ID</th>
+      <th>Snow ID</th>
       <th>Role</th>
       <th>Chapter</th>
       <th>Squad</th>
+      <th>Demand Type</th>
+      <th>Tribe</th>
       <th>On Resume Screening</th>
       <th>On L1 Interview</th>
       <th>On L2 Interview</th>
@@ -29,14 +32,18 @@ label{
       <th>On Buddy Assignment</th>
       <th>On Candidate Joining</th>
       <th>On Resume Rejected</th>
+      <th style="width:154px;">Actions</th>
       </tr>
       
       {% for i in roles %}
-      <tr class="accordion">
+      <tr>
         <td>{{i[0]}}</td>
+        <td>{{i[6]}}</td>
         <td>{{i[1]}}</td>
         <td>{{i[2]}}</td>
         <td>{{i[3]}}</td>
+        <td>{{i[4]}}</td>
+        <td>{{i[5]}}</td>
         <td>{{nums[i[0]]['stage1']}}</td>
         <td>{{nums[i[0]]['stage2']}}</td>
         <td>{{nums[i[0]]['stage3']}}</td>
@@ -45,17 +52,137 @@ label{
         <td>{{nums[i[0]]['stage6']}}</td>
         <td>{{nums[i[0]]['stage7']}}</td>
         <td>{{nums[i[0]]['stage8']}}</td>
+        <td><svg class="accordion" style="width:25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
+        &nbsp;<svg class="accordion addp"  style="width:25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+        &nbsp;<a href="/delete-role/{{i[0]}}"><svg style="width:25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
+        &nbsp;<a href="/delete-role/{{i[0]}}"><svg style="width:25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
+        </td>
       </tr>
       <tr style="display:none;">
-      <td colspan=12>
+      <td colspan=13>
+        <form class="form-container" id="newprofile" action = "add-new-profile" method = "POST" enctype = "multipart/form-data">
+          <input type="hidden" value="{{i[0]}}" id="tsin_id" name="tsin_id">
+          <label for="name"><b>Name</b></label>
+          <input type="text" id="name" placeholder="Enter Candidate's Name" name="name" required>
+
+          <label for="email"><b>Email</b></label>
+          <input type="email" id="email" placeholder="Enter Candidate's Email ID" name="email" required>
+
+          <label for="PAN"><b>PAN Number</b></label>
+          <input type="text" id="pan" placeholder="Enter Candidate's PAN Number" name="pan" required>
+
+          <label for="phone"><b>Phone number</b></label>
+          <input type="text" id="phone" pattern="[789][0-9]{9}" placeholder="Enter Candidate's phone" name="phone" onchange="checkphone({{phones}}, this);" required>
+
+          <label for="company"><b>Current Company</b></label>
+          <input type="text" id="company" placeholder="Enter Candidate's current company" name="company" required>
+
+          <label for="experience"><b>Years of Experience</b></label>
+          <input type="text" id="experience" placeholder="Enter Candidate's experience (in years)" name="experience" required>
+
+          <label for="resume"><b>Current Location</b></label>
+          <input type="text" id="location" placeholder="Enter Candidate's current location" name="location" required>
+
+          <label for="resume"><b>Upload Resume</b></label>
+          <input type="file" id="resume" name="resume" accept=".pdf" style="text-align:center;border: 1px dashed #E20074; padding:10px;color:#E20074;"><br><br>
+
+          <button type="submit" id="submit-resume" class="btn">Submit</button>
+        </form>
+        <form class="form-container" id="editrole" action = "edit-role" method = "POST" enctype = "multipart/form-data">
+          <input type="hidden" value="{{i[0]}}" id="tsin_id" name="tsin_id">
+        <label for="snowid">Enter Snow ID: </label>
+        <input type="text" id="snowid" name="snow_id" style="width:270px;"><br><br>
+        <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
+        <select name="chapter" id="chapter"style="width:270px;">
+          <option value="none">--None--</option>
+          <option value="Data Engineering">Data Engineering</option>
+          <option value="Devops & Infra">Devops & Infra</option>
+          <option value="Product Engineering">Product Engineering</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Domain Expert">Domain Expert</option>
+          <option value="Delphi">Delphi</option>
+          <option value="AI/ML as Service">AI/ML as Service</option>
+          <option value="Productization">Productization</option>
+          <option value="Data Architect">Data Architect</option>
+          <option value="Assurance">Assurance</option>
+          <option value="Agile & Scrum">Agile & Scrum</option>
+        </select><br><br>
+        <label for="role">Enter Role: <span style="color:red;">*</span></label>
+        <select name="role" id="role"style="width:270px;">
+          <option value="none">--None--</option>
+          <option value="Full Stack Developer">Full Stack Developer</option>
+          <option value="Sr. Full-stack Engineer - ELSA">Sr. Full-stack Engineer - ELSA</option>
+          <option value="Med. Full-stack Engineer - ELSA">Med. Full-stack Engineer - ELSA</option>
+          <option value="Jr. Full-stack Engineer - ELSA">Jr. Full-stack Engineer - ELSA</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Business Analyst">AI/ML as Service</option>
+          <option value="Data Engineer">Data Engineer</option>
+          <option value="Sr. Data Engineer">Sr. Data Engineer</option>
+          <option value="Data Engineer with MicroStrategy skills">Data Engineer with MicroStrategy skills</option>
+          <option value="DevOps Engineer">DevOps Engineer</option>
+          <option value="DevOps - ELSA">DevOps - ELSA</option>
+          <option value="DevOps Engineer - Cloud Booster">DevOps Engineer - Cloud Booster</option>
+          <option value="DevOps Engineer- Automated Fault Detection">DevOps Engineer- Automated Fault Detection</option>
+          <option value="Data Scientist">Data Scientist</option>
+          <option value="Backend Engineer">Backend Engineer</option>
+          <option value="MLOPS Engineer">MLOPS Engineer</option>
+          <option value="Scrum Master">Scrum Master</option>
+          <option value="Front End Developer">Front End Developer</option>
+          <option value="Cloud Architect">Cloud Architect</option>
+          <option value="Product Owner">Product Owner</option>
+          <option value="UI Developer">UI Developer</option>
+          <option value="Security Engineer ">Security Engineer </option>
+          <option value="Security Engineer -GCP">Security Engineer -GCP</option>
+          <option value="QA">QA</option>
+          <option value="Jr. QA ">Jr. QA </option>
+          <option value="Senior QA">Senior QA</option>
+        </select><br><br>
+        <label for="squad">Enter Squad: <span style="color:red;">*</span></label>
+         <select name="squad" id="squad"style="width:270px;">
+          <option value="none">--None--</option>
+          <option value="ELSA">ELSA</option>
+          <option value="NDI Hub">NDI Hub</option>
+          <option value="Cloud Booster">Cloud Booster</option>
+          <option value="Automated Fault Detection">Automated Fault Detection</option>
+          <option value="EU Central">EU Central</option>
+          <option value="MA Persona">MA Persona</option>
+          <option value="CET">CET</option>
+          <option value="MLOps">MLOps</option>
+          <option value="Halo">Halo</option>
+          <option value="Operation Support">Operation Support</option>
+          <option value="Nemo">Nemo</option>
+          <option value="DIL">DIL</option>
+          <option value="Argus">Argus</option>
+          <option value="Magenta adtech">Magenta adtech</option>
+          <option value="NWI">NWI</option>
+          <option value="Pluto">Pluto</option>
+        </select><br><br>
+        <label for="demandtype">Enter Type of Demand: </label>
+        <select name="demandtype" id="demandtype"style="width:270px;">
+          <option value="none">--None--</option>
+          <option value="Backfill">Backfill</option>
+          <option value="New Demand">New Demand</option>
+          <option value="Proactive">Proactive</option>
+        </select><br><br>
+        <label for="tribe">Enter Tribe: </label>
+        <select name="tribe" id="tribe"style="width:270px;">
+          <option value="none">--None--</option>
+          <option value="NetOps">NetOps</option>
+          <option value="DEP">DEP</option>
+          <option value="Halo">Halo</option>
+          <option value="CET">CET</option>
+          <option value="Halo">Halo</option>
+        </select><br><br>
+        <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
+      </form>
         <table style="width:100%;">
-      <tr>
-        <th>Name</th>
-        <th>Current Stage</th>
-        <th>Profile</th>
-        <th>Update Stage</th>
-        <th>View Stage</th>
-      </tr>
+        <tr>
+          <th>Name</th>
+          <th>Current Stage</th>
+          <th>Profile</th>
+          <th>Update Stage</th>
+          <th>View Stage</th>
+        </tr>
       
           {% for j in candidates[" "+i[0]+" "] %}
           <tr>
@@ -86,9 +213,7 @@ label{
  
                 <button type="submit" id="submit-resume" class="btn">Submit</button>
               </form>
-              
-            <div>
-              <div class="card">
+              <div>
                 <div class="container">
                   <h4><b>{{j['candidate_name']}}</b></h4>
                   <p><b>Phone</b>: {{j['phone']}}</p>
@@ -98,7 +223,6 @@ label{
                   <button id="download_resume" name="{{j['id']}}">Download Resume</button>
                 </div>
               </div>
-            </div>
             {% if j['current_stage'].strip() =='Profile Upload' %}
             <ul class="progressbar">
                     <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date'].strip()}}</b> - <b>{{j['tsin_opened_date'].strip()}}</b></li>
@@ -204,7 +328,7 @@ label{
                 <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
             </ul>
             {% endif %}
-        <div class="card">
+        <div>
             <div class="container">
                   <form class="form-container" id="updatestage" action = "update-stage" method = "POST" enctype = "multipart/form-data" style="text-align:left;">
                 <input type="hidden" value="{{j['id']}}" id="cid" name="candidate_id">
@@ -220,11 +344,11 @@ label{
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
                   <label for="l1_remarks"> Remarks/Comments:</label><br>
-                  <textarea id="l1_remarks" name="l1_remarks" rows="4" cols="50"></textarea>
+                  <textarea id="l1_remarks" name="l1_remarks" rows="4" cols="50"></textarea><br>
                   <label for="l2_interviewer"> L2 Interviewer Name</label>
                   <input type="text" id="l2_interviewer_name" name="l2_interviewer_name" style="width:270px;"><br>
                   <label for="l2_interview_date"> L2 Interview Date</label>
-                  <input type="date" id="l2_interview_date" name="l2_interview_date" style="width:270px;"><br>
+                  <input type="date" id="l2_interview_date" name="l2_interview_date" style="width:270px;"><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
@@ -237,11 +361,11 @@ label{
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
                   <label for="l2_remarks"> Remarks/Comments:</label><br>
-                  <textarea id="l2_remarks" name="l2_remarks" rows="4" cols="50"></textarea>
+                  <textarea id="l2_remarks" name="l2_remarks" rows="4" cols="50"></textarea><br>
                   <label for="l3_interviewer"> L3 Interviewer Name</label>
                   <input type="text" id="l3_interviewer_name" name="l3_interviewer_name" style="width:270px;"><br>
                   <label for="l3_interviewer"> L3 Interview Date</label>
-                  <input type="date" id="l3_interview_date" name="l3_interview_date" style="width:270px;"><br>
+                  <input type="date" id="l3_interview_date" name="l3_interview_date" style="width:270px;"><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
@@ -254,7 +378,7 @@ label{
                   <input type="radio" id="passed" name="result" value="passed"><label for="passed"> &nbsp;Passed</label><br>
                   <input type="radio" id="failed" name="result" value="failed"><label for="failed"> &nbsp;Failed</label><br>
                   <label for="l3_remarks"> Remarks/Comments:</label><br>
-                  <textarea id="l3_remarks" name="l3_remarks" rows="4" cols="50"></textarea>
+                  <textarea id="l3_remarks" name="l3_remarks" rows="4" cols="50"></textarea><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button
                 >
                 {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
@@ -264,7 +388,7 @@ label{
                   <span class="update-time"></span>
                   <input class="stageupdatetime" name="stageupdatetime" type="hidden">
                   <label for="li_interviewer"> Joining Date</label>
-                  <input type="date" id="joining_date" name="joining_date" style="width:270px;"><br>
+                  <input type="date" id="joining_date" name="joining_date" style="width:270px;"><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'Offer RollOut' %}
@@ -274,7 +398,7 @@ label{
                   <span class="update-time"></span>
                   <input class="stageupdatetime" name="stageupdatetime" type="hidden"> 
                   <label for="buddy_name"> Buddy Name</label>
-                  <input type="text" id="buddy_name" name="buddy_name" style="width:270px;"><br>
+                  <input type="text" id="buddy_name" name="buddy_name" style="width:270px;"><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
@@ -288,7 +412,7 @@ label{
                   <span class="update-time"></span>
                   <input class="stageupdatetime" name="dropoutstageupdatetime" type="hidden"> 
                   <label for="dropout_reason"> Dropout Reason</label>
-                  <input type="text" id="dropout_reason" name="dropout_reason" style="width:270px;"><br>
+                  <input type="text" id="dropout_reason" name="dropout_reason" style="width:270px;"><br><br>
                 <button type="submit" id="stage-update" class="btn">Submit</button>
 
                 {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
@@ -303,13 +427,13 @@ label{
                 
               </form>
             </div>
-        </div>
+            </div>
         
             </td>
           </tr>
           {% endfor %}
           </table>
-        </td>
+      </td>
       </tr>
       <tr class="panel" style="width:100%;">
         <td colspan=8 >
@@ -419,6 +543,7 @@ var btn=document.getElementsByClassName("view-profile");
 var profile=document.getElementsByClassName("resume-upload");
 var stage=document.getElementsByClassName("stage-update");
 var updateEvent=document.getElementsByClassName("stageupdation");
+var addp=document.getElementsByClassName("addp");
 var i;
 
 for (i = 0; i < acc.length; i++) {
@@ -426,11 +551,33 @@ for (i = 0; i < acc.length; i++) {
     /* Toggle between adding and removing the "active" class,
     to highlight the button that controls the panel */
     this.classList.toggle("active");
-
+    var panel = this.parentNode.parentNode.nextElementSibling;
+    if (panel.style.display === "table-row"){
+      if (this.classList.contains("addp")){
+        var panel2=panel.childNodes[1].childNodes[3];
+        var panel3=panel.childNodes[1].childNodes[1];
+        var panel4=panel.childNodes[1].childNodes[5];
+        console.log(panel, panel2);
+        if (panel2.style.display !="none" or panel3.style.display != "none"){
+        panel2.style.display="none";
+        panel3.style.display="none";
+        panel4.style.display="table";
+      }
+      else if(panel4.style.display === "table"){
+        panel.style.display = "none";
+      }
+    else{
+      var panel2=panel.childNodes[1].childNodes[1];
+      var panel3=panel.childNodes[1].childNodes[3];
+      console.log(panel, panel2);
+      panel2.style.display="none";
+      panel3.style.display="table";
+    }
+    }
     /* Toggle between hiding and showing the active panel */
-    var panel = this.nextElementSibling;
+    
     console.log(panel);
-    if (panel.style.display === "table-row") {
+     {
       panel.style.display = "none";
     } else {
       panel.style.display = "table-row";
@@ -562,6 +709,14 @@ download_button.addEventListener("click", function() {
             response.setContentType( "application/pdf" );
         });
 });
+function checkphone(el, el2){
+  for(var i=0;i<el.length;i++){
+    console.log(el2.value);
+    if (el[i]==el2.value){
+      alert("Phone number already exists, enter unique candidate");
+    }
+  }
+}
 </script>
 
 {% endblock content %}
