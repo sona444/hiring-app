@@ -62,6 +62,22 @@ def get_abstract_data():
     print(nums)
     return result, d, nums, list_of_phone
 
+def get_detailed_data():
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    cursor.execute('SELECT tsin_id, role, chapter, squad, demand_type, Tribe, snow_id from roles;')
+    result = cursor.fetchall()
+    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
+    result2 = cursor.fetchall()
+    roles={}
+    for i in result:
+        roles[i[0]]={"role":i[1], "chapter":i[2], "squad":i[3], "demand_type":i[4], "tribe":i[5], "snow_id":i[6]}
+    d=[]
+    for i in result2:
+        d.append({'tsinid':i[0],'chapter':roles[i[0].strip()]['chapter'],'squad':roles[i[0].strip()]['squad'],'demand_type':roles[i[0].strip()]['demand_type'],'tribe':roles[i[0].strip()]['tribe'],'snow_id':roles[i[0].strip()]['snow_id'],'role':roles[i[0].strip()]['role'],'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
+        print(d)
+    return d
+
 @app.route('/')
 def main():
     result, d,nums, phones=get_abstract_data()
@@ -220,16 +236,8 @@ def tsinform():
 
 @app.route('/detailed-view', methods=['GET','POST'])
 def detailed():
-    con=sqlite3.connect('db/data.db') #connecting to the database
-    cursor=con.cursor()
-    role_dict={}
-    cursor.execute('SELECT tsin_id, role, chapter, squad from roles;')
-    result = cursor.fetchall()
-    for i in result:
-        role_dict[i[0]]=[i[1],i[2],i[3]]
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
-    return render_template('detailed.html', roles=role_dict,cands=result2)
+    z=get_detailed_data()
+    return render_template('detailed.html', final=z)
 
 @app.route('/delete-role/<tsin>', methods=['GET','POST'])
 def delete_role(tsin):
@@ -292,5 +300,16 @@ def newprofile():
             "object 'resume"+str(name)+"' to bucket 'resume'."
         )
     return redirect(url_for('main'))   
+
+@app.route('/apply-filter', methods=['GET','POST'])
+def apply_filter():
+    val1=request.form.get('val1')
+    val2=request.form.get('val2')
+    val3=request.form.get('val3')
+    val4=request.form.get('val4')
+    val5=request.form.get('val5')
+    z=get_detailed_data()
+    final=[]
+    return z
 if __name__ == '__main__':
     app.run()
