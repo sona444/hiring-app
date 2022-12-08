@@ -175,6 +175,7 @@ def downloadresume():
     res = cursor.fetchall()
     print(res)
     z=client.get_object('resume', 'resume'+res[0][0])
+    client.fget_object('resume', 'resume'+res[0][0],"resume'"+res[0][0]+"'.pdf")
     return z.data
 
 @app.route('/upload-candidates', methods=['GET','POST'])
