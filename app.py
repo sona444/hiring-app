@@ -4,14 +4,14 @@ import sqlite3
 import pandas as pd
 from minio import Minio
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-load_dotenv()
-app = Flask(__name__)
-app["SQLALCHEMY_DATABASE_URI"]=""
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-from models import participants, team
+# from flask_sqlalchemy import SQLAlchemy
+# from flask_migrate import Migrate
+# load_dotenv()
+# app = Flask(__name__)
+# app["SQLALCHEMY_DATABASE_URI"]=""
+# db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
+# from models import participants, team
 
 client = Minio(
         "play.min.io",
@@ -35,8 +35,8 @@ def get_abstract_data():
     nums={}
     for i in result:
         nums[i[0].strip()]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
-    print(nums)
-    print(result)
+    #print(nums)
+    #print(result)
     cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
     result2=cursor.fetchall()
     list_of_phone=[]
@@ -65,8 +65,8 @@ def get_abstract_data():
             d[i[0]].append({'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
         else:
             d[i[0]]=[{'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]}]
-    print(d)
-    print(nums)
+    #print(d)
+    #print(nums)
     return result, d, nums, list_of_phone
 
 def get_detailed_data():
@@ -78,11 +78,11 @@ def get_detailed_data():
     result2 = cursor.fetchall()
     roles={}
     for i in result:
-        roles[i[0]]={"role":i[1], "chapter":i[2], "squad":i[3], "demand_type":i[4], "tribe":i[5], "snow_id":i[6]}
+        roles[i[0].strip()]={"role":i[1], "chapter":i[2], "squad":i[3], "demand_type":i[4], "tribe":i[5], "snow_id":i[6]}
     d=[]
     for i in result2:
         d.append({'tsinid':i[0],'chapter':roles[i[0].strip()]['chapter'],'squad':roles[i[0].strip()]['squad'],'demand_type':roles[i[0].strip()]['demand_type'],'tribe':roles[i[0].strip()]['tribe'],'snow_id':roles[i[0].strip()]['snow_id'],'role':roles[i[0].strip()]['role'],'id':i[21],'candidate_name':i[1], 'pan':i[2],'candidate_email':i[3], 'current_stage':i[4],'request_raised_date': i[5], 'tsin_opened_date':i[6], 'resume_screened_date':i[7], 'l1_interview_date':i[8], 'l1_interviewer':i[9], 'l2_interview_date':i[10], 'l2_interviewer':i[11], 'l3_interview_date':i[12], 'l3_interviewer':i[13], 'offer_rollout_date':i[14], 'joining_date':i[15], 'buddy_assignment_date':i[16], 'buddy_name':i[17], 'candidate_dropout_date':i[18], 'candidate_dropout_reason':i[19], 'resume':i[20], 'phone':i[22], 'current_location':i[23], 'current_company':i[24], 'experience':i[25]})
-        print(d)
+        #print(d)
     return d
 
 @app.route('/')
@@ -119,20 +119,20 @@ def uploadDs():
     con=sqlite3.connect('db/data.db') #connecting to the database
     cursor=con.cursor()
     for i in dict_of_records:
-        cursor.execute("SELECT * from roles where tsin_id = '"+i['TSIN ID']+"';")
+        cursor.execute("SELECT * from roles where tsin_id = '"+i['TSIN ID'].strip()+"';")
         existing_roles=cursor.fetchall()
         cursor.execute("SELECT candidate_email, tsin_id from candidates;")
         existing_emails=cursor.fetchall()
         if len(existing_roles)==0:
-            cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad) VALUES ('"+i['TSIN ID']+"','"+i['Role ']+"','"+ i['Chapter']+"','"+ i['Squad']+"');")
+            cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad) VALUES ('"+str(i['TSIN ID'].strip())+"','"+str(i['Role '])+"','"+ str(i['Chapter'])+"','"+ str(i['Squad'])+"');")
             con.commit()
-        z=[" "+i['Cadidate Email']+" ", " "+i['TSIN ID']+" "]
+        z=[" "+str(i['Cadidate Email'])+" ", " "+str(i['TSIN ID'].strip())+" "]
         if tuple(z) in existing_emails:
             print('yes')
-            cursor.execute("UPDATE candidates SET tsin_id='"+i['TSIN ID']+"',candidate_name= '"+ i['Candidate Name ']+"',pan='" +i['PAN Number']+"',candidate_email='"+ i['Cadidate Email']+"',current_stage='"+ i['Current Stage ']+"',request_raised_date='" +str(i['Request Rasied '])+"' WHERE candidate_email = '"+i['Cadidate Email']+"' AND tsin_id= '"+ i['TSIN ID']+"';")
+            cursor.execute("UPDATE candidates SET tsin_id='"+str(i['TSIN ID'].strip())+"',candidate_name= '"+ str(i['Candidate Name '])+"',pan='" +str(i['PAN Number'])+"',candidate_email='"+ str(i['Cadidate Email'])+"',current_stage='"+ str(i['Current Stage '])+"',request_raised_date='" +str(i['APSD Date'])+"' WHERE candidate_email = '"+str(i['Cadidate Email'])+"' AND tsin_id= '"+ str(i['TSIN ID'])+"';")
             con.commit()
         else:
-            query='''INSERT INTO candidates (tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume) VALUES (' '''+i['TSIN ID']+''' ',' '''+ i['Candidate Name ']+''' ',' ''' +i['PAN Number']+''' ',' '''+ i['Cadidate Email']+''' ',' '''+ i['Current Stage ']+''' ',' ''' +str(i['Request Rasied '])+''' ',' '''+str(i['TSIN Opened'])+''' ',' '''+str(i['Resume Screened'])+''' ',' '''+str(i['L1 Interview Complete'])+''' ',' '''+str(i['L1 Interviewer'])+''' ',' '''+str(i['L2 Interview Complete'])+''' ',' '''+str(i['L2 interviewer'])+''' ',' '''+str(i['L3 Interview Complete'])+''' ',' '''+str(i['L3 Interviewer'])+''' ',' '''+str(i['Offer RollOut '])+''' ',' '''+str(i['Joining Date'])+''' ',' '''+str(i['Buddy Assignment '])+''' ',' '''+str(i['Buddy Name'])+''' ',' '''+str(i['Candidate Joined'])+''' ',' '''+str(i['Candidate Dropout'])+''' ',' '''+str(i['Dropout Reason'])+''' ');'''
+            query='''INSERT INTO candidates (tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume) VALUES (' '''+str(i['TSIN ID'].strip())+''' ',' '''+ str(i['Candidate Name '])+''' ',' ''' +str(i['PAN Number'])+''' ',' '''+ str(i['Cadidate Email'])+''' ',' '''+ str(i['Current Stage '])+''' ',' ''' +str(i['APSD Date'])+''' ',' '''+str(i['TSIN Opened'])+''' ',' '''+str(i['Resume Screened'])+''' ',' '''+str(i['L1 Interview Complete'])+''' ',' '''+str(i['L1 Interviewer '])+''' ',' '''+str(i['L2 Interview Complete'])+''' ',' '''+str(i['L2 interviewer'])+''' ',' '''+str(i['L3 Interview Complete'])+''' ',' '''+str(i['L3 Interviewer'])+''' ',' '''+str(i['Offer RollOut '])+''' ',' '''+str(i['Joining Date'])+''' ',' '''+str(i['Buddy Assignment '])+''' ',' '''+str(i['Buddy Name'])+''' ',' '''+str(i['Candidate Joined'])+''' ',' '''+str(i['Candidate Dropout'])+''' ',' '''+str(i['Dropout Reason'])+''' ');'''
             cursor.execute(query)
             con.commit()
     print('added to db')
@@ -150,7 +150,7 @@ def profileUpload():
     cursor=con.cursor()
     cursor.execute("SELECT candidate_name from candidates where id = '"+ cand_id +"';")
     result2=cursor.fetchall()
-    print(result2)
+    #print(result2[0][0])
     if resume:
         resume.save('static/resume')
         client.fput_object(
@@ -169,7 +169,13 @@ def profileUpload():
 @app.route('/download-resume', methods=['GET','POST'])
 def downloadresume():
     id=request.form.get('id')
-    z=client.get_object('resume', 'resume'+id)
+    con=sqlite3.connect('db/data.db') #connecting to the database
+    cursor=con.cursor()
+    cursor.execute("SELECT candidate_name from candidates where id = '"+id+"'")
+    res = cursor.fetchall()
+    print(res)
+    z=client.get_object('resume', 'resume'+res[0][0])
+    client.fget_object('resume', 'resume'+res[0][0],"resume'"+res[0][0]+"'.pdf")
     return z.data
 
 @app.route('/upload-candidates', methods=['GET','POST'])
@@ -269,7 +275,7 @@ def detailed():
                 if i not in final:
                     final.append(i)
         if cname:
-            print(cname, i['candidate_name'])
+            #print(cname, i['candidate_name'])
             if i['candidate_name'].strip()==cname.strip():
                 if i not in final:
                     final.append(i)
@@ -301,7 +307,7 @@ def newposition():
     cursor.execute('SELECT tsin_id, snow_id from roles;')
     result = cursor.fetchall()
     for i in result:
-        print(i[0])
+        #print(i[0])
         if tsinid.strip()==i[0].strip():
             return "TSIN ID already exists"
         if snow_id:
@@ -325,7 +331,7 @@ def newprofile():
     con=sqlite3.connect('db/data.db') #connecting to the database
     cursor=con.cursor()
     query='''INSERT INTO candidates (tsin_id, candidate_name, pan, candidate_email, current_stage, phone, current_location, current_company, experience) VALUES (' '''+tsin+''' ',' '''+ name+''' ',' ''' +pan+''' ',' '''+ email+''' ','Profile Added ',' '''+ phone+''' ',' '''+ location+''' ',' '''+ company+''' ',' '''+ experience+''' ');'''
-    print(query)
+    #print(query)
     cursor.execute(query)
     con.commit()
     
