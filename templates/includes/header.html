@@ -6,6 +6,10 @@
 		<a class="navbar-brand navbar-center"href="/"><button class="new_tsin" style="font-size:15px;"><b>Abstract View</b></button></a>
 		<a class="navbar-brand navbar-center"href="/detailed-view"><button class="new_tsin" style="font-size:15px;"><b>Detailed View</b></button></a>
 		<a class="navbar-brand navbar-center"href="/add-tsin"><button class="new_tsin" style="font-size:15px;"><b>Add Position</b></button></a>
+		{% if url_for(request.endpoint) == '/detailed-view'%}
+		<a class="navbar-brand navbar-center"href="/detailed-view"><button class="new_tsin" style="text-decoration:none !important; font-size:15px;"><b>Reset Filters</b></button></a>
+		{% endif %}
+	
 	</nav>
 </header>
 <script>

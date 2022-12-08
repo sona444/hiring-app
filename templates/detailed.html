@@ -16,50 +16,50 @@
       <th>TSIN ID<br> <select id='selUser' style='width: 104px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% set tsin = [] %}
-      {% for i in cands %}
-        {% if i[0] not in tsin %}
-          {{ tsin.append( i[0] ) }}
-          <option value='{{i[0]}}'>{{i[0]}}</option> 
+      {% for i in final %}
+        {% if i['tsinid'] not in tsin %}
+          {{ tsin.append( i['tsinid'] ) }}
+          <option value='{{i["tsinid"]}}'>{{i['tsinid']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
       <th>Role<br><select id='selUser2' style='width: 104px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% set role = [] %}
-      {% for i in cands %}
-        {% if roles[i[0].strip()][0] not in role %}
-          {{ role.append( roles[i[0].strip()][0] ) }}
-          <option value='{{roles[i[0].strip()][0]}}'>{{roles[i[0].strip()][0]}}</option> 
+      {% for i in final %}
+        {% if i['role'] not in role %}
+          {{ role.append( i['role'] ) }}
+          <option value='{{i["role"]}}'>{{i['role']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
       <th>Chapter<br><select id='selUser3' style='width: 130px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% set chapter = [] %}
-      {% for i in cands %}
-        {% if roles[i[0].strip()][1] not in chapter %}
-          {{ chapter.append( roles[i[0].strip()][1] ) }}
-          <option value='{{roles[i[0].strip()][1]}}'>{{roles[i[0].strip()][1]}}</option> 
+      {% for i in final %}
+        {% if i['chapter'] not in chapter %}
+          {{ chapter.append( i['chapter'] ) }}
+          <option value="i['chapter']">{{i['chapter']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
       <th>Squad<br><select id='selUser4' style='width: 130px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% set squad = [] %}
-      {% for i in cands %}
-        {% if roles[i[0].strip()][2] not in squad %}
-          {{ squad.append( roles[i[0].strip()][2] ) }}
-          <option value='{{roles[i[0].strip()][2]}}'>{{roles[i[0].strip()][2]}}</option> 
+      {% for i in final %}
+        {% if i['squad'] not in squad %}
+          {{ squad.append( i['squad'] ) }}
+          <option value="i['squad']">{{i['squad']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
       <th>Candidate Name <br><select id='selUser5' style='width: 153px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% set cname = [] %}
-      {% for i in cands %}
-        {% if i[1] not in cname %}
-          {{ cname.append( i[1] ) }}
-          <option value='{{i[1]}}'>{{i[1]}}</option> 
+      {% for i in final %}
+        {% if i['candidate_name'] not in cname %}
+          {{ cname.append( i['candidate_name'] ) }}
+          <option value="{{i['candidate_name']}}">{{i['candidate_name']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
@@ -174,12 +174,14 @@ function applyfilter(){
       "val4":val4,
       "val5":val5,
     }
-    urll
     $.ajax({
       type: "POST",
       data: jsondata,
-      url:"/apply-filter",
-      dataType: "json"
+      url:"/detailed-view",
+      complete: function(response){
+        document.getElementsByTagName("body")[0].innerHTML="";
+        document.getElementsByTagName("body")[0].innerHTML=response.responseText;
+      }
       });
 }
 </script>

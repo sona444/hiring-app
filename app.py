@@ -3,8 +3,15 @@ from openpyxl import load_workbook
 import sqlite3
 import pandas as pd
 from minio import Minio
-
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+load_dotenv()
 app = Flask(__name__)
+app["SQLALCHEMY_DATABASE_URI"]=""
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+from models import participants, team
 
 client = Minio(
         "play.min.io",
@@ -164,6 +171,7 @@ def downloadresume():
     id=request.form.get('id')
     z=client.get_object('resume', 'resume'+id)
     return z.data
+
 @app.route('/upload-candidates', methods=['GET','POST'])
 def candidates():
     return render_template('index.html')
@@ -236,8 +244,39 @@ def tsinform():
 
 @app.route('/detailed-view', methods=['GET','POST'])
 def detailed():
+    tsin=request.form.get('val1')
+    role=request.form.get('val2')
+    chapter=request.form.get('val3')
+    squad=request.form.get('val4')
+    cname=request.form.get('val5')
     z=get_detailed_data()
-    return render_template('detailed.html', final=z)
+    final=[]
+    for i in z:
+        if tsin:
+            if i['tsinid'].strip()==tsin.strip():
+                if i not in final:
+                    final.append(i)
+        if role:
+            if i['role'].strip()==role.strip():
+                if i not in final:
+                    final.append(i)
+        if chapter:
+            if i['chapter'].strip()==chapter.strip():
+                if i not in final:
+                    final.append(i)
+        if squad:
+            if i['squad'].strip()==squad.strip():
+                if i not in final:
+                    final.append(i)
+        if cname:
+            print(cname, i['candidate_name'])
+            if i['candidate_name'].strip()==cname.strip():
+                if i not in final:
+                    final.append(i)
+    if final==[]:
+        return render_template('detailed.html', final=z)
+    else:
+        return render_template('detailed.html', final=final)
 
 @app.route('/delete-role/<tsin>', methods=['GET','POST'])
 def delete_role(tsin):
@@ -303,13 +342,34 @@ def newprofile():
 
 @app.route('/apply-filter', methods=['GET','POST'])
 def apply_filter():
-    val1=request.form.get('val1')
-    val2=request.form.get('val2')
-    val3=request.form.get('val3')
-    val4=request.form.get('val4')
-    val5=request.form.get('val5')
+    tsin=request.form.get('val1')
+    role=request.form.get('val2')
+    chapter=request.form.get('val3')
+    squad=request.form.get('val4')
+    cname=request.form.get('val5')
     z=get_detailed_data()
     final=[]
-    return z
+    for i in z:
+        if tsin:
+            if i['tsinid'].strip()==tsin.strip():
+                if i not in final:
+                    final.append(i)
+        if role:
+            if i['role'].strip()==role.strip():
+                if i not in final:
+                    final.append(i)
+        if chapter:
+            if i['chapter'].strip()==chapter.strip():
+                if i not in final:
+                    final.append(i)
+        if squad:
+            if i['squad'].strip()==squad.strip():
+                if i not in final:
+                    final.append(i)
+        if cname:
+            if i['candidate_name'].strip()==cname.strip():
+                if i not in final:
+                    final.append(i)
+    return render_template('detailed.html', final=final)
 if __name__ == '__main__':
     app.run()
