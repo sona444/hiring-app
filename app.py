@@ -6,9 +6,11 @@ from minio import Minio
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import update
 load_dotenv()
+
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"]="postgresql://postgres:@localhost:5432/hiringapp"
+app.config["SQLALCHEMY_DATABASE_URI"]="postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -26,25 +28,21 @@ if not found:
 else:
     print("Bucket 'resume' already exists")
 
-app = Flask(__name__)
 
 def get_abstract_data():
-    con=sqlite3.connect('db/data.db') #connecting to the database
-    cursor=con.cursor()
     
-    cursor.execute('SELECT tsin_id, role, chapter, squad, demand_type, Tribe, snow_id from roles;')
-    result = cursor.fetchall()
+    result=roles.query.all()
+    print(result)
     nums={}
     for i in result:
         nums[i[0].strip()]={'stage1':0,'stage2':0,'stage3':0,'stage4':0,'stage5':0,'stage6':0,'stage7':0, 'stage8':0}
     #print(nums)
     #print(result)
-    cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, id, phone, current_location, current_company, experience from candidates;')
-    result2=cursor.fetchall()
+    result2=candidates.query.all()
+    print(result2)
     list_of_phone=[]
     for i in result2:
         list_of_phone.append(i[22])
-    con.close()
     d={}
     for i in result2:
         if i[4].strip()=='Resume Screened for Interview':
@@ -118,21 +116,22 @@ def uploadDs():
 
     dict_of_records=Dataframe.to_dict(orient='record')
     
-    con=sqlite3.connect('db/data.db') #connecting to the database
-    cursor=con.cursor()
     for i in dict_of_records:
-        cursor.execute("SELECT * from roles where tsin_id = '"+i['TSIN ID'].strip()+"';")
-        existing_roles=cursor.fetchall()
-        cursor.execute("SELECT candidate_email, tsin_id from candidates;")
-        existing_emails=cursor.fetchall()
+        existing_roles=roles.query.filter_by(tsin_id=i['TSIN ID'].strip())
+        existing_emails=candidates.query(candidates.candidate_email, candidates.tsin_id).all()
         if len(existing_roles)==0:
-            cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad) VALUES ('"+str(i['TSIN ID'].strip())+"','"+str(i['Role '])+"','"+ str(i['Chapter'])+"','"+ str(i['Squad'])+"');")
-            con.commit()
+            db.session.add(roles(tsin_id=str(i['TSIN ID'].strip()), role=str(i['Role ']), chapter=str(i['Chapter']), squad=str(i['Squad'])))
         z=[" "+str(i['Cadidate Email'])+" ", " "+str(i['TSIN ID'].strip())+" "]
         if tuple(z) in existing_emails:
             print('yes')
-            cursor.execute("UPDATE candidates SET tsin_id='"+str(i['TSIN ID'].strip())+"',candidate_name= '"+ str(i['Candidate Name '])+"',pan='" +str(i['PAN Number'])+"',candidate_email='"+ str(i['Cadidate Email'])+"',current_stage='"+ str(i['Current Stage '])+"',request_raised_date='" +str(i['APSD Date'])+"' WHERE candidate_email = '"+str(i['Cadidate Email'])+"' AND tsin_id= '"+ str(i['TSIN ID'])+"';")
-            con.commit()
+            z=candidates.query.filter_by(candidate_email=str(i['Cadidate Email']), tsin_id=str(i['TSIN ID'].strip()))
+            z.tsin_id=str(i['TSIN ID'].strip())
+            z.candidate_name=str(i['Candidate Name '])
+            z.pan=str(i['PAN Number'])
+            z.candidate_email=str(i['Cadidate Email'])
+            z.current_stage=str(i['Current Stage '])
+            z.request_raised_date=str(i['APSD Date'])
+            
         else:
             query='''INSERT INTO candidates (tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume) VALUES (' '''+str(i['TSIN ID'].strip())+''' ',' '''+ str(i['Candidate Name '])+''' ',' ''' +str(i['PAN Number'])+''' ',' '''+ str(i['Cadidate Email'])+''' ',' '''+ str(i['Current Stage '])+''' ',' ''' +str(i['APSD Date'])+''' ',' '''+str(i['TSIN Opened'])+''' ',' '''+str(i['Resume Screened'])+''' ',' '''+str(i['L1 Interview Complete'])+''' ',' '''+str(i['L1 Interviewer '])+''' ',' '''+str(i['L2 Interview Complete'])+''' ',' '''+str(i['L2 interviewer'])+''' ',' '''+str(i['L3 Interview Complete'])+''' ',' '''+str(i['L3 Interviewer'])+''' ',' '''+str(i['Offer RollOut '])+''' ',' '''+str(i['Joining Date'])+''' ',' '''+str(i['Buddy Assignment '])+''' ',' '''+str(i['Buddy Name'])+''' ',' '''+str(i['Candidate Joined'])+''' ',' '''+str(i['Candidate Dropout'])+''' ',' '''+str(i['Dropout Reason'])+''' ');'''
             cursor.execute(query)
@@ -181,7 +180,7 @@ def downloadresume():
     return z.data
 
 @app.route('/upload-candidates', methods=['GET','POST'])
-def candidates():
+def candidates1():
     return render_template('index.html')
 
 @app.route('/update-stage', methods=['GET','POST'])
