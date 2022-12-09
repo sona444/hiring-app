@@ -293,7 +293,7 @@ label{
                   <p><b>Current Company</b>: {{j['current_company']}}</p>
                   <p><b>Total Experience</b>: {{j['experience']}}</p>
                   <p><b>Current Location</b>: {{j['current_location']}}</p>
-                  <button id="download_resume" name="{{j['id']}}">Download Resume</button>
+                  <button class="download_resume" name="{{j['id']}}">Download Resume</button>
                 </div>
               </div>
             {% if j['current_stage'].strip() =='Profile Upload' %}
@@ -829,19 +829,33 @@ for (i = 0; i < updateEvent.length; i++) {
     });
    
 }
-download_button= document.getElementById("download_resume");
-download_button.addEventListener("click", function() {
-  jsondata={"id":download_button.name}
+download_button= document.getElementsByClassName("download_resume");
+for (i = 0; i < download_button.length; i++) {
+  download_button[i].addEventListener("click", function() {
+  jsondata={"id":this.name}
   $.ajax({
       type: "POST",
       data: jsondata,
       url:"/download-resume",
-      dataType: "json" 
-      }).done(function( response ) {
-            console.log(response.responseText)
-            response.setContentType( "application/pdf" );
+      dataType: "json", 
+      complete: function( response ) {
+            console.log(response.responseText);
+            window.open("http://127.0.0.1:5000/static/resume.pdf");
+        /*var file = window.URL.createObjectURL(response.responseText);
+        var a = document.createElement("a");
+        a.href = file;
+        a.download = this.response.name || "detailPDF";
+        document.body.appendChild(a);
+        a.click();
+        // remove `a` following `Save As` dialog, 
+        // `window` regains `focus`
+        window.onfocus = function () {                     
+          document.body.removeChild(a)
+        }*/
+        }
         });
-});
+      });
+}
 function checkphone(el, el2){
   for(var i=0;i<el.length;i++){
     console.log(el2.value);

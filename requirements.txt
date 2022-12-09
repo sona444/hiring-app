@@ -25,6 +25,7 @@ Flask==2.2.2
 Flask-Migrate==4.0.0
 Flask-Minio==0.1.2
 flask-mongoengine==1.0.0
+Flask-Script==2.0.6
 Flask-SQLAlchemy==3.0.2
 Flask-WTF==1.0.1
 idna==3.4
@@ -69,6 +70,7 @@ platformdirs==2.5.4
 prometheus-client==0.15.0
 prompt-toolkit==3.0.32
 psutil==5.9.4
+psycopg2==2.9.5
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21

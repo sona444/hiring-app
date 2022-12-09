@@ -4,14 +4,16 @@ import sqlite3
 import pandas as pd
 from minio import Minio
 from dotenv import load_dotenv
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
-# load_dotenv()
-# app = Flask(__name__)
-# app["SQLALCHEMY_DATABASE_URI"]=""
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
-# from models import participants, team
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+load_dotenv()
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"]="postgresql://postgres:@localhost:5432/hiringapp"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+from models import candidates, roles
 
 client = Minio(
         "play.min.io",
@@ -154,11 +156,11 @@ def profileUpload():
     if resume:
         resume.save('static/resume')
         client.fput_object(
-            "resume", "resume"+str(result2[0][0]), "static/resume",
+            "resume", "resume"+str(result2[0][0]).strip(), "static/resume",
         )
         print(
             "resume is successfully uploaded as "
-            "object 'resume"+str(result2[0][0])+"' to bucket 'resume'."
+            "object 'resume"+str(result2[0][0]).strip()+"' to bucket 'resume'."
         )
     
     cursor.execute("UPDATE candidates SET phone = '"+ phone +"', current_location = '"+ location +"', current_company='"+ company +"', experience = '"+ experience +"' WHERE id= '"+ cand_id+"';")
@@ -175,7 +177,7 @@ def downloadresume():
     res = cursor.fetchall()
     print(res)
     z=client.get_object('resume', 'resume'+res[0][0])
-    client.fget_object('resume', 'resume'+res[0][0],"resume'"+res[0][0]+"'.pdf")
+    client.fget_object('resume', 'resume'+res[0][0],"static/resume.pdf")
     return z.data
 
 @app.route('/upload-candidates', methods=['GET','POST'])
