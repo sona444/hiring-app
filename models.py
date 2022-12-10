@@ -73,13 +73,13 @@ class candidates(db.Model):
 
 class roles(db.Model):
     __tablename__="roles"
-    tsin_id=db.Column(db.Integer, primary_key=True) 
+    tsin_id=db.Column(db.String, primary_key=True) 
     Role=db.Column(db.String, nullable=False)
     Chapter=db.Column(db.String, nullable=False)
     Squad=db.Column(db.String, nullable=False)
     demand_type=db.Column(db.String, nullable=True)
     Tribe=db.Column(db.String, nullable=True)
-    snow_id=db.Column(db.Boolean, nullable=True)
+    snow_id=db.Column(db.String, nullable=True)
     
 
     def __init__(self, tsin_id, role, chapter, squad, demand_type, tribe, snow_id):
