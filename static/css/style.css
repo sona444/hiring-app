@@ -150,12 +150,13 @@ animation: loader-inner 2s infinite ease-in;
   text-align:center;
 }
 .roles td{
-  padding:10px;
+  padding:4px;
 }
 .roles th{
-  padding:10px;
+  padding:5px;
   text-align:center;
-  height:20px;
+  height:10px;
+  font-size:12px;
 }
 .container {
   width: 100%;
@@ -362,4 +363,55 @@ border-color:red;
 #submit-resume{
   width:100px;
   margin:0 auto;
+}
+#newprofile input[type=text], #newprofile input[type=email], #newprofile input[type=file], #editrole input[type=text], #profile input{
+  margin: 2px;
+font-family: inherit;
+font-size: inherit;
+line-height: inherit;
+box-sizing: border-box;
+width: 271px !important;
+background-color: white !important;
+border: 1px solid lightgray;
+padding: 5px;
+}
+#newprofile .btn, #editrole .btn, #profile .btn{
+  background-color: #e20074;
+  padding:5px !important;
+  font-size:small;
+  width:100px;
+}
+.navbar-toggler{
+  background-color:#E20074;
+}
+.resetfilters{
+  position: absolute;
+  right: 46px;
+  margin-top:-15px !important;
+}
+@media (min-width:1024px){
+  .menu_fixed .navbar{
+    margin-top:-20px !important;
+  }
+}
+@media (max-width:1024px){
+  .topbar nav{
+    float:none;
+    padding: 0 !important;
+    padding-right:0px !important;
+    padding-top:8px !important;
+  }
+  .menu_fixed .navbar{
+    padding-left:20px !important;
+  }
+  .topbar{
+    padding-left: 25px !important;
+  }
+  .resetfilters{
+    margin-top:-15px;
+  }
+  .resetfilters{
+    position: static;
+    right: 46px;
+  }
 }

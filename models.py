@@ -82,11 +82,11 @@ class roles(db.Model):
     snow_id=db.Column(db.String, nullable=True)
     
 
-    def __init__(self, tsin_id, role, chapter, squad, demand_type, tribe, snow_id):
+    def __init__(self, tsin_id, Role, Chapter, Squad, demand_type, Tribe, snow_id):
         self.tsin_id=tsin_id
-        self.Role=role
-        self.Chapter=chapter
-        self.Squad=squad
+        self.Role=Role
+        self.Chapter=Chapter
+        self.Squad=Squad
         self.demand_type=demand_type
-        self.Tribe=tribe
+        self.Tribe=Tribe
         self.snow_id=snow_id

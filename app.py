@@ -10,7 +10,7 @@ from sqlalchemy import update
 load_dotenv()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://yashraj:yashraj@localhost:5432/hiringapp"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -126,9 +126,9 @@ def get_detailed_data():
     # result2 = cursor.fetchall()
     result = roles.query.all()
     result2 = candidates.query.all()
-    roles = {}
+    roless = {}
     for i in result:
-        roles[i.tsin_id.strip()] = {
+        roless[i.tsin_id.strip()] = {
             "role" : i.Role, 
             "chapter" : i.Chapter, 
             "squad" : i.Squad, 
@@ -140,12 +140,12 @@ def get_detailed_data():
     for i in result2:
         d.append({
             'tsinid' : i.tsin_id,
-            'chapter' : roles[i.tsin_id.strip()]['chapter'],
-            'squad' : roles[i.tsin_id.strip()]['squad'],
-            'demand_type' : roles[i.tsin_id.strip()]['demand_type'],
-            'tribe' : roles[i.tsin_id.strip()]['tribe'],
-            'snow_id' : roles[i.tsin_id.strip()]['snow_id'],
-            'role' : roles[i.tsin_id.strip()]['role'],
+            'chapter' : roless[i.tsin_id.strip()]['chapter'],
+            'squad' : roless[i.tsin_id.strip()]['squad'],
+            'demand_type' : roless[i.tsin_id.strip()]['demand_type'],
+            'tribe' : roless[i.tsin_id.strip()]['tribe'],
+            'snow_id' : roless[i.tsin_id.strip()]['snow_id'],
+            'role' : roless[i.tsin_id.strip()]['role'],
             'id' : i.id,
             'candidate_name' : i.candidate_name, 
             'pan' : i.pan,
@@ -177,6 +177,7 @@ def get_detailed_data():
 @app.route('/')
 def main():
     result, d, nums, phones = get_abstract_data()
+    print(d, result)
     return render_template('candidates.html', roles = result, candidates = d, nums = nums, phones = phones)
 
 
@@ -211,11 +212,11 @@ def uploadDs():
         if len(existing_roles) == 0:
             db.session.add(roles(
                 tsin_id = str(i['TSIN ID'].strip()), 
-                role = str(i['Role ']), 
-                chapter = str(i['Chapter']), 
-                squad = str(i['Squad']),
+                Role = str(i['Role ']), 
+                Chapter = str(i['Chapter']), 
+                Squad = str(i['Squad']),
                 demand_type = str(i['Type of Demand']), 
-                tribe = str(i['Tribe']), 
+                Tribe = str(i['Tribe']), 
                 snow_id = str(i['Snow ID'])
             ))
             db.session.commit()
@@ -230,7 +231,8 @@ def uploadDs():
             z.candidate_email = str(i['Cadidate Email'])
             z.current_stage = str(i['Current Stage '])
             z.request_raised_date = str(i['APSD Date'])
-            
+            db.session.commit()
+
         else:
             db.session.add(candidates(
                 tsin_id = str(i['TSIN ID'].strip()), 
@@ -640,5 +642,26 @@ def apply_filter():
                 if i not in final:
                     final.append(i)
     return render_template('detailed.html', final = final)
+
+@app.route('/edit-role', methods = ['GET', 'POST'])
+def editrole():
+    tsin = request.form.get('tsin_id')
+    snow_id = request.form.get('snow_id')
+    chapter = request.form.get('chapter')
+    role = request.form.get('role')
+    squad = request.form.get('squad')
+    demandtype = request.form.get('demandtype')
+    tribe = request.form.get('tribe')
+    db.session.query(roles).filter(roles.tsin_id == tsin).update({
+                'snow_id':snow_id,
+                'Chapter':chapter,
+                'Role':role,
+                'Squad':squad,
+                'demand_type':demandtype,
+                'Tribe':tribe
+            })
+    db.session.commit()
+    return redirect(url_for('main'))   
+
 if __name__ == '__main__':
     app.run()
