@@ -1,0 +1,137 @@
+{% extends "layout/base.html" %}
+
+{% block title %}HIREUP{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    #myChartweekly div div div{
+        position:static !important;
+        float:left ;
+    }
+    #myChartweekly{
+        float:left;
+    }
+    #myChartmonthly div div div{
+        position:static !important;
+        float:left ;
+    }
+    #myChartmonthly{
+        float:left;
+    }
+    #myChartquarterly div div div{
+        position:static !important;
+        float:left ;
+    }
+    #myChartquarterly{
+        float:left;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block body_class %} landing-page {% endblock body_class %}
+
+{% block content %}
+
+<main>
+{{offers}}
+{{dropout}}
+<form>
+<input type="hidden" id="offer-weekly" value="{{total_offer[0]}}">
+<input type="hidden" id="offer-monthly" value="{{total_offer[1]}}">
+<input type="hidden" id="offer-quarterly" value="{{total_offer[2]}}">
+<input type="hidden" id="dropout-weekly" value="{{total_dropouts[0]}}">
+<input type="hidden" id="dropout-monthly" value="{{total_dropouts[1]}}">
+<input type="hidden" id="dropout-quarterly" value="{{total_dropouts[2]}}">
+<input type="hidden" id="offer-rollwise" value="{{role_wise_offers}}">
+</form>
+<div id="myChartweekly" width="400" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
+<div id="myChartmonthly" width="400" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
+<div id="myChartquarterly" width="400" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
+</main>
+<script>
+var weeklyoffer=$('#offer-weekly').val();
+var monthlyoffer=$('#offer-monthly').val();
+var quarterlyoffer=$('#offer-quarterly').val();
+var weeklydropout=$('#dropout-weekly').val();
+var monthlydropout=$('#dropout-monthly').val();
+var quarterlydropout=$('#dropout-quarterly').val();
+var role_wise_offers=$('#offer-rolewise').val();
+console.log(quarterlyoffer, quarterlydropout);
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawChart);
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+    ['Activity', 'Resumes under it'],
+    ['Offers Rolled Out', Number(weeklyoffer)],
+    ['Candidate Dropped Out',Number(weeklydropout)],
+]);
+
+var options = {
+    title: 'Past 2 Weeks Insights',
+    is3D: true,
+    pieSliceText:'value',
+    sliceVisibilityThreshold:0
+};
+
+var chart = new google.visualization.PieChart(document.getElementById('myChartweekly'));
+chart.draw(data, options);
+}
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawChart1);
+function drawChart1() {
+var data = google.visualization.arrayToDataTable([
+    ['Activity', 'Resumes under it'],
+    ['Offers Rolled Out', Number(monthlyoffer)],
+    ['Candidate Dropped Out', Number(monthlydropout)],
+]);
+
+var options = {
+    title: "Last 1 Month's Insights",
+    is3D: true,
+    pieSliceText:'value',
+    sliceVisibilityThreshold:0
+};
+
+var chart = new google.visualization.PieChart(document.getElementById('myChartmonthly'));
+chart.draw(data, options);
+}
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawChart2);
+function drawChart2() {
+var data = google.visualization.arrayToDataTable([
+    ['Activity', 'Resumes under it'],
+    ['Offers Rolled Out', Number(quarterlyoffer)],
+    ['Candidate Dropped Out', Number(quarterlydropout)],
+]);
+
+var options = {
+    title: "Last 1 Quarter's Insights",
+    is3D: true,
+    pieSliceText:'value',
+    sliceVisibilityThreshold:0
+};
+
+var chart = new google.visualization.PieChart(document.getElementById('myChartquarterly'));
+chart.draw(data, options);
+}
+var ar = Object.entries(month[key][j]).map(([a, b]) => [a, Number(b)]);
+function drawChart() {
+              var data = new google.visualization.DataTable();
+              data.addColumn('string', 'Product');
+              var time=myObj.time;
+              for( var i=0; i<time.length;i++){
+              data.addColumn('number', time[i]);
+              }
+              data.addRows(myObj.rows);
+
+              var options = {
+                title:'Year-wise Trends Representation',
+                is3D:true,
+                height:'500px'
+              };
+              var chart = new google.visualization.ColumnChart(document.getElementById("myChart3"));
+              chart.draw(data, options);
+          }
+</script>
+{% endblock content %}

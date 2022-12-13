@@ -35,8 +35,10 @@ class candidates(db.Model):
     current_company=db.Column(db.String,nullable=True)
     experience=db.Column(db.String,nullable=True)
     candidate_joined_date=db.Column(db.String,nullable=True)
+    created_at=db.Column(db.DateTime, nullable=False)
+    modified_at=db.Column(db.DateTime, nullable=False)
     
-    def __init__(self,tsin_id, candidate_name, candidate_email, current_stage, pan, request_raised_date, tsin_opened_date, resume_screened_date, resume_screened_remarks, l1_interview_date, l1_interviewer, l1_interview_result, l1_interview_remarks, l2_interview_date, l2_interviewer, l2_interview_remarks, l2_interview_result, l3_interview_date, l3_interviewer, l3_interview_result, l3_interview_remarks, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, phone, current_location, current_company, experience, candidate_joined_date):
+    def __init__(self,tsin_id, candidate_name, candidate_email, current_stage, pan, request_raised_date, tsin_opened_date, resume_screened_date, resume_screened_remarks, l1_interview_date, l1_interviewer, l1_interview_result, l1_interview_remarks, l2_interview_date, l2_interviewer, l2_interview_remarks, l2_interview_result, l3_interview_date, l3_interviewer, l3_interview_result, l3_interview_remarks, offer_rollout_date, joining_date, buddy_assignment_date, buddy_name, candidate_dropout_date, candidate_dropout_reason, resume, phone, current_location, current_company, experience, candidate_joined_date, created_at, modified_at):
         self.tsin_id=tsin_id
         self.candidate_name=candidate_name
         self.candidate_email=candidate_email
@@ -70,23 +72,29 @@ class candidates(db.Model):
         self.current_company=current_company
         self.experience=experience
         self.candidate_joined_date=candidate_joined_date
+        self.created_at=created_at
+        self.modified_at=modified_at
 
 class roles(db.Model):
     __tablename__="roles"
     tsin_id=db.Column(db.String, primary_key=True) 
-    Role=db.Column(db.String, nullable=False)
-    Chapter=db.Column(db.String, nullable=False)
-    Squad=db.Column(db.String, nullable=False)
+    role=db.Column(db.String, nullable=False)
+    chapter=db.Column(db.String, nullable=False)
+    squad=db.Column(db.String, nullable=False)
     demand_type=db.Column(db.String, nullable=True)
-    Tribe=db.Column(db.String, nullable=True)
+    tribe=db.Column(db.String, nullable=True)
     snow_id=db.Column(db.String, nullable=True)
+    created_at=db.Column(db.DateTime, nullable=False)
+    modified_at=db.Column(db.DateTime, nullable=False)
     
 
-    def __init__(self, tsin_id, Role, Chapter, Squad, demand_type, Tribe, snow_id):
+    def __init__(self, tsin_id, role, chapter, squad, demand_type, tribe, snow_id, created_at, modified_at):
         self.tsin_id=tsin_id
-        self.Role=Role
-        self.Chapter=Chapter
-        self.Squad=Squad
+        self.role=role
+        self.chapter=chapter
+        self.squad=squad
         self.demand_type=demand_type
-        self.Tribe=Tribe
+        self.tribe=tribe
         self.snow_id=snow_id
+        self.created_at=created_at
+        self.modified_at=modified_at

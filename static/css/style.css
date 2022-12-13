@@ -252,7 +252,7 @@ border-color:red;
 .new_tsin{
   border-radius: 10px;
 } */
-.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin{
+.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard{
   color:#E20074;
   border:0;
   background-color:white;

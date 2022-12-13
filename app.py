@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import update
+from datetime import datetime
 load_dotenv()
 
 app = Flask(__name__)
@@ -27,7 +28,6 @@ if not found:
     client.make_bucket("resume")
 else:
     print("Bucket 'resume' already exists")
-
 
 def get_abstract_data():
     result = roles.query.all()
@@ -114,10 +114,49 @@ def get_abstract_data():
             }]
     return result, d, nums, list_of_phone
 
+def total_offers():
+    result = candidates.query.with_entities(candidates.tsin_id, candidates.offer_rollout_date, candidates.candidate_dropout_date).all()
+    
+    final={}
+    dropout_final={}
+    for i in result:
+        j=roles.query.with_entities(roles.role).filter_by(tsin_id=i.tsin_id).all()
+        print(j)
+        if '-' in i.offer_rollout_date:
+            time=i.offer_rollout_date.split(' ')[0]
+            time2=time.replace("-","/")
+            now = datetime.now()
+            d1=datetime.strptime(time2, "%Y/%m/%d")
+            now2=now.strftime("%Y/%m/%d")
+            now=datetime.strptime(now2,"%Y/%m/%d")
+            print(type(now))
+            difference=now-d1
+            print(j[0][0])
+            if j[0][0] in final.keys():
+                final[j[0][0]].append(difference.days)
+            else:
+                final[j[0][0]]=[difference.days]
+        if '-' in i.candidate_dropout_date:
+            time=i.candidate_dropout_date.split(' ')[0]
+            time2=time.replace("-","/")
+            now = datetime.now()
+            d1=datetime.strptime(time2, "%Y/%m/%d")
+            now2=now.strftime("%Y/%m/%d")
+            now=datetime.strptime(now2,"%Y/%m/%d")
+            print(type(now))
+            difference=now-d1
+            if j[0][0] in dropout_final.keys():
+                dropout_final[j[0][0]].append(difference.days)
+            else:
+                dropout_final[j[0][0]]=[difference.days]
+    print(final)
+    
+    return final, dropout_final
+
 def get_detailed_data():
     # con=sqlite3.connect('db/data.db') #connecting to the database
     # cursor=con.cursor()
-    # cursor.execute('SELECT tsin_id, role, chapter, squad, demand_type, Tribe, snow_id from roles;')
+    # cursor.execute('SELECT tsin_id, role, chapter, squad, demand_type, tribe, snow_id from roles;')
     # result = cursor.fetchall()
     # cursor.execute('SELECT tsin_id, candidate_name, pan, candidate_email, current_stage, request_raised_date, tsin_opened_date, 
     # resume_screened_date, l1_interview_date, l1_interviewer, l2_interview_date, l2_interviewer, l3_interview_date, l3_interviewer, 
@@ -129,11 +168,11 @@ def get_detailed_data():
     roless = {}
     for i in result:
         roless[i.tsin_id.strip()] = {
-            "role" : i.Role, 
-            "chapter" : i.Chapter, 
-            "squad" : i.Squad, 
+            "role" : i.role, 
+            "chapter" : i.chapter, 
+            "squad" : i.squad, 
             "demand_type" : i.demand_type, 
-            "tribe" : i.Tribe, 
+            "tribe" : i.tribe, 
             "snow_id" : i.snow_id
         }
     d=[]
@@ -212,12 +251,14 @@ def uploadDs():
         if len(existing_roles) == 0:
             db.session.add(roles(
                 tsin_id = str(i['TSIN ID'].strip()), 
-                Role = str(i['Role ']), 
-                Chapter = str(i['Chapter']), 
-                Squad = str(i['Squad']),
+                role = str(i['Role ']), 
+                chapter = str(i['Chapter']), 
+                squad = str(i['Squad']),
                 demand_type = str(i['Type of Demand']), 
-                Tribe = str(i['Tribe']), 
-                snow_id = str(i['Snow ID'])
+                tribe = str(i['Tribe']), 
+                snow_id = str(i['Snow ID']),
+                created_at=datetime.now(),
+                modified_at=datetime.now()
             ))
             db.session.commit()
 
@@ -244,7 +285,7 @@ def uploadDs():
                 tsin_opened_date = str(i['TSIN Opened']), 
                 resume_screened_date = str(i['Resume Screened']), 
                 l1_interview_date = str(i['L1 Interview Complete']), 
-                l1_interviewer = str(i['L1 Interviewer ']), 
+                l1_interviewer = str(i['L1 Interviewer']), 
                 l2_interview_date = str(i['L2 Interview Complete']), 
                 l2_interviewer = str(i['L2 interviewer']), 
                 l3_interview_date = str(i['L3 Interview Complete']), 
@@ -267,7 +308,9 @@ def uploadDs():
                 current_location = "",
                 current_company = "",
                 experience = "",
-                candidate_joined_date = ""
+                candidate_joined_date = "",
+                created_at=datetime.now(),
+                modified_at=datetime.now()
             ))
             db.session.commit()
     print('added to db')
@@ -299,7 +342,8 @@ def profileUpload():
         'phone' : phone, 
         'current_location' : location, 
         'current_company' : company,
-        'experience' : experience    
+        'experience' : experience,
+        'modified_at':datetime.now()    
     })
     db.session.commit()
     # cursor.execute("UPDATE candidates SET phone = '"+ phone +"', current_location = '"+ location +"', current_company='"+ company +"', 
@@ -351,7 +395,8 @@ def updateStage():
                 'l1_interview_result' : result,
                 'l1_interview_remarks' : l1_remarks,
                 'l2_interviewer' : l2_interviewer_name,
-                'l2_interview_date' : l2_interview_date
+                'l2_interview_date' : l2_interview_date,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'L1 Interview Complete', l1_completion = '"+ update_time +"', 
             # l1_interview_result = '"+ result +"', l1_interview_remarks = '"+ l1_remarks +"', l2_interviewer='"+ l2_interviewer_name +"', 
@@ -361,7 +406,8 @@ def updateStage():
                 'current_stage' : 'Resume Rejected', 
                 'l1_completion' : update_time, 
                 'l1_interview_result' : result,
-                'l1_interview_remarks' : l1_remarks
+                'l1_interview_remarks' : l1_remarks,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'Resume Rejected', l1_completion = '"+ update_time +"', 
             # l1_interview_result = '"+ result +"', l1_interview_remarks = '"+ l1_remarks +"';")
@@ -385,7 +431,8 @@ def updateStage():
                 'current_stage' : 'Resume Rejected', 
                 'l2_completion' : update_time, 
                 'l2_interview_result' : result,
-                'l2_interview_remarks' : l2_remarks
+                'l2_interview_remarks' : l2_remarks,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'Resume Rejected', l2_completion = '"+ update_time +"', 
             # l2_interview_result = '"+ result +"', l2_interview_remarks = '"+ l2_remarks +"';")
@@ -398,6 +445,7 @@ def updateStage():
                 'l3_completion' : update_time, 
                 'l3_interview_result' : result,
                 'l3_interview_remarks' : l3_remarks,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'L3 Interview Complete', l3_completion = '"+ update_time +"', 
             # l3_interview_result = '"+ result +"', l3_interview_remarks = '"+ l3_remarks +"' WHERE id= '"+ cand_id+"';")
@@ -406,7 +454,8 @@ def updateStage():
                 'current_stage' : 'Resume Rejected', 
                 'l3_completion' : update_time, 
                 'l3_interview_result' : result,
-                'l3_interview_remarks' : l3_remarks
+                'l3_interview_remarks' : l3_remarks,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'Resume Rejected', l3_completion = '"+ update_time +"', 
             # l3_interview_result = '"+ result +"', l3_interview_remarks = '"+ l3_remarks +"';")
@@ -417,6 +466,7 @@ def updateStage():
             'current_stage' : 'Offer RollOut', 
             'offer_rollout_date' : update_time, 
             'joining_date' : joining_date,
+            'modified_at':datetime.now()
         })
         db.session.commit()
         # cursor.execute("UPDATE candidates SET current_stage = 'Offer RollOut', offer_rollout_date = '"+ update_time +"', 
@@ -427,6 +477,7 @@ def updateStage():
             'current_stage' : 'Buddy Assignment', 
             'buddy_assignment_date' : update_time, 
             'buddy_name' : buddy_name,
+            'modified_at':datetime.now()
         })
         db.session.commit()
         # cursor.execute("UPDATE candidates SET current_stage = 'Buddy Assignment', buddy_assignment_date = '"+ update_time +"', 
@@ -438,7 +489,8 @@ def updateStage():
         elif joining_stage_time:
             db.session.query(candidates).filter(candidates.id == cand_id).update({
                 'current_stage' : 'Candidate Joined', 
-                'candidate_joined_date' : joining_stage_time, 
+                'candidate_joined_date' : joining_stage_time,
+                'modified_at':datetime.now() 
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'Candidate Joined', candidate_joined_date = '"+ joining_stage_time +"' WHERE id= '"+ cand_id+"';")
         elif dropout_stage_time:
@@ -446,6 +498,7 @@ def updateStage():
                 'current_stage' : 'Candidate Dropout', 
                 'candidate_dropout_date' : dropout_stage_time, 
                 'candidate_dropout_reason' : dropout_reason,
+                'modified_at':datetime.now()
             })
             # cursor.execute("UPDATE candidates SET current_stage = 'Candidate Dropout', candidate_dropout_date = '"+ dropout_stage_time +"',
             #  candidate_dropout_reason = '"+ dropout_reason+"' WHERE id= '"+ cand_id+"';")
@@ -531,7 +584,7 @@ def newposition():
             if snow_id.strip() == i[1].strip():
                 return "SNOW ID already exists"
     
-    # cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad, demand_type, Tribe, snow_id) VALUES ('"+tsinid+"','"+role+"','"+ 
+    # cursor.execute("INSERT INTO roles(tsin_id, role, chapter, squad, demand_type, tribe, snow_id) VALUES ('"+tsinid+"','"+role+"','"+ 
     # chapter+"','"+ squad+"','"+ demandtype+"','"+ tribe+"','"+ snow_id+"');")
     # con.commit()
     db.session.add(roles(
@@ -541,7 +594,9 @@ def newposition():
         squad = squad,
         demand_type = demandtype, 
         tribe = tribe, 
-        snow_id = snow_id
+        snow_id = snow_id,
+        created_at=datetime.now(),
+        modified_at=datetime.now()
     ))
     db.session.commit()
     return redirect(url_for('main'))
@@ -598,7 +653,9 @@ def newprofile():
         current_location = location,
         current_company = company,
         experience = experience,
-        candidate_joined_date = ""
+        candidate_joined_date = "",
+        created_at=datetime.now(),
+        modified_at=datetime.now()
     ))
     db.session.commit()
 
@@ -654,14 +711,44 @@ def editrole():
     tribe = request.form.get('tribe')
     db.session.query(roles).filter(roles.tsin_id == tsin).update({
                 'snow_id':snow_id,
-                'Chapter':chapter,
-                'Role':role,
-                'Squad':squad,
+                'chapter':chapter,
+                'role':role,
+                'squad':squad,
                 'demand_type':demandtype,
-                'Tribe':tribe
+                'tribe':tribe,
+                'modified_at':datetime.now()
             })
     db.session.commit()
     return redirect(url_for('main'))   
+
+@app.route('/dashboard', methods = ['GET', 'POST'])
+def dashboard():
+    z, drop=total_offers()
+    weekly=0
+    montly=0
+    quarterly=0
+    for i in z.values():
+        for j in i:
+            if j<=14:
+                weekly+=1
+            elif j<=30:
+                montly+=1
+            elif j>30 and j<=90:
+                quarterly+=1
+    offers=[weekly, montly, quarterly]
+    dropout_weekly=0
+    dropout_montly=0
+    dropout_quarterly=0
+    for i in drop.values():
+        for j in i:
+            if j<=14:
+                dropout_weekly+=1
+            elif j>14 and j<=30:
+                dropout_montly+=1
+            elif j>30 and j<=90:
+                dropout_quarterly+=1
+    dropouts=[dropout_weekly, dropout_montly, dropout_quarterly]
+    return render_template('dashboard.html', role_wise_offers=z, role_wise_dropout=drop, total_offer=offers, total_dropouts=dropouts)
 
 if __name__ == '__main__':
     app.run()
