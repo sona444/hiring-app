@@ -22,6 +22,7 @@ et-xmlfile==1.1.0
 executing==1.2.0
 fastjsonschema==2.16.2
 Flask==2.2.2
+Flask-DotEnv==0.1.2
 Flask-Migrate==4.0.0
 Flask-Minio==0.1.2
 flask-mongoengine==1.0.0
