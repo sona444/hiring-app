@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import update
 from datetime import datetime
+import json
 load_dotenv()
 
 app = Flask(__name__)
@@ -18,14 +19,14 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from models import candidates, roles
 
-client = Minio(
-    "play.min.io",
-    access_key = "Q3AM3UQ867SPQQA43P2F",
-    secret_key = "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
+minioClient = Minio('localhost:9000',
+access_key='minioadmin',
+secret_key='minioadmin',
+secure=False
 )
-found = client.bucket_exists("resume")
+found = minioClient.bucket_exists("resume")
 if not found:
-    client.make_bucket("resume")
+    minioClient.make_bucket("resume")
 else:
     print("Bucket 'resume' already exists")
 
@@ -129,10 +130,9 @@ def total_offers():
             d1=datetime.strptime(time2, "%Y/%m/%d")
             now2=now.strftime("%Y/%m/%d")
             now=datetime.strptime(now2,"%Y/%m/%d")
-            print(type(now))
             difference=now-d1
-            print(j[0][0])
             if j[0][0] in final.keys():
+                print('.....',final[j[0][0]])
                 final[j[0][0]].append(difference.days)
             else:
                 final[j[0][0]]=[difference.days]
@@ -152,6 +152,27 @@ def total_offers():
     print(final)
     
     return final, dropout_final
+
+def get_new_profiles():
+    result = candidates.query.with_entities(candidates.tsin_id, candidates.created_at).all()
+    final={}
+    for i in result:
+        j=roles.query.with_entities(roles.role).filter_by(tsin_id=i.tsin_id).all()
+        print(j)
+        # time=i.created_at.split(' ')[0]
+        # time2=time.replace("-","/")
+        now = datetime.now()
+        # d1=datetime.strptime(i.created_at, "%Y/%m/%d")
+        # now2=now.strftime("%Y/%m/%d")
+        # now=datetime.strptime(now2,"%Y/%m/%d")
+        # print(type(now))
+        difference=now - i.created_at
+        print(j[0][0])
+        if j[0][0] in final.keys():
+            final[j[0][0]].append(difference.days)
+        else:
+            final[j[0][0]]=[difference.days]
+    return final
 
 def get_detailed_data():
     # con=sqlite3.connect('db/data.db') #connecting to the database
@@ -332,7 +353,7 @@ def profileUpload():
     result2 = candidates.query.with_entities(candidates.candidate_name).filter_by(id = cand_id).all()
     if resume:
         resume.save('static/resume')
-        client.fput_object("resume", "resume" + str(result2[0][0]).strip(), "static/resume",)
+        minioClient.fput_object("resume", "resume" + str(result2[0][0]).strip(), "static/resume",)
         print(
             "resume is successfully uploaded as "
             "object 'resume" + str(result2[0][0]).strip() + "' to bucket 'resume'."
@@ -359,8 +380,8 @@ def downloadresume():
     # cursor.execute("SELECT candidate_name from candidates where id = '"+id+"'")
     # res = cursor.fetchall()
     res = candidates.query.with_entities(candidates.candidate_name).filter_by(id = id).all()
-    z = client.get_object('resume', 'resume' + res[0][0])
-    client.fget_object('resume', 'resume' + res[0][0], "static/resume.pdf")
+    z = minioClient.get_object('resume', 'resume' + res[0][0])
+    minioClient.fget_object('resume', 'resume' + res[0][0], "static/resume.pdf")
     return z.data
 
 @app.route('/upload-candidates', methods = ['GET', 'POST'])
@@ -661,7 +682,7 @@ def newprofile():
 
     if resume:
         resume.save('static/resume')
-        client.fput_object("resume", "resume" + str(name), "static/resume")
+        minioClient.fput_object("resume", "resume" + str(name), "static/resume")
         print(
             "resume is successfully uploaded as "
             "object 'resume" + str(name) + "' to bucket 'resume'."
@@ -724,6 +745,8 @@ def editrole():
 @app.route('/dashboard', methods = ['GET', 'POST'])
 def dashboard():
     z, drop=total_offers()
+    new_pos=get_new_profiles()
+    print(z)
     weekly=0
     montly=0
     quarterly=0
@@ -731,10 +754,12 @@ def dashboard():
         for j in i:
             if j<=14:
                 weekly+=1
-            elif j<=30:
+            if j<=30:
                 montly+=1
-            elif j>30 and j<=90:
+            if j<=90:
                 quarterly+=1
+    for i in z:
+        z[i]=len(z[i])
     offers=[weekly, montly, quarterly]
     dropout_weekly=0
     dropout_montly=0
@@ -743,12 +768,29 @@ def dashboard():
         for j in i:
             if j<=14:
                 dropout_weekly+=1
-            elif j>14 and j<=30:
+            if j<=30:
                 dropout_montly+=1
-            elif j>30 and j<=90:
+            if j<=30:
                 dropout_quarterly+=1
+    for i in drop:
+        drop[i]=len(drop[i])
+    new_weekly=0
+    new_monthly=0
+    new_quarterly=0
+    for i in new_pos.values():
+        for j in i:
+            if j<=14:
+                new_weekly+=1
+            if j<=30:
+                new_monthly+=1
+            if j<=90:
+                new_quarterly+=1
+    for i in new_pos:
+        new_pos[i]=len(new_pos[i])
     dropouts=[dropout_weekly, dropout_montly, dropout_quarterly]
-    return render_template('dashboard.html', role_wise_offers=z, role_wise_dropout=drop, total_offer=offers, total_dropouts=dropouts)
+    new_positions=[new_weekly, new_monthly, new_quarterly]
+    # final_z=json.dumps(z)
+    return render_template('dashboard.html', role_wise_offers=z, role_wise_dropout=drop, role_wise_new=new_pos, total_offer=offers, total_dropouts=dropouts, new_positions=new_positions)
 
 if __name__ == '__main__':
     app.run()

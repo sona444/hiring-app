@@ -92,7 +92,7 @@ label{
         <form class="form-container" id="editrole" action = "edit-role" method = "POST" enctype = "multipart/form-data">
           <input type="hidden" value="{{i.tsin_id}}" id="tsin_id" name="tsin_id">
         <label for="snowid">Enter Snow ID: </label>
-        <input type="text" id="snowid" name="snow_id" value="{{i[6]}}" style="width:270px;"><br><br>
+        <input type="text" id="snowid" name="snow_id" value="{{i.snow_id}}" style="width:270px;"><br><br>
         <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
         <select name="chapter" id="chapter"style="width:270px;" value="{{i[2]}}">
         {% if i[2]=="none" %}
