@@ -1,4 +1,4 @@
-<header class="header menu_fixed">
+<header class="header menu_fixed" style="position:fixed;top:67px;width:100%;z-index:10;">
 
 	<nav class="navbar navbar-nav navbar-expand-lg navarea navbar-light" style=" width:100% !important;  padding-top:10px;padding-bottom:0;  padding-left:50px; display: flex;flex-direction: row;  float: left; color:white; padding-right: 50px;">
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +18,12 @@
 	{% if url_for(request.endpoint) == '/detailed-view'%}
 		<a class="navbar-brand navbar-center resetfilters"href="/detailed-view" style="float:right;margin-top:0px;"><button class="new_tsin" style="text-decoration:none !important; font-size:13px; border: 1px solid lightgray;padding:5px; margin-top:-20px !important; border-radius: 8px;"><b>Reset Filters</b></button></a>
 		{% endif %}
+	{% if url_for(request.endpoint) == '/'%}
+		<label class="switch">
+			<input type="checkbox" class="togglebtn">
+			<span class="slider round"></span>
+		</label>
+	{% endif %}
 </header>
 <script>
 $(document).ready(function() {
@@ -27,4 +33,12 @@ $(document).ready(function() {
         }
     });
 });
+$('.togglebtn').change(function(){
+   var element = document.body;
+   element.classList.toggle("inactive-theme");
+  });
+  function toggleFunction() {
+   var element = document.body;
+   element.classList.toggle("inactive-theme");
+  }
 </script>

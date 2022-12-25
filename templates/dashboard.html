@@ -35,7 +35,7 @@
         margin-bottom:120px;
     }
     #myChartrolenew{
-        display:block;
+        display:inline-table !important;
     }
     
 </style>
@@ -45,7 +45,7 @@
 
 {% block content %}
 
-<main>
+<main style="padding-top:130px;">
 {{offers}}
 {{dropout}}
 <form>
@@ -61,13 +61,17 @@
 <input type="hidden" id="new-quarterly" value="{{new_positions[2]}}">
 <input type="hidden" id="new-rolewise" value="{{role_wise_new}}">
 </form>
+<button onclick="new_profiles({{role_wise_new}})" id="new_profile_add" style="display:none;"></button>
 <div id="myChartweekly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
 <div id="myChartmonthly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
 <div id="myChartquarterly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
 <div id="myChartroleoffers" width="500" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartrolenew" width="500" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
+<div id="myChartrolenew" width="500" height="400" style="display:inline-table; width:400px !important; height:400px !important;"></div>
 </main>
 <script>
+$(document).ready(function() {
+    document.getElementById("new_profile_add").click();
+});
 var weeklyoffer=$('#offer-weekly').val();
 var monthlyoffer=$('#offer-monthly').val();
 var quarterlyoffer=$('#offer-quarterly').val();
@@ -86,13 +90,12 @@ google.charts.setOnLoadCallback(drawChart1);
 google.charts.setOnLoadCallback(drawChart2);
 google.charts.load("current", {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawChart3);
-google.charts.setOnLoadCallback(drawChart4);
 function drawChart() {
 var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(weeklyoffer)],
     ['Candidate Dropped Out',Number(weeklydropout)],
-    ['New Positions Opened', Number(weeklynew)]
+    ['New Profiles Added', Number(weeklynew)]
 ]);
 
 var options = {
@@ -110,7 +113,7 @@ var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(monthlyoffer)],
     ['Candidate Dropped Out', Number(monthlydropout)],
-    ['New Positions Opened', Number(monthlynew)]
+    ['New Profiles Added', Number(monthlynew)]
 ]);
 
 var options = {
@@ -128,7 +131,7 @@ var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(quarterlyoffer)],
     ['Candidate Dropped Out', Number(quarterlydropout)],
-    ['New Positions Opened', Number(quarterlynew)]
+    ['New Profiles Added', Number(quarterlynew)]
 ]);
 
 var options = {
@@ -166,28 +169,44 @@ function drawChart3() {
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartroleoffers"));
               chart.draw(data, options);
           }
-function drawChart4() {
+function new_profiles(rows){
+    function drawChart4() {
               var data = new google.visualization.DataTable();
               data.addColumn('string', 'Role');
-              data.addColumn('number', 'New Profiles');
+              data.addColumn('number', 'Profile Added');
+              data.addColumn('number', 'Resume Screened for Interview');
+              data.addColumn('number', 'L1 Interview Complete');
+              data.addColumn('number', 'L2 Interview Complete');
+              data.addColumn('number', 'L3 Interview Complete');
+              data.addColumn('number', 'Offer RollOut');
+              data.addColumn('number', 'Buddy Assignment');
+              data.addColumn('number', 'Candidate Joined/Dropout');
               console.log(newrolewise);
-              var key1 = newrolewise.replace(/'/g, '"');
+              /*var key1 = newrolewise.replace(/'/g, '"');
               var role_new=JSON.parse(key1);
               var len=Object.keys(role_new).length;
               const chartdata = [];
               for(let i=0;i<len;i++){
                 chartdata.push([Object.keys(role_new)[i], Object.values(role_new)[i]]);
-              }
-              data.addRows(chartdata);
+              }*/
+              data.addRows(rows);
 
               var options = {
                 title:'Number of New Profiles in each Role',
                 is3D:true,
                 height:500, 
-                width:1400
+                width:1400,
+                isStacked: true,
+                annotations: {
+                    textStyle: {
+                    fontSize: 10
+                    }
+                },
               };
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartrolenew"));
               chart.draw(data, options);
-          }
+    }
+    google.charts.setOnLoadCallback(drawChart4);
+}
 </script>
 {% endblock content %}
