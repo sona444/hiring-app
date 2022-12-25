@@ -47,7 +47,7 @@ def get_abstract_data():
             "stage8": 0,
             "stage9": 0,
         }
-    result2 = candidates.query.filter_by(status = "active")
+    result2 = candidates.query.filter_by(status="active")
     list_of_phone = []
     for i in result2:
         list_of_phone.append(i.phone)
@@ -406,28 +406,28 @@ def uploadDs():
                 tsin_id=str(i["TSIN ID"].strip()),
             ).update(
                 {
-                    "tsin_id":str(i["TSIN ID"].strip()),
-                    "candidate_name":str(i["Candidate Name "]),
-                    "pan":str(i["PAN Number"]),
-                    "candidate_email":str(i["Cadidate Email"]),
-                    "current_stage":current_stage,
-                    "request_raised_date":request_raised_date,
-                    "tsin_opened_date":tsin_opened_date,
-                    "resume_screened_date":resume_screened_date,
-                    "l1_interview_date":l1_interview_date,
-                    "l1_interviewer":str(i["L1 Interviewer"]),
-                    "l2_interview_date":l2_interview_date,
-                    "l2_interviewer":str(i["L2 interviewer"]),
-                    "l3_interview_date":l3_interview_date,
-                    "l3_interviewer":str(i["L3 Interviewer"]),
-                    "offer_rollout_date":offer_rollout_date,
-                    "joining_date":joining_date,
-                    "buddy_assignment_date":buddy_assignment_date,
-                    "buddy_name":str(i["Buddy Name"]),
-                    "candidate_dropout_date":candidate_dropout_date,
-                    "candidate_dropout_reason":str(i["Dropout Reason"]),
-                    "modified_at":datetime.now(),
-                    "status":"active"
+                    "tsin_id": str(i["TSIN ID"].strip()),
+                    "candidate_name": str(i["Candidate Name "]),
+                    "pan": str(i["PAN Number"]),
+                    "candidate_email": str(i["Cadidate Email"]),
+                    "current_stage": current_stage,
+                    "request_raised_date": request_raised_date,
+                    "tsin_opened_date": tsin_opened_date,
+                    "resume_screened_date": resume_screened_date,
+                    "l1_interview_date": l1_interview_date,
+                    "l1_interviewer": str(i["L1 Interviewer"]),
+                    "l2_interview_date": l2_interview_date,
+                    "l2_interviewer": str(i["L2 interviewer"]),
+                    "l3_interview_date": l3_interview_date,
+                    "l3_interviewer": str(i["L3 Interviewer"]),
+                    "offer_rollout_date": offer_rollout_date,
+                    "joining_date": joining_date,
+                    "buddy_assignment_date": buddy_assignment_date,
+                    "buddy_name": str(i["Buddy Name"]),
+                    "candidate_dropout_date": candidate_dropout_date,
+                    "candidate_dropout_reason": str(i["Dropout Reason"]),
+                    "modified_at": datetime.now(),
+                    "status": "active",
                 }
             )
             # z.tsin_id = str(i["TSIN ID"].strip())
@@ -478,7 +478,7 @@ def uploadDs():
                     created_at=datetime.now(),
                     modified_at=datetime.now(),
                     resume_remarks="",
-                    status="active"
+                    status="active",
                 )
             )
             db.session.commit()
@@ -739,7 +739,7 @@ def detailed():
 def delete_role(tsin):
     db.session.query(roles).filter(roles.tsin_id == tsin).update(
         {
-            "status":"inactive",
+            "status": "inactive",
             "modified_at": datetime.now(),
         }
     )
@@ -751,7 +751,7 @@ def delete_role(tsin):
 def delete_profile(id):
     db.session.query(candidates).filter(candidates.id == id).update(
         {
-            "status":"inactive",
+            "status": "inactive",
             "modified_at": datetime.now(),
         }
     )

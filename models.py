@@ -42,7 +42,7 @@ class candidates(db.Model):
     candidate_joined_date = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False)
     modified_at = db.Column(db.DateTime, nullable=False)
-    status=db.Column(db.String, nullable=True)
+    status = db.Column(db.String, nullable=True)
 
     def __init__(
         self,
@@ -84,8 +84,8 @@ class candidates(db.Model):
         resume_remarks,
         l1_completion,
         l2_completion,
-        l3_completion, 
-        status
+        l3_completion,
+        status,
     ):
         self.tsin_id = tsin_id
         self.candidate_name = candidate_name
@@ -123,10 +123,10 @@ class candidates(db.Model):
         self.created_at = created_at
         self.modified_at = modified_at
         self.resume_remarks = resume_remarks
-        self.l1_completion=l1_completion
-        self.l2_completion=l2_completion
-        self.l3_completion=l3_completion
-        self.status=status
+        self.l1_completion = l1_completion
+        self.l2_completion = l2_completion
+        self.l3_completion = l3_completion
+        self.status = status
 
 
 class roles(db.Model):
@@ -139,7 +139,7 @@ class roles(db.Model):
     tribe = db.Column(db.String, nullable=True)
     snow_id = db.Column(db.String, nullable=True)
     aspd_date = db.Column(db.DateTime, nullable=True)
-    status=db.Column(db.String, nullable=True)
+    status = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, nullable=False)
     modified_at = db.Column(db.DateTime, nullable=False)
 
@@ -155,7 +155,7 @@ class roles(db.Model):
         created_at,
         modified_at,
         aspd_date,
-        status
+        status,
     ):
         self.tsin_id = tsin_id
         self.role = role
