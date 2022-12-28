@@ -35,9 +35,20 @@
         margin-bottom:120px;
     }
     #myChartrolenew{
-        display:inline-table !important;
+        display:block;
     }
-    
+    input{
+      margin:1vw;
+    }
+    .shadow1{
+        margin:auto;
+        width:700px;
+        padding:1em;
+        border-radius:5px;
+        display: block;
+        overflow:hidden;
+        }
+
 </style>
 {% endblock stylesheets %}
 
@@ -45,7 +56,7 @@
 
 {% block content %}
 
-<main style="padding-top:130px;">
+<main>
 {{offers}}
 {{dropout}}
 <form>
@@ -61,17 +72,252 @@
 <input type="hidden" id="new-quarterly" value="{{new_positions[2]}}">
 <input type="hidden" id="new-rolewise" value="{{role_wise_new}}">
 </form>
-<button onclick="new_profiles({{role_wise_new}})" id="new_profile_add" style="display:none;"></button>
+
+<div style="display:block; width:80%; margin:auto;">
+<input id="tsin_id" placeholder="Enter TSIN ID"></input>
+<input id="role" placeholder="Enter Role"></input>
+<input id="chapter" placeholder="Enter Chapter"></input>
+<input id="squad" placeholder="Enter Squad"></input>
+<button onclick="getData()" style="padding:0 12px; border-radius:6px; margin-left:1vw; border: 1px solid #E20074; background: white; color:#E20074;">GET</button>
+</div>
+</br>
+</br>
+<div id="chartHolder">
+
+</div>
 <div id="myChartweekly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
 <div id="myChartmonthly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
 <div id="myChartquarterly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartroleoffers" width="500" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartrolenew" width="500" height="400" style="display:inline-table; width:400px !important; height:400px !important;"></div>
+<div id="myChartroleoffers" width="500" height="400" style="margin: auto; display:block; width:400px !important; height:400px !important;"></div>
+<div id="myChartrolenew" width="500" height="400" style="display:block; width:400px !important; height:400px !important;"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 </main>
 <script>
-$(document).ready(function() {
-    document.getElementById("new_profile_add").click();
-});
+function getData(){
+  e=document.getElementById("barcharts");
+  if(e){
+    e.remove();
+  }
+  const e1='<div id="barcharts"><div class="shadow1"><canvas id="myChart"></canvas></div></br></br><div class="shadow1"><canvas id="myChart1"></canvas></div></div>'
+  document.getElementById("chartHolder").insertAdjacentHTML('beforeend',e1);
+  tsin_id=document.getElementById("tsin_id").value || 'all';
+  role=document.getElementById("role").value;
+  chapter=document.getElementById("chapter").value;
+  squad=document.getElementById("squad").value;
+  var url='http://localhost:5000/getData?tsin_id='+tsin_id;
+  if(role){
+    url=url+'&role='+role;
+  }
+  if(squad){
+    url=url+'&squad='+squad;
+  }
+  console.log(tsin_id);
+$.get(url,function(response, status){
+  const data = {
+    labels: response["KPIlabels"],
+    datasets: [
+      {
+        label: ' ',
+        data: response["KPIdata"],
+        backgroundColor: ['rgb(255, 99, 132)','rgb(255, 159, 64)','rgb(255, 205, 86)','rgb(75, 192, 192)','rgb(54, 162, 235)','rgb(255, 99, 132)']
+      }
+    ]
+  };
+  const SLAdata = {
+    labels: response["SLAlabels"],
+    datasets: [
+      {
+        label: ' #good ',
+        data: response["SLAdata"][0],
+        backgroundColor: 'rgb(85, 166, 48)'
+      },
+      {
+        label: ' #average ',
+        data: response["SLAdata"][1],
+        backgroundColor: 'rgb(255, 208, 0)'
+      },
+      {
+        label: ' #poor ',
+        data: response["SLAdata"][2],
+        backgroundColor: 'rgb(255, 77, 109)'
+      }
+    ]
+  };
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          enabled: false,
+          position: 'nearest',
+          external: externalTooltipHandler
+        },
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: 'Key performance Indicator'
+        }
+      }
+    },
+  };
+  const config2 = {
+    type: 'bar',
+    data: SLAdata,
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          enabled: false,
+          position: 'nearest',
+          external: externalTooltipHandler
+        },
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: true,
+          text: "SLA's completion metrics"
+        },
+      },
+      scales: {
+        x: {
+          stacked: true,
+          },
+        y: {
+          stacked: true
+        },
+      },
+    },
+  };
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+  const myChart1 = new Chart(
+    document.getElementById('myChart1'),
+    config2
+  );
+})}
+
+</script>
+<script>
+  const getOrCreateTooltip = (chart) => {
+  let tooltipEl = chart.canvas.parentNode.querySelector('div');
+
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.style.height='70px';
+    tooltipEl.style.width='200px';
+    tooltipEl.style.boxShadow = '0px 4px 8px rgba(0,0,0,0.7)';
+    tooltipEl.style.background = 'rgba(0, 0, 0, 0.8)';
+    tooltipEl.style.borderRadius = '5px';
+    tooltipEl.style.color = 'white';
+    tooltipEl.style.opacity = 1;
+    tooltipEl.style.pointerEvents = 'none';
+    tooltipEl.style.position = 'absolute';
+    tooltipEl.style.transform = 'translate(-50%, 0)';
+    tooltipEl.style.transition = 'all .1s ease';
+
+    const table = document.createElement('table');
+    table.style.margin = '0px';
+
+    tooltipEl.appendChild(table);
+    chart.canvas.parentNode.appendChild(tooltipEl);
+  }
+
+  return tooltipEl;
+};
+
+  const externalTooltipHandler = (context) => {
+  // Tooltip Element
+  const {chart, tooltip} = context;
+  const tooltipEl = getOrCreateTooltip(chart);
+
+  // Hide if no tooltip
+  if (tooltip.opacity === 0) {
+    tooltipEl.style.opacity = 0;
+    return;
+  }
+
+  // Set Text
+  if (tooltip.body) {
+    const titleLines = tooltip.title || [];
+    const bodyLines = tooltip.body.map(b => b.lines);
+
+    const tableHead = document.createElement('thead');
+
+    titleLines.forEach(title => {
+      const tr = document.createElement('tr');
+      tr.style.borderWidth = 0;
+
+      const th = document.createElement('th');
+      th.style.borderWidth = 0;
+      const text = document.createTextNode(title);
+      //console.log(title)
+
+      th.appendChild(text);
+      tr.appendChild(th);
+      tableHead.appendChild(tr);
+    });
+
+    const tableBody = document.createElement('tbody');
+    bodyLines.forEach((body, i) => {
+      const colors = tooltip.labelColors[i];
+
+      const span = document.createElement('span');
+      span.style.background = colors.backgroundColor;
+      span.style.borderColor = colors.borderColor;
+      //span.style.borderWidth = '2px';
+      //span.style.marginRight = '10px';
+      span.style.height = '10px';
+      span.style.width = '10px';
+      span.style.display = 'inline-block';
+
+      const tr = document.createElement('tr');
+      tr.style.backgroundColor = 'inherit';
+      tr.style.borderWidth = 0;
+
+      const td = document.createElement('td');
+      td.style.borderWidth = 0;
+
+      const text = document.createTextNode(body);
+      //console.log(text);
+
+      td.appendChild(span);
+      td.appendChild(text);
+      tr.appendChild(td);
+      tableBody.appendChild(tr);
+    });
+
+    const tableRoot = tooltipEl.querySelector('table');
+
+    // Remove old children
+    while (tableRoot.firstChild) {
+      tableRoot.firstChild.remove();
+    }
+
+    // Add new children
+    tableRoot.appendChild(tableHead);
+    tableRoot.appendChild(tableBody);
+  }
+
+  const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
+
+  // Display, position, and set styles for font
+  tooltipEl.style.opacity = 1;
+  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
+  tooltipEl.style.top = positionY + tooltip.caretY + 'px';
+  tooltipEl.style.font = tooltip.options.bodyFont.string;
+  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
+};
+getData();
+</script>
+<script>
 var weeklyoffer=$('#offer-weekly').val();
 var monthlyoffer=$('#offer-monthly').val();
 var quarterlyoffer=$('#offer-quarterly').val();
@@ -90,12 +336,13 @@ google.charts.setOnLoadCallback(drawChart1);
 google.charts.setOnLoadCallback(drawChart2);
 google.charts.load("current", {packages: ['corechart', 'bar']});
 google.charts.setOnLoadCallback(drawChart3);
+google.charts.setOnLoadCallback(drawChart4);
 function drawChart() {
 var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(weeklyoffer)],
     ['Candidate Dropped Out',Number(weeklydropout)],
-    ['New Profiles Added', Number(weeklynew)]
+    ['New Positions Opened', Number(weeklynew)]
 ]);
 
 var options = {
@@ -113,7 +360,7 @@ var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(monthlyoffer)],
     ['Candidate Dropped Out', Number(monthlydropout)],
-    ['New Profiles Added', Number(monthlynew)]
+    ['New Positions Opened', Number(monthlynew)]
 ]);
 
 var options = {
@@ -131,7 +378,7 @@ var data = google.visualization.arrayToDataTable([
     ['Activity', 'Resumes under it'],
     ['Offers Rolled Out', Number(quarterlyoffer)],
     ['Candidate Dropped Out', Number(quarterlydropout)],
-    ['New Profiles Added', Number(quarterlynew)]
+    ['New Positions Opened', Number(quarterlynew)]
 ]);
 
 var options = {
@@ -163,50 +410,34 @@ function drawChart3() {
               var options = {
                 title:'Number of Offers Rolled out in each Role',
                 is3D:true,
-                height:500, 
+                height:500,
                 width:700
               };
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartroleoffers"));
               chart.draw(data, options);
           }
-function new_profiles(rows){
-    function drawChart4() {
+function drawChart4() {
               var data = new google.visualization.DataTable();
               data.addColumn('string', 'Role');
-              data.addColumn('number', 'Profile Added');
-              data.addColumn('number', 'Resume Screened for Interview');
-              data.addColumn('number', 'L1 Interview Complete');
-              data.addColumn('number', 'L2 Interview Complete');
-              data.addColumn('number', 'L3 Interview Complete');
-              data.addColumn('number', 'Offer RollOut');
-              data.addColumn('number', 'Buddy Assignment');
-              data.addColumn('number', 'Candidate Joined/Dropout');
+              data.addColumn('number', 'New Profiles');
               console.log(newrolewise);
-              /*var key1 = newrolewise.replace(/'/g, '"');
+              var key1 = newrolewise.replace(/'/g, '"');
               var role_new=JSON.parse(key1);
               var len=Object.keys(role_new).length;
               const chartdata = [];
               for(let i=0;i<len;i++){
                 chartdata.push([Object.keys(role_new)[i], Object.values(role_new)[i]]);
-              }*/
-              data.addRows(rows);
+              }
+              data.addRows(chartdata);
 
               var options = {
                 title:'Number of New Profiles in each Role',
                 is3D:true,
-                height:500, 
-                width:1400,
-                isStacked: true,
-                annotations: {
-                    textStyle: {
-                    fontSize: 10
-                    }
-                },
+                height:500,
+                width:1400
               };
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartrolenew"));
               chart.draw(data, options);
-    }
-    google.charts.setOnLoadCallback(drawChart4);
-}
+          }
 </script>
 {% endblock content %}
