@@ -7,6 +7,7 @@
 label{
   width:17%;
   text-align:right;
+  font-size:12px;
 }
 </style>{% endblock stylesheets %}
 
@@ -18,15 +19,15 @@ label{
 <section class="register-form">
     <div class="container form">
     <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
-    <h1 style="color: #E20074; text-align:center; font-size:30px;">Add New Position</h1><br><br><br>
+    <h1 style="color: #E20074; text-align:center; font-size:25px;">Add New Position</h1><hr><br><br><br><br>
       <form id="upload-form" name="tsinform"  action = "/new-position" method = "POST" enctype = "multipart/form-data">
         
         <label for="tsinid"> Enter a Unique TSIN ID:<span style="color:red;">*</span></label>
-        <input type="text" id="tsinid" name="tsinid" style="width:270px;" onchange="checktsin({{final}}, this);" required><br><br>
+        <input type="text" id="tsinid" name="tsinid" style="width:270px;height:19px;" onchange="checktsin({{final}}, this);" required><br><br>
         <label for="snowid">Enter Snow ID: </label>
-        <input type="text" id="snowid" name="snow_id" style="width:270px;"><br><br>
+        <input type="text" id="snowid" name="snow_id" style="width:270px;height:19px;"><br><br>
         <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
-        <select name="chapter" id="chapter"style="width:270px;">
+        <select name="chapter" id="chapter"style="width:270px;height:19px; font-size:12px;">
           <option value="none">--None--</option>
           <option value="Data Engineering">Data Engineering</option>
           <option value="Devops & Infra">Devops & Infra</option>
@@ -39,49 +40,49 @@ label{
           <option value="Data Architect">Data Architect</option>
           <option value="Assurance">Assurance</option>
           <option value="Agile & Scrum">Agile & Scrum</option>
-        </select><br><br>
+        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+       <br><input type="text" placeholder="Enter Chapter Name"><input type="submit" value="Add Chapter" placeholder="Add Chapter"><br>
         <label for="role">Enter Role: <span style="color:red;">*</span></label>
-        <select name="role" id="role"style="width:270px;">
+        <select name="role" id="role"style="width:270px;height:19px;font-size:12px;">
           <option value="none">--None--</option>
           <option value="Full Stack Developer">Full Stack Developer</option>
-          <option value="Sr. Full-stack Engineer - ELSA">Sr. Full-stack Engineer - ELSA</option>
-          <option value="Med. Full-stack Engineer - ELSA">Med. Full-stack Engineer - ELSA</option>
-          <option value="Jr. Full-stack Engineer - ELSA">Jr. Full-stack Engineer - ELSA</option>
-          <option value="Software Engineer">Software Engineer</option>
-          <option value="Business Analyst">AI/ML as Service</option>
+          <option value="Sr. Full-stack Engineer">Sr. Full-stack Engineer</option>
+          <option value="Business Analyst">Business Analyst</option>
           <option value="Data Engineer">Data Engineer</option>
           <option value="Sr. Data Engineer">Sr. Data Engineer</option>
-          <option value="Data Engineer with MicroStrategy skills">Data Engineer with MicroStrategy skills</option>
+          <option value="Microstrategy Developer">Microstrategy Developer</option>
           <option value="DevOps Engineer">DevOps Engineer</option>
-          <option value="DevOps - ELSA">DevOps - ELSA</option>
-          <option value="DevOps Engineer - Cloud Booster">DevOps Engineer - Cloud Booster</option>
-          <option value="DevOps Engineer- Automated Fault Detection">DevOps Engineer- Automated Fault Detection</option>
+          <option value="DevOps Architect">DevOps Architect</option>
+          <option value="Cloud Architect">Cloud Architect</option>
           <option value="Data Scientist">Data Scientist</option>
+          <option value="Sr. Data Scientist">Sr. Data Scientist</option>
           <option value="Backend Engineer">Backend Engineer</option>
+          <option value="Sr. Backend Engineer"> Sr. Backend Engineer</option>
           <option value="MLOPS Engineer">MLOPS Engineer</option>
           <option value="Scrum Master">Scrum Master</option>
           <option value="Front End Developer">Front End Developer</option>
-          <option value="Cloud Architect">Cloud Architect</option>
+          <option value=" Sr. Front End Developer"> Sr. Front End Developer</option>
           <option value="Product Owner">Product Owner</option>
-          <option value="UI Developer">UI Developer</option>
+          <option value="Product Manager">Product Manager</option>
+          <option value="PMO">PMO</option>
           <option value="Security Engineer ">Security Engineer </option>
-          <option value="Security Engineer -GCP">Security Engineer -GCP</option>
+          <option value="Infrastructure Engineer">Infrastructure Engineer</option>
+          <option value="Platform Engineer">Platform Engineer</option>
           <option value="QA">QA</option>
-          <option value="Jr. QA ">Jr. QA </option>
           <option value="Senior QA">Senior QA</option>
+          <option value="Associate Architect">Associate Architect</option>
+          <option value="UX Designer">UX Designer</option>
         </select><br><br>
         <label for="squad">Enter Squad: <span style="color:red;">*</span></label>
-         <select name="squad" id="squad"style="width:270px;">
+         <select name="squad" id="squad"style="width:270px;height:19px;font-size:12px;">
           <option value="none">--None--</option>
           <option value="ELSA">ELSA</option>
           <option value="NDI Hub">NDI Hub</option>
           <option value="Cloud Booster">Cloud Booster</option>
-          <option value="Automated Fault Detection">Automated Fault Detection</option>
           <option value="EU Central">EU Central</option>
           <option value="MA Persona">MA Persona</option>
           <option value="CET">CET</option>
           <option value="MLOps">MLOps</option>
-          <option value="Halo">Halo</option>
           <option value="Operation Support">Operation Support</option>
           <option value="Nemo">Nemo</option>
           <option value="DIL">DIL</option>
@@ -89,22 +90,48 @@ label{
           <option value="Magenta adtech">Magenta adtech</option>
           <option value="NWI">NWI</option>
           <option value="Pluto">Pluto</option>
+          <option value="TDG CDSC">TDG CDSC</option>
+          <option value="EU TV HH Analytics">EU TV HH Analytics</option>
+          <option value="Network Automation">Network Automation</option>
+          <option value="Pluto CST">Pluto CST</option>
+          <option value="Pluto MT">Pluto MT</option>
+          <option value="Network Energy Management">Network Energy Management</option>
+          <option value="Pluto OTE">Pluto OTE</option>
+          <option value="Group Audit">Group Audit</option>
+          <option value="Nemo">Nemo</option>
+          <option value="Procurement">Procurement</option>
+          <option value="TDG NDI">TDG NDI</option>
+          <option value="TDG ODI">TDG ODI</option>
+          <option value="Network Analytics">Network Analytics</option>
+          <option value="TDG Sale">TDG Sales</option>
+          <option value="AET-CET">AET-CET</option>
+          <option value="EU Perceptro">EU Perceptro</option>
+          <option value="Persona DB">Persona DB</option>
+          <option value="Insights Portal">Insights Portal</option>
+          <option value="CXI NPS Prediction">CXI NPS Prediction</option>
+          <option value="Operational Support">Operational Support</option>
+          <option value="AET-CET">AET-CET</option>
+          <option value="AdTech">AdTech</option>
+          <option value="Delphi">Delphi</option>
+          <option value="TDG TV">TDG TV</option>
+          <option value="TDG NBx">TDG NBx</option>
+          <option value="Workbench">Workbench</option>
+
         </select><br><br>
         <label for="demandtype">Enter Type of Demand: </label>
-        <select name="demandtype" id="demandtype"style="width:270px;">
+        <select name="demandtype" id="demandtype"style="width:270px;height:19px;font-size:12px;">
           <option value="none">--None--</option>
           <option value="Backfill">Backfill</option>
           <option value="New Demand">New Demand</option>
           <option value="Proactive">Proactive</option>
         </select><br><br>
         <label for="tribe">Enter Tribe: </label>
-        <select name="tribe" id="tribe"style="width:270px;">
+        <select name="tribe" id="tribe"style="width:270px;height:19px;font-size:12px;">
           <option value="none">--None--</option>
           <option value="NetOps">NetOps</option>
           <option value="DEP">DEP</option>
           <option value="Halo">Halo</option>
           <option value="CET">CET</option>
-          <option value="Halo">Halo</option>
         </select><br><br>
         <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
       </form>

@@ -36,6 +36,15 @@ $(document).ready(function() {
 $('.togglebtn').change(function(){
    var element = document.body;
    element.classList.toggle("inactive-theme");
+   if($("body").hasClass('inactive-theme')){
+      console.log('yes');
+      $("#activetable").css("display","none");
+      $("#inactivetable").css("display","table");
+    }
+    else{
+      $("#activetable").css("display","table");
+      $("#inactivetable").css("display","none");
+    }
   });
   function toggleFunction() {
    var element = document.body;

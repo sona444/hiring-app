@@ -226,7 +226,7 @@ border-color:red;
   transition: 0.4s;
 }
 #updatestage{
-  width:50%;
+  width:30%;
   margin:0 auto;
 }
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -252,10 +252,17 @@ border-color:red;
 .new_tsin{
   border-radius: 10px;
 } */
-.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard{
+.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard, #stage-update{
   color:#E20074;
   border:0;
   background-color:white;
+}
+#stage-update{
+  border:1px solid #E20074;
+  border-radius:5px;
+  width: fit-content;
+  padding: 10px;
+  font-size: small;
 }
 .reg-form{
   width:100%;
