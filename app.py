@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from sqlalchemy import update, desc
 from datetime import datetime
 import json
+import numpy as np
 
 load_dotenv()
 
