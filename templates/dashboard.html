@@ -74,24 +74,21 @@
 </form>
 <button id="new_profile_add" onclick="new_profiles({{role_wise_new}})"></button>
 <div style="display:block; width:80%; margin:auto;">
-<input id="tsin_id" placeholder="Enter TSIN ID"></input>
-<input id="role" placeholder="Enter Role"></input>
-<input id="chapter" placeholder="Enter Chapter"></input>
-<input id="squad" placeholder="Enter Squad"></input>
+<input id="tsin_id" placeholder="Enter TSIN ID">
+<input id="role" placeholder="Enter Role">
+<input id="chapter" placeholder="Enter Chapter">
+<input id="squad" placeholder="Enter Squad">
 <button onclick="getData()" style="padding:0 12px; border-radius:6px; margin-left:1vw; border: 1px solid #E20074; background: white; color:#E20074;">GET</button>
-</div>
-</br>
-</br>
+</div><br><br>
 <div id="chartHolder">
 
 </div>
-<div id="myChartweekly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartmonthly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartquarterly" width="400" height="300" style="display:block; width:400px !important; height:400px !important;"></div>
-<div id="myChartroleoffers" width="500" height="400" style="margin: auto; display:block; width:400px !important; height:400px !important;"></div>
+<div id="myChartweekly" width="400" height="300" style="display:block; width:400px !important; height:350px !important;"></div>
+<div id="myChartmonthly" width="400" height="300" style="display:block; width:400px !important; height:350px !important;"></div>
+<div id="myChartquarterly" width="400" height="300" style="display:block; width:400px !important; height:350px !important;"></div>
+<div id="myChartroleoffers" width="500" height="400" style="margin: auto; display:block; width:400px !important; height:480px !important;"></div>
 <div id="myChartrolenew" width="500" height="400" style="display:inline-table; width:400px !important; height:400px !important;"></div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
 </main>
 <script>
 $(document).ready(function() {
