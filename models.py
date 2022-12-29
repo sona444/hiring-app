@@ -172,51 +172,43 @@ class roles(db.Model):
 
 class role(db.Model):
     __tablename__ = "role"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     role_name = db.Column(db.String, nullable=False)
 
     def __init__(
         self,
-        id,
         role_name
     ):
-        self.id = id
         self.role_name = role_name
 
 class chapter(db.Model):
     __tablename__ = "chapter"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     chapter_name = db.Column(db.String, nullable=False)
     def __init__(
         self,
-        id,
         chapter_name
     ):
-        self.id = id
         self.chapter_name = chapter_name
 
 class squad(db.Model):
     __tablename__ = "squad"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     squad_name = db.Column(db.String, nullable=False)
 
     def __init__(
         self,
-        id,
         squad_name
     ):
-        self.id = id
         self.squad_name = squad_name
 
 class tribe(db.Model):
     __tablename__ = "tribe"
-    id = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     tribe_name = db.Column(db.String, nullable=False)
 
     def __init__(
         self,
-        id,
         tribe_name
     ):
-        self.id = id
         self.tribe_name = tribe_name

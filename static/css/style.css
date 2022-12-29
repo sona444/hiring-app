@@ -252,12 +252,12 @@ border-color:red;
 .new_tsin{
   border-radius: 10px;
 } */
-.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard, #stage-update{
+.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard, #stage-update, .addchapter, .addtribe,.addsquad, .addrole{
   color:#E20074;
   border:0;
   background-color:white;
 }
-#stage-update{
+#stage-update, .addchapter, .addtribe,.addsquad, .addrole{
   border:1px solid #E20074;
   border-radius:5px;
   width: fit-content;
@@ -493,4 +493,12 @@ border-radius: 34px;
 
 .slider.round:before {
 border-radius: 50%;
+}
+.swal2-confirm{
+  font-weight: 800;
+    background-color:white !important;
+    border: 1px solid #E20074 !important;
+    padding: 7px;
+    color: #E20074 !important;
+    border-radius: 8px;
 }

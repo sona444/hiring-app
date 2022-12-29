@@ -21,7 +21,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-from models import candidates, roles
+from models import *
 
 minioClient = Minio(
     "localhost:9000", access_key="minioadmin", secret_key="minioadmin", secure=False
@@ -527,9 +527,13 @@ def get_detailed_data():
 @app.route("/")
 def main():
     result, d, nums, phones, inactiveresult, inactiveprofiles, d2, colors= get_abstract_data()
+    roless=role.query.all()
+    chapters=chapter.query.all()
+    squads=squad.query.all()
+    tribes=tribe.query.all()
     print(d['TSIN012575'])
     return render_template(
-        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, inactives=inactiveresult, inactive_status=inactiveprofiles, inactivecands=d2, final_colors=colors
+        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, inactives=inactiveresult, inactive_status=inactiveprofiles, inactivecands=d2, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters
     )
 
 
@@ -1006,10 +1010,14 @@ def updateStage():
 @app.route("/add-tsin", methods=["GET", "POST"])
 def tsinform():
     result = roles.query.with_entities(roles.tsin_id).all()
+    roless=role.query.all()
+    chapters=chapter.query.all()
+    squads=squad.query.all()
+    tribes=tribe.query.all()
     final = []
     for i in result:
         final.append(i[0])
-    return render_template("tsin_form.html", final=final)
+    return render_template("tsin_form.html", final=final, roles=roless, chapters=chapters, squads=squads, tribes=tribes)
 
 
 @app.route("/detailed-view", methods=["GET", "POST"])
@@ -1356,5 +1364,34 @@ def getData():
         "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()]}
         #print(d)
         return d
+
+@app.route('/add-chapter', methods = ['GET', 'POST'])
+def addchapter():
+    Chapter=request.form.get("chapter")
+    db.session.add(chapter(chapter_name=Chapter))
+    db.session.commit()
+    return "Chapter Added Succesfully"
+
+@app.route('/add-role', methods = ['GET', 'POST'])
+def addroler():
+    Role=request.form.get("role")
+    db.session.add(role(role_name=Role))
+    db.session.commit()
+    return "Role Added Succesfully"
+
+@app.route('/add-squad', methods = ['GET', 'POST'])
+def addsquad():
+    Squad=request.form.get("squad")
+    db.session.add(squad(squad_name=Squad))
+    db.session.commit()
+    return "Squad Added Succesfully"
+
+@app.route('/add-tribe', methods = ['GET', 'POST'])
+def addtribe():
+    Tribe=request.form.get("tribe")
+    db.session.add(tribe(tribe_name=Tribe))
+    db.session.commit()
+    return "Tribe Added Succesfully"
+
 if __name__ == "__main__":
     app.run()

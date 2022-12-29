@@ -105,7 +105,7 @@ function getData(){
   role=document.getElementById("role").value;
   chapter=document.getElementById("chapter").value;
   squad=document.getElementById("squad").value;
-  var url='http://localhost:5000/getData?tsin_id='+tsin_id;
+  var url='/getData?tsin_id='+tsin_id;
   if(role){
     url=url+'&role='+role;
   }
