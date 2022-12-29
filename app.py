@@ -1393,5 +1393,8 @@ def addtribe():
     db.session.commit()
     return "Tribe Added Succesfully"
 
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    return render_template("login.html")
 if __name__ == "__main__":
     app.run()
