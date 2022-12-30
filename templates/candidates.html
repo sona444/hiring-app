@@ -19,8 +19,9 @@ label{
 
 <main style="padding-top:130px;">
 <div class="info" style="width:100vw; overflow:scroll;">
-      <table id="activetable" class="roles" style="font-size:11px;">
+      <table id="activetable" class="roles" style="font-size:11px;table-layout:inherit;">
       <tr style="position:sticky; top:0px; z-index:1px;">
+      <th style="padding:0 !important; width:28px !important;"></th>
       <th>TSIN ID</th>
       <th>Snow ID</th>
       <th>Role</th>
@@ -40,56 +41,17 @@ label{
       <th style="width:154px;">Actions</th>
       </tr>
       {% for i in roles %}
-      {% if final_colors[i.tsin_id]=="green" %}
-        <tr style="background-color:#e6ffe6;">
-          <td>{{i.tsin_id}}</td>
-          <td>{{i.snow_id}}</td>
-          <td>{{i.role}}</td>
-          <td>{{i.chapter}}</td>
-          <td>{{i.squad}}</td>
-          <td>{{i.demand_type}}</td>
-          <td>{{i.tribe}}</td>
-          <td>{{nums[i.tsin_id]['stage9']}}</td>
-          <td>{{nums[i.tsin_id]['stage1']}}</td>
-          <td>{{nums[i.tsin_id]['stage2']}}</td>
-          <td>{{nums[i.tsin_id]['stage3']}}</td>
-          <td>{{nums[i.tsin_id]['stage4']}}</td>
-          <td>{{nums[i.tsin_id]['stage5']}}</td>
-          <td>{{nums[i.tsin_id]['stage6']}}</td>
-          <td>{{nums[i.tsin_id]['stage7']}}</td>
-          <td>{{nums[i.tsin_id]['stage8']}}</td>
-           <td><svg class="accordion eye" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-        &nbsp;<a href="/delete-role/{{i.tsin_id}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-        </tr>
+      {% if i.status=="active" %}
+        <tr>
+          {% if final_colors[i.tsin_id]=="green" %}
+          <td style="background-color:#1DF516;padding:0 !important;"><svg style="width:18px;" class="accordion eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "yellow" %}
-          <tr style="background-color:#ffffbf;">
-          <td>{{i.tsin_id}}</td>
-          <td>{{i.snow_id}}</td>
-          <td>{{i.role}}</td>
-          <td>{{i.chapter}}</td>
-          <td>{{i.squad}}</td>
-          <td>{{i.demand_type}}</td>
-          <td>{{i.tribe}}</td>
-          <td>{{nums[i.tsin_id]['stage9']}}</td>
-          <td>{{nums[i.tsin_id]['stage1']}}</td>
-          <td>{{nums[i.tsin_id]['stage2']}}</td>
-          <td>{{nums[i.tsin_id]['stage3']}}</td>
-          <td>{{nums[i.tsin_id]['stage4']}}</td>
-          <td>{{nums[i.tsin_id]['stage5']}}</td>
-          <td>{{nums[i.tsin_id]['stage6']}}</td>
-          <td>{{nums[i.tsin_id]['stage7']}}</td>
-          <td>{{nums[i.tsin_id]['stage8']}}</td>
-           <td><svg class="accordion eye" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-        &nbsp;<a href="/delete-role/{{i.tsin_id}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-        </tr>
+          <td style="background-color:#F5B216;padding:0 !important;"><svg style="width:18px;" class="accordion eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "red" %}
-          <tr style="background-color:#ffbfbf;">
+          <td style="background-color:#FF2F00;padding:0 !important;"><svg  style="width:18px;" class="accordion eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          {% else %}
+            <td style="background-color:#E6EDE9;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+       {% endif %}
           <td>{{i.tsin_id}}</td>
           <td>{{i.snow_id}}</td>
           <td>{{i.role}}</td>
@@ -106,16 +68,15 @@ label{
           <td>{{nums[i.tsin_id]['stage6']}}</td>
           <td>{{nums[i.tsin_id]['stage7']}}</td>
           <td>{{nums[i.tsin_id]['stage8']}}</td>
-           <td><svg class="accordion eye" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+           <td><svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
         &nbsp;<a href="/delete-role/{{i.tsin_id}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
         &nbsp;<svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
         </td>
         </tr>
-        {% endif %}
+          
       
       <tr style="display:none;">
-      <td colspan=17>
+      <td colspan=18>
         <form class="form-container" id="newprofile" action = "add-new-profile" method = "POST" enctype = "multipart/form-data" style="width:600px; margin:0 auto;">
           <input type="hidden" value="{{i.tsin_id}}" id="tsin_id" name="tsin_id">
           <label for="name" style="width:200px; text-align:right;"><b>Name : </b></label>&nbsp;
@@ -305,6 +266,7 @@ label{
       </form>
         <table style="width:100%;">
         <tr colspan="">
+        <th style="width:28px;"></th>
           <th>Name</th>
           <th>Current Stage</th>
           <th>Update Stage</th>
@@ -313,53 +275,30 @@ label{
         </tr>
       
           {% for j in candidates[i.tsin_id] %}
+          <tr>
             {% if j['color'] == "gray" %}
-          <tr style="background-color:lightgray;">
+            <td style="background-color:lightgray;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            {% elif j['color'] == "green" %}
+            <td style="background-color:#1DF516;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            {% elif j['color'] == "yellow" %}
+            <td  style="background-color:#ffffbf;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            {% elif j['color'] == "red" %}
+            <td  style="background-color:#ffbfbf;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            {% endif %}
             <td>{{j['candidate_name']}}</td>
             <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
+            <td>
+            {% if j['status'] == "inactive" %}<a href="/activate-profile/{{j['id']}}"><button class="activate-btn2">Activate</button></a>
+            {% else %}<button class="stage-update" style="background-color:transparent;">Update Stage</button>
+            {% endif %}
+            </td>
             <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
+            <td><a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
         &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
         </td>
           </tr>
-          {% elif j['color'] == "green" %}
-          <tr style="background-color:#e6ffe6;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% elif j['color'] == "yellow" %}
-          <tr style="background-color:#ffffbf;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% elif j['color'] == "red" %}
-          <tr style="background-color:#ffbfbf;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-         {% endif %}
           <tr class="panel" style="width:100%;">
-            <td colspan=5 >
+            <td colspan=6 >
               <form class="form-container" id="profile" action = "upload-profile" method = "POST" enctype = "multipart/form-data" style="width:600px; margin:0 auto;">
                 <input type="hidden" value="{{j['id']}}" id="candidate_id" name="candidate_id">
                 <label for="phone" style="width:200px; text-align:right;"><b>Phone number</b></label>
@@ -708,10 +647,12 @@ label{
         <li>Step 3</li>
       </ul></tr>-->
       
+          {% endif %}
       {% endfor %} 
       </table>
       <table id="inactivetable" class="roles inactive" style="font-size:11px; display:none;">
         <tr style="position:sticky; top:0px; z-index:1px;">
+        <th style="width:28px;"></th>
         <th>TSIN ID</th>
         <th>Snow ID</th>
         <th>Role</th>
@@ -730,51 +671,18 @@ label{
         <th>On Resume Rejected</th>
         <th style="width:154px;">Actions</th>
         </tr>
-        {% for i in inactives %}
+        {% for i in roles %}
+        {% if i.status=="inactive" %}
+        <tr>
         {% if final_colors[i.tsin_id]=="green" %}
-        <tr style="background-color:#e6ffe6;">
-          <td>{{i.tsin_id}}</td>
-          <td>{{i.snow_id}}</td>
-          <td>{{i.role}}</td>
-          <td>{{i.chapter}}</td>
-          <td>{{i.squad}}</td>
-          <td>{{i.demand_type}}</td>
-          <td>{{i.tribe}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage9']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage1']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage2']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage3']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage4']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage5']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage6']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage7']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage8']}}</td>
-          <td><svg class="accordion eye2" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;</td>
-        </tr>
+          <td style="background-color:#16F4D0;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "yellow" %}
-          <tr style="background-color:#ffffbf;">
-          <td>{{i.tsin_id}}</td>
-          <td>{{i.snow_id}}</td>
-          <td>{{i.role}}</td>
-          <td>{{i.chapter}}</td>
-          <td>{{i.squad}}</td>
-          <td>{{i.demand_type}}</td>
-          <td>{{i.tribe}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage9']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage1']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage2']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage3']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage4']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage5']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage6']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage7']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage8']}}</td>
-          <td><svg class="accordion eye2" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;</td>
-        </tr>
+          <td style="background-color:#ffffbf;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "red" %}
-          <tr style="background-color:#ffbfbf;">
+          <td style="background-color:#ffbfbf;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          {% else %}
+          <td style="background-color:#CBCECC;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+        {% endif %}
           <td>{{i.tsin_id}}</td>
           <td>{{i.snow_id}}</td>
           <td>{{i.role}}</td>
@@ -782,80 +690,166 @@ label{
           <td>{{i.squad}}</td>
           <td>{{i.demand_type}}</td>
           <td>{{i.tribe}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage9']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage1']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage2']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage3']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage4']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage5']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage6']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage7']}}</td>
-          <td>{{inactive_status[i.tsin_id]['stage8']}}</td>
-          <td><svg class="accordion eye2" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;</td>
+          <td>{{nums[i.tsin_id]['stage9']}}</td>
+          <td>{{nums[i.tsin_id]['stage1']}}</td>
+          <td>{{nums[i.tsin_id]['stage2']}}</td>
+          <td>{{nums[i.tsin_id]['stage3']}}</td>
+          <td>{{nums[i.tsin_id]['stage4']}}</td>
+          <td>{{nums[i.tsin_id]['stage5']}}</td>
+          <td>{{nums[i.tsin_id]['stage6']}}</td>
+          <td>{{nums[i.tsin_id]['stage7']}}</td>
+          <td>{{nums[i.tsin_id]['stage8']}}</td>
+          <td><a href="/activate-role/{{i.tsin_id}}"><button class="activate-btn">Activate</button></a></td>
+        </tr>
+        <tr style="display:none;">
+          <td colspan="18">
+            <table style="width:100%;">
+            <tr>
+              <th style="width:28px;"></th>
+              <th>Name</th>
+              <th>Current Stage</th>
+              <th>View Stage</th>
+            </tr>
+          
+              {% for j in candidates[i.tsin_id] %}
+              <tr>
+              {% if j['color'] == "gray" %}
+                <td style="background-color:lightgray;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                {% elif j['color'] == "green" %}
+                <td style="background-color:#e6ffe6;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                {% elif j['color'] == "yellow" %}
+                <td  style="background-color:#ffffbf;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                {% elif j['color'] == "red" %}
+                <td  style="background-color:#ffbfbf;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                {% endif %}
+                <td>{{j['candidate_name']}}</td>
+                <td>{{j['current_stage']}}</td>
+                <td><button class="candidate-row2" style="background-color:transparent;" >View Status</button></td>
+                
+            </tr>
+            <tr class="panel" style="width:100%;">
+              <td colspan=4 >
+              <div>
+                <div class="container">
+                  <h4><b>{{j['candidate_name']}}</b></h4>
+                  <p><b>Phone</b>: {{j['phone']}}</p>
+                  <p><b>Current Company</b>: {{j['current_company']}}</p>
+                  <p><b>Total Experience</b>: {{j['experience']}}</p>
+                  <p><b>Current Location</b>: {{j['current_location']}}</p>
+                  <button class="download_resume" name="{{j['id']}}">Download Resume</button>
+                </div>
+              </div>
+              {% if j['current_stage'].strip() =='Profile Upload' %}
+            <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>In Process</b>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
+                </ul>
+            {% elif j['current_stage'].strip() =='Resume Screened for Interview' %}
+            <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
+                <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process  <br>&nbsp;</li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut<br>&nbsp;</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
+                <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut   <br>&nbsp;</li>
+                    <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
+                </ul>
+            {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
+            <ul class="progressbar">
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br><b>{{j['l3_interview_date']}}</b> - <b> In Process</b></li>
+                    <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
+                    <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Offer RollOut' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> In Process</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut<br><b>{{j['buddy_assignment_date']}}</b> - <b> In Process</b></li>
+            </ul>
+            {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
+            <ul class="progressbar">
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
+                <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
+                <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
+                <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
+                <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
+                <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
+                {% if j['current_stage'].strip() == 'Candidate Dropout' %}
+                <li class="mno active dropout">Stage 8 - Candidate Joined / DropOut</li>
+                {% elif j['current_stage'].strip() == 'Candidate Joined' %}
+                <li class="mno active">Stage 8 - Candidate Joined / DropOut</li>
+                {% endif %}
+            </ul>
+            {% elif j['current_stage'].strip() == 'Resume Rejected' %}
+            <ul class="progressbar">
+                <li class="mno">Stage 1 - Profile Added </li>
+                <li class="mno">Stage 2 - Resume Screened for Interview </li>
+                <li class="mno">Stage 3 - L1 Interview in Process </li>
+                <li class="mno">Stage 4 - L2 Interview in Process</li>
+                <li class="mno">Stage 5 - L3 Interview in Process </li>
+                <li class="mno">Stage 6 - Offer RollOut  </li>
+                <li class="mno">Stage 7 - Buddy Assignment </li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut</li>
+            </ul>
+            {% endif %}
+              </td>
+            </tr>
+              {% endfor %}
+            </table>
+          </td>
         </tr>
         {% endif %}
-        <tr style="display:none;">
-        <td colspan="17">
-        <table style="width:100%;">
-        <tr colspan="">
-          <th>Name</th>
-          <th>Current Stage</th>
-          <th>Update Stage</th>
-          <th>View Stage</th>
-          <th>Actions</th>
-        </tr>
-      
-          {% for j in inactivecands[i.tsin_id] %}
-          {% if j['color'] == "gray" %}
-          <tr style="background-color:lightgray;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% elif j['color'] == "green" %}
-          <tr style="background-color:#e6ffe6;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% elif j['color'] == "yellow" %}
-          <tr style="background-color:#ffffbf;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% elif j['color'] == "red" %}
-          <tr style="background-color:#ffbfbf;">
-            <td>{{j['candidate_name']}}</td>
-            <td>{{j['current_stage']}}</td>
-            <td><button class="stage-update" style="background-color:transparent;">Update Stage</button></td>
-            <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><svg class="view-profile" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg>
-        &nbsp;<a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </table>
-        </td>
-        </tr>
         {% endfor %}
       </table>
     </div>
@@ -866,7 +860,9 @@ var acc = document.getElementsByClassName("eye");
 var inacacc = document.getElementsByClassName("eye2");
 var edit= document.getElementsByClassName("edit");
 var acc2= document.getElementsByClassName("candidate-row");
+var acc3= document.getElementsByClassName("candidate-row2");
 var btn=document.getElementsByClassName("view-profile");
+var btn2=document.getElementsByClassName("view-profile2");
 var profile=document.getElementsByClassName("resume-upload");
 var stage=document.getElementsByClassName("stage-update");
 var updateEvent=document.getElementsByClassName("stageupdation");
@@ -1014,6 +1010,30 @@ for (i = 0; i < acc2.length; i++) {
     }
   });
 }
+for (i = 0; i < acc3.length; i++) {
+  acc3[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+
+    var panel1 = this.parentNode.parentNode.nextElementSibling;
+    var panel2= panel1.firstChild.nextElementSibling.childNodes[1];
+    var panel3= panel1.firstChild.nextElementSibling.childNodes[3];
+    console.log("yes");
+    console.log(panel1,panel2,panel3);
+    if (panel1.style.display === "table-row") {
+      if (panel2.style.display == "none"){
+      panel1.style.display = "none";
+      }
+      else{
+        panel2.style.display="none";
+        panel3.style.display="block";
+      }
+    } else {
+      panel1.style.display = "table-row";
+      panel3.style.display="block";
+      panel2.style.display="none";
+    }
+  });
+}
 for (i = 0; i < profile.length; i++) {
   profile[i].addEventListener("click", function() {
     this.classList.toggle("active");
@@ -1049,12 +1069,37 @@ for (i = 0; i < btn.length; i++) {
     if (panel2.style.display === "table-row") {
       panel2.style.display = "none";
 
-    } else {
+      } else {
       panel2.style.display = "table-row";
       panel3.style.display="none";
       panel4.style.display="none";
       panel5.style.display="block";
       panel6.style.display="none";
+    }
+  });
+}
+for (i = 0; i < btn2.length; i++) {
+  btn2[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    var panel2 = this.parentNode.parentNode.nextElementSibling;
+    var panel4= panel2.firstChild.nextElementSibling.childNodes[1];
+    var panel5= panel2.firstChild.nextElementSibling.childNodes[3];
+    console.log(panel2, panel4, panel5);
+    if (panel2.style.display === "table-row") {
+      if(panel4.style.display=="block"){
+      panel2.style.display = "none";
+      }
+      else{
+        panel5.style.display="none";
+        panel4.style.display="block";
+      }
+    } else {
+      panel2.style.display = "table-row";
+      panel4.style.display="block";
+      panel5.style.display="none";
     }
   });
 }

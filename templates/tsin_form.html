@@ -16,257 +16,59 @@ label{
 {% block content %}
 
 <main style="padding-top:130px;">
-<section class="register-form">
-    <div class="container form">
-    <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
-    <h1 style="color: #E20074; text-align:center; font-size:25px;">Add New Position</h1><hr><br><br><br><br>
-      <form id="upload-form" name="tsinform"  action = "/new-position" method = "POST" enctype = "multipart/form-data">
-        
-        <label for="tsinid"> Enter a Unique TSIN ID:<span style="color:red;">*</span></label>
-        <input type="text" id="tsinid" name="tsinid" style="width:270px;height:19px;" onchange="checktsin({{final}}, this);" required><br><br>
-        <label for="snowid">Enter Snow ID: </label>
-        <input type="text" id="snowid" name="snow_id" style="width:270px;height:19px;"><br><br>
-        <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
-        <select name="chapter" id="chapter"style="width:270px;height:19px; font-size:12px;">
+<table id="activetable" class="roles" style="font-size:11px;">
+      <tr style="position:sticky; top:0px; z-index:1px;">
+      <th>TSIN ID</th>
+      <th>Snow ID</th>
+      <th>Role</th>
+      <th>Chapter</th>
+      <th>Squad</th>
+      <th>Demand Type</th>
+      <th>Tribe</th>
+      <th style="width:154px;">Actions</th>
+      </tr>
+        <tr>
+          <td><input type="text" id="tsinid" name="tsinid"  placeholder="TSIN ID" onchange="checktsin({{final}}, this);" required></td>
+          <td><input type="text" id="snowid" name="snow_id"  placeholder="Snow ID"></td>
+          <td><select name="chapter" id="chapter"style=" font-size:12px;">
           <option value="none">--None--</option>
         {% for i in chapters %}
           <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
         {% endfor %}
-          <!--<option value="Data Engineering">Data Engineering</option>
-          <option value="Devops & Infra">Devops & Infra</option>
-          <option value="Product Engineering">Product Engineering</option>
-          <option value="Data Science">Data Science</option>
-          <option value="Domain Expert">Domain Expert</option>
-          <option value="Delphi">Delphi</option>
-          <option value="AI/ML as Service">AI/ML as Service</option>
-          <option value="Productization">Productization</option>
-          <option value="Data Architect">Data Architect</option>
-          <option value="Assurance">Assurance</option>
-          <option value="Agile & Scrum">Agile & Scrum</option>-->
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newchapter" placeholder="Enter Chapter Name" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addchapter" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Chapter</button><br>
-        <label for="role">Enter Role: <span style="color:red;">*</span></label>
-        <select name="role" id="role"style="width:270px;height:19px;font-size:12px;">
+        </select>
+        </td>
+        <td><select name="role" id="role"style="font-size:12px;">
           <option value="none">--None--</option>
           {% for i in roles %}
           <option value="{{i.role_name}}">{{i.role_name}}</option>
           {% endfor %}
-          <!--<option value="Full Stack Developer">Full Stack Developer</option>
-          <option value="Sr. Full-stack Engineer">Sr. Full-stack Engineer</option>
-          <option value="Business Analyst">Business Analyst</option>
-          <option value="Data Engineer">Data Engineer</option>
-          <option value="Sr. Data Engineer">Sr. Data Engineer</option>
-          <option value="Microstrategy Developer">Microstrategy Developer</option>
-          <option value="DevOps Engineer">DevOps Engineer</option>
-          <option value="DevOps Architect">DevOps Architect</option>
-          <option value="Cloud Architect">Cloud Architect</option>
-          <option value="Data Scientist">Data Scientist</option>
-          <option value="Sr. Data Scientist">Sr. Data Scientist</option>
-          <option value="Backend Engineer">Backend Engineer</option>
-          <option value="Sr. Backend Engineer"> Sr. Backend Engineer</option>
-          <option value="MLOPS Engineer">MLOPS Engineer</option>
-          <option value="Scrum Master">Scrum Master</option>
-          <option value="Front End Developer">Front End Developer</option>
-          <option value=" Sr. Front End Developer"> Sr. Front End Developer</option>
-          <option value="Product Owner">Product Owner</option>
-          <option value="Product Manager">Product Manager</option>
-          <option value="PMO">PMO</option>
-          <option value="Security Engineer ">Security Engineer </option>
-          <option value="Infrastructure Engineer">Infrastructure Engineer</option>
-          <option value="Platform Engineer">Platform Engineer</option>
-          <option value="QA">QA</option>
-          <option value="Senior QA">Senior QA</option>
-          <option value="Associate Architect">Associate Architect</option>
-          <option value="UX Designer">UX Designer</option>-->
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newrole" placeholder="Enter Role" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addrole" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Role</button><br>
-        <label for="squad">Enter Squad: <span style="color:red;">*</span></label>
-         <select name="squad" id="squad"style="width:270px;height:19px;font-size:12px;">
+          </select>
+        </td>
+        <td><select name="squad" id="squad"style="font-size:12px;">
           <option value="none">--None--</option>
           {% for i in squads %}
           <option value="{{i.squad_name}}">{{i.squad_name}}</option>
           {% endfor %}
-          <!--<option value="ELSA">ELSA</option>
-          <option value="NDI Hub">NDI Hub</option>
-          <option value="Cloud Booster">Cloud Booster</option>
-          <option value="EU Central">EU Central</option>
-          <option value="MA Persona">MA Persona</option>
-          <option value="CET">CET</option>
-          <option value="MLOps">MLOps</option>
-          <option value="Operation Support">Operation Support</option>
-          <option value="Nemo">Nemo</option>
-          <option value="DIL">DIL</option>
-          <option value="Argus">Argus</option>
-          <option value="Magenta adtech">Magenta adtech</option>
-          <option value="NWI">NWI</option>
-          <option value="Pluto">Pluto</option>
-          <option value="TDG CDSC">TDG CDSC</option>
-          <option value="EU TV HH Analytics">EU TV HH Analytics</option>
-          <option value="Network Automation">Network Automation</option>
-          <option value="Pluto CST">Pluto CST</option>
-          <option value="Pluto MT">Pluto MT</option>
-          <option value="Network Energy Management">Network Energy Management</option>
-          <option value="Pluto OTE">Pluto OTE</option>
-          <option value="Group Audit">Group Audit</option>
-          <option value="Nemo">Nemo</option>
-          <option value="Procurement">Procurement</option>
-          <option value="TDG NDI">TDG NDI</option>
-          <option value="TDG ODI">TDG ODI</option>
-          <option value="Network Analytics">Network Analytics</option>
-          <option value="TDG Sale">TDG Sales</option>
-          <option value="AET-CET">AET-CET</option>
-          <option value="EU Perceptro">EU Perceptro</option>
-          <option value="Persona DB">Persona DB</option>
-          <option value="Insights Portal">Insights Portal</option>
-          <option value="CXI NPS Prediction">CXI NPS Prediction</option>
-          <option value="Operational Support">Operational Support</option>
-          <option value="AET-CET">AET-CET</option>
-          <option value="AdTech">AdTech</option>
-          <option value="Delphi">Delphi</option>
-          <option value="TDG TV">TDG TV</option>
-          <option value="TDG NBx">TDG NBx</option>
-          <option value="Workbench">Workbench</option>-->
-
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newsquad" placeholder="Enter Squad Name" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addsquad" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Squad</button><br>
-        <label for="demandtype">Enter Type of Demand: </label>
-        <select name="demandtype" id="demandtype"style="width:270px;height:19px;font-size:12px;">
+          </select>
+          </td>
+          <td>
+        <select name="demandtype" id="demandtype"style="font-size:12px;">
           <option value="none">--None--</option>
           <option value="Backfill">Backfill</option>
           <option value="New Demand">New Demand</option>
           <option value="Proactive">Proactive</option>
-        </select><br><br>
-        <label for="tribe">Enter Tribe: </label>
-        <select name="tribe" id="tribe"style="width:270px;height:19px;font-size:12px;">
+        </select></td>
+        <td>
+        <select name="tribe" id="tribe"style="font-size:12px;">
           <option value="none">--None--</option>
           {% for i in tribes %}
           <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
           {% endfor %}
-          <!--<option value="NetOps">NetOps</option>
-          <option value="DEP">DEP</option>
-          <option value="Halo">Halo</option>
-          <option value="CET">CET</option>-->
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newtribe" placeholder="Enter Tribe Name" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addtribe" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Tribe</button><br>
-        <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
-      </form>
-    </div>
-    
-  </div>
-  
-</section>
+        </select>
+        </td>
+        </tr>
+</table>
 </main>
 <script>
-var acc = document.getElementsByClassName("add");
-var chapterbtn=document.getElementsByClassName("addchapter");
-var rolebtn=document.getElementsByClassName("addrole");
-var tribebtn=document.getElementsByClassName("addtribe");
-var squadbtn=document.getElementsByClassName("addsquad");
-chapterbtn[0].addEventListener("click", function() {
-chapter=$("#newchapter").val();
-jsondata={
-  "chapter":chapter
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-chapter",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-rolebtn[0].addEventListener("click", function() {
-role=$("#newrole").val();
-jsondata={
-  "role":role
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-role",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-tribebtn[0].addEventListener("click", function() {
-tribe=$("#newtribe").val();
-jsondata={
-  "tribe":tribe
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-tribe",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-squadbtn[0].addEventListener("click", function() {
-squad=$("#newsquad").val();
-jsondata={
-  "squad":squad
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-squad",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling.nextElementSibling;
-    var panel2=panel.nextElementSibling;
-        console.log(panel,panel2);
-    if (panel.style.display != "none"){
-        panel.style.display="none";
-        panel2.style.display="none";
-      }
-      else{
-        console.log('entered2');
-        panel.style.display="inline-block";
-        panel2.style.display="inline-block";
-      }
-    });
-    /* Toggle between hiding and showing the active panel */
-    
-     /*{
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "table-row";
-    }*/
-    }
-function checktsin(el, el2){
-  for(var i=0;i<el.length;i++){
-    console.log(el2.value);
-    if (el[i]==el2.value){
-      alert("TSIN ID already exists");
-    }
-  }
-}
-    $(".loader").css("visibility","hidden");
-$(document).on('click', '#upload', function(e){
-    $(".loader").css("visibility","visible");
-});
 </script>
 {% endblock content %}

@@ -34,24 +34,16 @@ else:
 
 
 def get_abstract_data():
-    result = roles.query.order_by(desc(roles.modified_at)).filter_by(status="active")
-    result3=roles.query.order_by(desc(roles.modified_at)).filter_by(status="inactive")
+    result = roles.query.order_by(desc(roles.modified_at)).all()
     nums = {}
-    nums2={}
+    col={
+        "green":1,
+        "yellow":2,
+        "red":3,
+        "gray":4
+    }
     for i in result:
         nums[i.tsin_id.strip()] = {
-            "stage1": 0,
-            "stage2": 0,
-            "stage3": 0,
-            "stage4": 0,
-            "stage5": 0,
-            "stage6": 0,
-            "stage7": 0,
-            "stage8": 0,
-            "stage9": 0,
-        }
-    for i in result3:
-        nums2[i.tsin_id.strip()] = {
             "stage1": 0,
             "stage2": 0,
             "stage3": 0,
@@ -67,14 +59,10 @@ def get_abstract_data():
     for i in result2:
         list_of_phone.append(i.phone)
     d = {}
-    d2={}
     final_color={}
     list_of_tsin=[]
-    list_of_inactive_tsin=[]
     for i in result:
         list_of_tsin.append(i.tsin_id.strip())
-    for i in result3:
-        list_of_inactive_tsin.append(i.tsin_id.strip())
     for i in result2:
         if i.tsin_id.strip() in list_of_tsin:
             if i.status=="inactive":
@@ -155,230 +143,77 @@ def get_abstract_data():
                         color="yellow"
                     else:
                         color="red"
-
-        elif i.tsin_id.strip() in list_of_inactive_tsin:
-            if i.status=="inactive":
-                color="gray"
+            if i.tsin_id.strip() in d:
+                d[i.tsin_id.strip()].append(
+                    {
+                        "id": i.id,
+                        "candidate_name": i.candidate_name,
+                        "pan": i.pan,
+                        "candidate_email": i.candidate_email,
+                        "current_stage": i.current_stage,
+                        "request_raised_date": i.request_raised_date,
+                        "tsin_opened_date": i.tsin_opened_date,
+                        "resume_screened_date": i.resume_screened_date,
+                        "l1_interview_date": i.l1_interview_date,
+                        "l1_interviewer": i.l1_interviewer,
+                        "l2_interview_date": i.l2_interview_date,
+                        "l2_interviewer": i.l2_interviewer,
+                        "l3_interview_date": i.l3_interview_date,
+                        "l3_interviewer": i.l3_interviewer,
+                        "offer_rollout_date": i.offer_rollout_date,
+                        "joining_date": i.joining_date,
+                        "buddy_assignment_date": i.buddy_assignment_date,
+                        "buddy_name": i.buddy_name,
+                        "candidate_dropout_date": i.candidate_dropout_date,
+                        "candidate_dropout_reason": i.candidate_dropout_reason,
+                        "resume": i.resume,
+                        "phone": i.phone,
+                        "current_location": i.current_location,
+                        "current_company": i.current_company,
+                        "experience": i.experience,
+                        "status": i.status,
+                        "color":color
+                    }
+                )
             else:
-                if i.current_stage.strip() == "Resume Screened for Interview":
-                    if i.tsin_id.strip()=="TSIN012575":
-                        print(i.candidate_name)
-                    nums2[i.tsin_id.strip()]["stage1"] += 1
-                    if i.resume_screened_date!=None:
-                        difference=datetime.now()-i.resume_screened_date
-                    elif i.tsin_opened_date!=None:
-                        difference=datetime.now()-i.tsin_opened_date
-                    if difference.days<=3:
-                        color="green"
-                    elif difference.days>3 and difference.days<5:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif i.current_stage.strip() == "L1 Interview Complete":
-                    difference=datetime.now()-i.l1_interview_date
-                    nums2[i.tsin_id.strip()]["stage2"] += 1
-                    if difference.days<=3:
-                        color="green"
-                    elif difference.days>3 and difference.days<5:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif i.current_stage.strip() == "L2 Interview Complete":
-                    nums2[i.tsin_id.strip()]["stage3"] += 1
-                    difference=datetime.now()-i.l2_interview_date
-                    if difference.days<=3:
-                        color="green"
-                    elif difference.days>3 and difference.days<5:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif i.current_stage.strip() == "L3 Interview Complete":
-                    nums2[i.tsin_id.strip()]["stage4"] += 1
-                    difference=datetime.now()-i.l3_interview_date
-                    if difference.days<=5:
-                        color="green"
-                    elif difference.days>5 and difference.days<7:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif i.current_stage.strip() == "Offer RollOut":
-                    nums2[i.tsin_id.strip()]["stage5"] += 1
-                    difference=datetime.now()-i.offer_rollout_date
-                    if difference.days<=2:
-                        color="green"
-                    elif difference.days>2 and difference.days<5:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif i.current_stage.strip() == "Buddy Assignment":
-                    nums2[i.tsin_id.strip()]["stage6"] += 1
-                    difference=datetime.now()-i.buddy_assignment_date
-                    if difference.days<=2:
-                        color="green"
-                    elif difference.days>2 and difference.days<2:
-                        color="yellow"
-                    else:
-                        color="red"
-                elif (
-                    i.current_stage.strip() == "Candidate Joined"
-                    or i.current_stage.strip() == "Candidate Dropout"
-                ):
-                    nums2[i.tsin_id.strip()]["stage7"] += 1
-                    color="gray"
-                elif i.current_stage.strip() == "Resume Rejected":
-                    nums2[i.tsin_id.strip()]["stage8"] += 1
-                    color="gray"
-                elif i.current_stage.strip() == "Profile Upload":
-                    nums2[i.tsin_id.strip()]["stage9"] += 1
-                    difference=datetime.now()-i.request_raised_date
-                    if difference.days<=5:
-                        color="green"
-                    elif difference.days>5 and difference.days<5:
-                        color="yellow"
-                    else:
-                        color="red"
+                d[i.tsin_id.strip()] = [
+                    {
+                        "id": i.id,
+                        "candidate_name": i.candidate_name,
+                        "pan": i.pan,
+                        "candidate_email": i.candidate_email,
+                        "current_stage": i.current_stage,
+                        "request_raised_date": i.request_raised_date,
+                        "tsin_opened_date": i.tsin_opened_date,
+                        "resume_screened_date": i.resume_screened_date,
+                        "l1_interview_date": i.l1_interview_date,
+                        "l1_interviewer": i.l1_interviewer,
+                        "l2_interview_date": i.l2_interview_date,
+                        "l2_interviewer": i.l2_interviewer,
+                        "l3_interview_date": i.l3_interview_date,
+                        "l3_interviewer": i.l3_interviewer,
+                        "offer_rollout_date": i.offer_rollout_date,
+                        "joining_date": i.joining_date,
+                        "buddy_assignment_date": i.buddy_assignment_date,
+                        "buddy_name": i.buddy_name,
+                        "candidate_dropout_date": i.candidate_dropout_date,
+                        "candidate_dropout_reason": i.candidate_dropout_reason,
+                        "resume": i.resume,
+                        "phone": i.phone,
+                        "current_location": i.current_location,
+                        "current_company": i.current_company,
+                        "experience": i.experience,
+                        "status":i.status,
+                        "color":color
+                    }
+                ]
         if i.tsin_id in final_color.keys():
-            if final_color[i.tsin_id]!=color:
-                if color=="green":
-                    final_color[i.tsin_id]="green"
-                elif color=="yellow":
-                    if final_color[i.tsin_id]=="red":
-                        final_color[i.tsin_id]="yellow"
-                elif color=="red" or color=="gray":
-                    continue
+            if col[final_color[i.tsin_id]]>col[color]:
+                final_color[i.tsin_id]=color
         else:
             final_color[i.tsin_id]=color
-        if i.tsin_id in list_of_tsin:
-            if i.tsin_id in d:
-                d[i.tsin_id].append(
-                    {
-                        "id": i.id,
-                        "candidate_name": i.candidate_name,
-                        "pan": i.pan,
-                        "candidate_email": i.candidate_email,
-                        "current_stage": i.current_stage,
-                        "request_raised_date": i.request_raised_date,
-                        "tsin_opened_date": i.tsin_opened_date,
-                        "resume_screened_date": i.resume_screened_date,
-                        "l1_interview_date": i.l1_interview_date,
-                        "l1_interviewer": i.l1_interviewer,
-                        "l2_interview_date": i.l2_interview_date,
-                        "l2_interviewer": i.l2_interviewer,
-                        "l3_interview_date": i.l3_interview_date,
-                        "l3_interviewer": i.l3_interviewer,
-                        "offer_rollout_date": i.offer_rollout_date,
-                        "joining_date": i.joining_date,
-                        "buddy_assignment_date": i.buddy_assignment_date,
-                        "buddy_name": i.buddy_name,
-                        "candidate_dropout_date": i.candidate_dropout_date,
-                        "candidate_dropout_reason": i.candidate_dropout_reason,
-                        "resume": i.resume,
-                        "phone": i.phone,
-                        "current_location": i.current_location,
-                        "current_company": i.current_company,
-                        "experience": i.experience,
-                        "status": i.status,
-                        "color":color
-                    }
-                )
-            else:
-                d[i.tsin_id] = [
-                    {
-                        "id": i.id,
-                        "candidate_name": i.candidate_name,
-                        "pan": i.pan,
-                        "candidate_email": i.candidate_email,
-                        "current_stage": i.current_stage,
-                        "request_raised_date": i.request_raised_date,
-                        "tsin_opened_date": i.tsin_opened_date,
-                        "resume_screened_date": i.resume_screened_date,
-                        "l1_interview_date": i.l1_interview_date,
-                        "l1_interviewer": i.l1_interviewer,
-                        "l2_interview_date": i.l2_interview_date,
-                        "l2_interviewer": i.l2_interviewer,
-                        "l3_interview_date": i.l3_interview_date,
-                        "l3_interviewer": i.l3_interviewer,
-                        "offer_rollout_date": i.offer_rollout_date,
-                        "joining_date": i.joining_date,
-                        "buddy_assignment_date": i.buddy_assignment_date,
-                        "buddy_name": i.buddy_name,
-                        "candidate_dropout_date": i.candidate_dropout_date,
-                        "candidate_dropout_reason": i.candidate_dropout_reason,
-                        "resume": i.resume,
-                        "phone": i.phone,
-                        "current_location": i.current_location,
-                        "current_company": i.current_company,
-                        "experience": i.experience,
-                        "status":i.status,
-                        "color":color
-                    }
-                ]
-        elif i.tsin_id in list_of_inactive_tsin:
-            if i.tsin_id in d2:
-                d2[i.tsin_id].append(
-                    {
-                        "id": i.id,
-                        "candidate_name": i.candidate_name,
-                        "pan": i.pan,
-                        "candidate_email": i.candidate_email,
-                        "current_stage": i.current_stage,
-                        "request_raised_date": i.request_raised_date,
-                        "tsin_opened_date": i.tsin_opened_date,
-                        "resume_screened_date": i.resume_screened_date,
-                        "l1_interview_date": i.l1_interview_date,
-                        "l1_interviewer": i.l1_interviewer,
-                        "l2_interview_date": i.l2_interview_date,
-                        "l2_interviewer": i.l2_interviewer,
-                        "l3_interview_date": i.l3_interview_date,
-                        "l3_interviewer": i.l3_interviewer,
-                        "offer_rollout_date": i.offer_rollout_date,
-                        "joining_date": i.joining_date,
-                        "buddy_assignment_date": i.buddy_assignment_date,
-                        "buddy_name": i.buddy_name,
-                        "candidate_dropout_date": i.candidate_dropout_date,
-                        "candidate_dropout_reason": i.candidate_dropout_reason,
-                        "resume": i.resume,
-                        "phone": i.phone,
-                        "current_location": i.current_location,
-                        "current_company": i.current_company,
-                        "experience": i.experience,
-                        "status": i.status,
-                        "color":color
-                    }
-                )
-            else:
-                d2[i.tsin_id] = [
-                    {
-                        "id": i.id,
-                        "candidate_name": i.candidate_name,
-                        "pan": i.pan,
-                        "candidate_email": i.candidate_email,
-                        "current_stage": i.current_stage,
-                        "request_raised_date": i.request_raised_date,
-                        "tsin_opened_date": i.tsin_opened_date,
-                        "resume_screened_date": i.resume_screened_date,
-                        "l1_interview_date": i.l1_interview_date,
-                        "l1_interviewer": i.l1_interviewer,
-                        "l2_interview_date": i.l2_interview_date,
-                        "l2_interviewer": i.l2_interviewer,
-                        "l3_interview_date": i.l3_interview_date,
-                        "l3_interviewer": i.l3_interviewer,
-                        "offer_rollout_date": i.offer_rollout_date,
-                        "joining_date": i.joining_date,
-                        "buddy_assignment_date": i.buddy_assignment_date,
-                        "buddy_name": i.buddy_name,
-                        "candidate_dropout_date": i.candidate_dropout_date,
-                        "candidate_dropout_reason": i.candidate_dropout_reason,
-                        "resume": i.resume,
-                        "phone": i.phone,
-                        "current_location": i.current_location,
-                        "current_company": i.current_company,
-                        "experience": i.experience,
-                        "status":i.status,
-                        "color":color
-                    }
-                ]
-    return result, d, nums, list_of_phone, result3, nums2, d2, final_color
+            
+    return result, d, nums, list_of_phone, final_color
 
 
 def total_offers():
@@ -526,14 +361,14 @@ def get_detailed_data():
 
 @app.route("/")
 def main():
-    result, d, nums, phones, inactiveresult, inactiveprofiles, d2, colors= get_abstract_data()
+    result, d, nums, phones, colors= get_abstract_data()
     roless=role.query.all()
     chapters=chapter.query.all()
     squads=squad.query.all()
     tribes=tribe.query.all()
-    print(d['TSIN012575'])
+    print(colors)
     return render_template(
-        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, inactives=inactiveresult, inactive_status=inactiveprofiles, inactivecands=d2, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters
+        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters
     )
 
 
@@ -1055,6 +890,16 @@ def detailed():
     else:
         return render_template("detailed.html", final=final)
 
+@app.route("/activate-role/<tsin>", methods=["GET", "POST"])
+def activate_role(tsin):
+    db.session.query(roles).filter(roles.tsin_id == tsin).update(
+        {
+            "status": "active",
+            "modified_at": datetime.now(),
+        }
+    )
+    db.session.commit()
+    return redirect(url_for("main"))
 
 @app.route("/delete-role/<tsin>", methods=["GET", "POST"])
 def delete_role(tsin):
@@ -1067,6 +912,16 @@ def delete_role(tsin):
     db.session.commit()
     return redirect(url_for("main"))
 
+@app.route("/activate-profile/<id>", methods=["GET", "POST"])
+def activate_profile(id):
+    db.session.query(candidates).filter(candidates.id == id).update(
+        {
+            "status": "active",
+            "modified_at": datetime.now(),
+        }
+    )
+    db.session.commit()
+    return redirect(url_for("main"))
 
 @app.route("/delete-profile/<id>", methods=["GET", "POST"])
 def delete_profile(id):

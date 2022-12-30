@@ -252,7 +252,7 @@ border-color:red;
 .new_tsin{
   border-radius: 10px;
 } */
-.resume-upload, .stage-update, .candidate-row, .download_resume, .new_tsin, .dashboard, #stage-update, .addchapter, .addtribe,.addsquad, .addrole{
+.resume-upload, .stage-update, .candidate-row,.candidate-row2, .download_resume, .new_tsin, .dashboard, #stage-update, .addchapter, .addtribe,.addsquad, .addrole{
   color:#E20074;
   border:0;
   background-color:white;
@@ -270,8 +270,12 @@ border-color:red;
 }
 .navbar-brand.active button{
   text-decoration: underline;
-}
+  font-weight:bold
+;}
 .navbar-brand.active{
+  background-color:transparent;
+}
+.eye.active, .view-profile.active,.eye2.active, .view-profile2.active{
   background-color:transparent;
 }
 /* .view-profile{
@@ -494,7 +498,7 @@ border-radius: 34px;
 .slider.round:before {
 border-radius: 50%;
 }
-.swal2-confirm{
+.swal2-confirm, .activate-btn{
   font-weight: 800;
     background-color:white !important;
     border: 1px solid #E20074 !important;

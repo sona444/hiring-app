@@ -51,7 +51,10 @@
         display: block;
         overflow:hidden;
     }
-    
+    #chartHolder .shadow1{
+        width:33%;
+        float:left;
+    }
 </style>
 {% endblock stylesheets %}
 
@@ -76,7 +79,7 @@
 <input type="hidden" id="new-rolewise" value="{{role_wise_new}}">
 </form>
 <button id="new_profile_add" onclick="new_profiles({{role_wise_new}})"></button>
-<div style="display:block; width:80%; margin:auto;">
+<div style="display:block; margin:auto;">
 <input id="tsin_id" placeholder="Enter TSIN ID">
 <input id="role" placeholder="Enter Role">
 <input id="chapter" placeholder="Enter Chapter">
@@ -87,9 +90,8 @@
 
 </div>
 <div id="myChartweekly" width="400" height="300" style=" width:31%; text-align:center; display:block; height:350px !important;"></div>
-<div id="myChartmonthly" width="400" height="300" style="width:31%; text-align:center; display:block; height:350px !important;"></div>
-<div id="myChartquarterly" width="400" height="300" style="width:31%; text-align:center; display:block;height:350px !important;"></div>
-<div id="myChartroleoffers" width="500" height="400" style="text-align:center; margin: auto; display:block; width:100% !important; height:480px !important;"></div>
+<!--<div id="myChartmonthly" width="400" height="300" style="width:31%; text-align:center; display:block; height:350px !important;"></div>
+<div id="myChartquarterly" width="400" height="300" style="width:31%; text-align:center; display:block;height:350px !important;"></div>-->
 <div id="myChartrolenew" width="500" height="400" style="text-align:center; display:inline-table; width:400px !important; height:400px !important;"></div>
 
 </main>
@@ -102,7 +104,7 @@ function getData(){
   if(e){
     e.remove();
   }
-  const e1='<div id="barcharts"><div class="shadow1"><canvas id="myChart"></canvas></div></br></br><div class="shadow1"><canvas id="myChart1"></canvas></div></div>'
+  const e1='<div id="barcharts"><div class="shadow1"><canvas id="myChart"></canvas></div><div class="shadow1"><canvas id="myChart1"></canvas></div></div>'
   document.getElementById("chartHolder").insertAdjacentHTML('beforeend',e1);
   tsin_id=document.getElementById("tsin_id").value || 'all';
   role=document.getElementById("role").value;
@@ -431,13 +433,6 @@ function new_profiles(rows){
               data.addColumn('number', 'Buddy Assignment');
               data.addColumn('number', 'Candidate Joined/Dropout');
               console.log(newrolewise);
-              /*var key1 = newrolewise.replace(/'/g, '"');
-              var role_new=JSON.parse(key1);
-              var len=Object.keys(role_new).length;
-              const chartdata = [];
-              for(let i=0;i<len;i++){
-                chartdata.push([Object.keys(role_new)[i], Object.values(role_new)[i]]);
-              }*/
               data.addRows(rows);
 
               var options = {
