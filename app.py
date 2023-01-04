@@ -1,13 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 from openpyxl import load_workbook
 import sqlite3
 import pandas as pd
+import uuid
 from minio import Minio
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import update, desc
-from datetime import datetime
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+from jose import JWTError, jwt
+from functools import wraps
 import json
 import numpy as np
 
@@ -16,21 +20,246 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+] = "postgresql://abhi:TEST123@localhost:5432/hiringapp"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from models import *
 
 minioClient = Minio(
-    "localhost:9000", access_key="minioadmin", secret_key="minioadmin", secure=False
-)
+        "play.min.io",
+        access_key="Q3AM3UQ867SPQQA43P2F",
+        secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
+    )
 found = minioClient.bucket_exists("resume")
 if not found:
     minioClient.make_bucket("resume")
 else:
     print("Bucket 'resume' already exists")
+
+#------------------Auth and roles access implementation--------------
+def token_required(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = None
+		if 'Authorization' in request.headers:
+			token = request.headers['Authorization']
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+		try:
+			#print(token.split()[1])
+			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+			current_user = Users.query\
+				.filter_by(id = data['id'])\
+				.first()
+		except:
+			return jsonify({
+				'message' : 'Token is invalid !!'
+			}), 401
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def pmoOnly(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = None
+		if 'Authorization' in request.headers:
+			token = request.headers['Authorization']
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+		try:
+			#print(token.split()[1])
+			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+			current_user = Users.query\
+				.filter_by(id = data['id'])\
+				.first()
+			if(current_user.role != 'pmo'):
+				return jsonify({
+					'message' : 'Unauthorised access to role PMO !!'
+				}), 401
+				current_user=None
+		except:
+			return jsonify({
+				'message' : 'Token is invalid !!'
+			}), 401
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def tacOnly(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = None
+		if 'Authorization' in request.headers:
+			token = request.headers['Authorization']
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+		try:
+			#print(token.split()[1])
+			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+			current_user = Users.query\
+				.filter_by(id = data['id'])\
+				.first()
+			if(current_user.role != 'tac'):
+				return jsonify({
+					'message' : 'Unauthorised access to role TAC team !!'
+				}), 401
+				current_user=None
+		except:
+			return jsonify({
+				'message' : 'Token is invalid !!'
+			}), 401
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def interviewerOnly(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = None
+		if 'Authorization' in request.headers:
+			token = request.headers['Authorization']
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+		try:
+			#print(token.split()[1])
+			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+			current_user = Users.query\
+				.filter_by(id = data['id'])\
+				.first()
+			if(current_user.role != 'tac'):
+				return jsonify({
+					'message' : 'Unauthorised access to role Interviewer !!'
+				}), 401
+				current_user=None
+		except:
+			return jsonify({
+				'message' : 'Token is invalid !!'
+			}), 401
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def hrOnly(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = None
+		if 'Authorization' in request.headers:
+			token = request.headers['Authorization']
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+		try:
+			#print(token.split()[1])
+			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+			current_user = Users.query\
+				.filter_by(id = data['id'])\
+				.first()
+			if(current_user.role != 'hr'):
+				return jsonify({
+					'message' : 'Unauthorised access to role HR team !!'
+				}), 401
+				current_user=None
+		except:
+			return jsonify({
+				'message' : 'Token is invalid !!'
+			}), 401
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+#example of pmo role specific routing
+@app.route('/test', methods=['GET'])
+@pmoOnly
+def getPMO(current_user):
+	if(current_user):
+		return jsonify({'users': current_user.name})
+	else:
+		return jsonify({'users': None})
+
+
+# an example of logged in admin route to access all data
+@app.route('/users', methods =['GET'])
+@token_required
+def get_all_users(current_user):
+	users = Users.query.all()
+	output = []
+	for user in users:
+		output.append({
+			'id': user.id,
+			'name' : user.name,
+			'email' : user.email,
+			'role': user.role
+		})
+
+	return jsonify({'users': output})
+
+@app.route('/loginToken', methods =['POST'])
+def loginToken():
+	auth = request.form
+	print(auth.get('email'), auth.get('password'))
+	if not auth or not auth.get('email') or not auth.get('password'):
+		return make_response(
+			'Could not verify',
+			401,
+			{'WWW-Authenticate' : 'Basic realm ="Login required !!"'}
+		)
+
+	user = Users.query\
+		.filter_by(email = auth.get('email'))\
+		.first()
+
+	if not user:
+		return make_response(
+			'Could not verify',
+			401,
+			{'WWW-Authenticate' : 'Basic realm ="User does not exist !!"'}
+		)
+
+	if check_password_hash(user.password, auth.get('password')):
+		token = jwt.encode({
+			'id': user.id,
+			'exp' : datetime.utcnow() + timedelta(minutes = 30)
+		}, app.config['SECRET_KEY'], 'HS256')
+
+		return make_response(jsonify({'token' : token}), 201)
+	return make_response(
+		'Could not verify',
+		403,
+		{'WWW-Authenticate' : 'Basic realm ="Wrong Password !!"'}
+	)
+
+@app.route('/createUser', methods =['POST'])
+def createUser():
+	data = request.form
+	name, email, role = data.get('name'), data.get('email'), data.get('role')
+	password = data.get('password')
+	user = Users.query\
+		.filter_by(email = email)\
+		.first()
+	if not user:
+		user = Users(
+			id = str(uuid.uuid4()),
+			name = name,
+			email = email,
+			password = generate_password_hash(password),
+			role = role
+		)
+		db.session.add(user)
+		db.session.commit()
+
+		return make_response('Successfully registered.', 201)
+	else:
+		return make_response('User already exists', 202)
+
+
+#--------------------------------------------------------------------
 
 
 def get_abstract_data():
@@ -212,7 +441,7 @@ def get_abstract_data():
                 final_color[i.tsin_id]=color
         else:
             final_color[i.tsin_id]=color
-            
+
     return result, d, nums, list_of_phone, final_color
 
 
@@ -435,7 +664,7 @@ def uploadDs():
 
         l3_interview_date = str(i["L3 Interview Complete"])
         if l3_interview_date == "nan" or l3_interview_date == "NaT":
-            
+
             l3_interview_date = None
         else:
             if current_stage=="Empty":
