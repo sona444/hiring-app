@@ -20,7 +20,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://abhi:TEST123@localhost:5432/hiringapp"
+] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
@@ -297,60 +297,55 @@ def get_abstract_data():
             if i.status=="inactive":
                 color="gray"
             else:
+                if i.request_raised_date:
+                    difference=datetime.now()-i.request_raised_date
+                elif i.resume_screened_date:
+                    difference=datetime.now()-i.resume_screened_date
                 if i.current_stage.strip() == "Resume Screened for Interview":
                     nums[i.tsin_id.strip()]["stage1"] += 1
-                    if i.resume_screened_date!=None:
-                        difference=datetime.now()-i.resume_screened_date
-                    elif i.tsin_opened_date!=None:
-                        difference=datetime.now()-i.tsin_opened_date
-                    if difference.days<=3:
+                    if difference.days<=8:
                         color="green"
-                    elif difference.days>3 and difference.days<5:
+                    elif difference.days>8 and difference.days<10:
                         color="yellow"
                     else:
                         color="red"
                 elif i.current_stage.strip() == "L1 Interview Complete":
-                    difference=datetime.now()-i.l1_interview_date
                     nums[i.tsin_id.strip()]["stage2"] += 1
-                    if difference.days<=3:
+                    if difference.days<=13:
                         color="green"
-                    elif difference.days>3 and difference.days<5:
+                    elif difference.days>13 and difference.days<15:
                         color="yellow"
                     else:
                         color="red"
                 elif i.current_stage.strip() == "L2 Interview Complete":
                     nums[i.tsin_id.strip()]["stage3"] += 1
-                    difference=datetime.now()-i.l2_interview_date
-                    if difference.days<=3:
+                    if difference.days<=16:
                         color="green"
-                    elif difference.days>3 and difference.days<5:
+                    elif difference.days>16 and difference.days<18:
                         color="yellow"
                     else:
                         color="red"
                 elif i.current_stage.strip() == "L3 Interview Complete":
                     nums[i.tsin_id.strip()]["stage4"] += 1
-                    difference=datetime.now()-i.l3_interview_date
-                    if difference.days<=5:
+                    if difference.days<=21:
                         color="green"
-                    elif difference.days>5 and difference.days<7:
+                    elif difference.days>21 and difference.days<23:
                         color="yellow"
                     else:
                         color="red"
                 elif i.current_stage.strip() == "Offer RollOut":
                     nums[i.tsin_id.strip()]["stage5"] += 1
-                    difference=datetime.now()-i.offer_rollout_date
-                    if difference.days<=2:
+                    if difference.days<=23:
                         color="green"
-                    elif difference.days>2 and difference.days<5:
+                    elif difference.days>23 and difference.days<25:
                         color="yellow"
                     else:
                         color="red"
                 elif i.current_stage.strip() == "Buddy Assignment":
                     nums[i.tsin_id.strip()]["stage6"] += 1
-                    difference=datetime.now()-i.buddy_assignment_date
-                    if difference.days<=2:
+                    if difference.days<=25:
                         color="green"
-                    elif difference.days>2 and difference.days<2:
+                    elif difference.days>25 and difference.days<27:
                         color="yellow"
                     else:
                         color="red"
@@ -365,7 +360,6 @@ def get_abstract_data():
                     color="gray"
                 elif i.current_stage.strip() == "Profile Upload":
                     nums[i.tsin_id.strip()]["stage9"] += 1
-                    difference=datetime.now()-i.request_raised_date
                     if difference.days<=5:
                         color="green"
                     elif difference.days>5 and difference.days<5:
@@ -1166,37 +1160,49 @@ def delete_profile(id):
 
 @app.route("/new-position", methods=["GET", "POST"])
 def newposition():
-    tsinid = request.form.get("tsinid")
-    role = request.form.get("role")
-    chapter = request.form.get("chapter")
-    squad = request.form.get("squad")
-    snow_id = request.form.get("snow_id")
-    tribe = request.form.get("tribe")
-    demandtype = request.form.get("demandtype")
+    total=request.form.get("total")
+    tsinid = []
+    role = []
+    chapter = []
+    squad = []
+    snow_id = []
+    tribe = []
+    demandtype = []
+    for i in range(int(total)):
+        tsinid.append(request.form.get("tsinid"+str(i)))
+        role.append(request.form.get("role"+str(i)))
+        chapter.append(request.form.get("chapter"+str(i)))
+        squad.append(request.form.get("squad"+str(i)))
+        snow_id.append(request.form.get("snowid"+str(i)))
+        tribe.append(request.form.get("tribe"+str(i)))
+        demandtype.append(request.form.get("demand"+str(i)))
+        
     result = roles.query.with_entities(roles.tsin_id, roles.snow_id).all()
     for i in result:
-        if tsinid.strip() == i[0].strip():
+        if i[0].strip() in tsinid:
             return "TSIN ID already exists"
-        if snow_id:
-            if snow_id.strip() == i[1].strip():
+        if snow_id!=[]:
+            if i[1].strip() in snow_id:
+                print(i[1])
                 return "SNOW ID already exists"
-
-    db.session.add(
-        roles(
-            tsin_id=tsinid,
-            role=role,
-            chapter=chapter,
-            squad=squad,
-            demand_type=demandtype,
-            tribe=tribe,
-            snow_id=snow_id,
-            status="active",
-            created_at=datetime.now(),
-            modified_at=datetime.now(),
+    for i in range(len(tsinid)):
+        db.session.add(
+            roles(
+                tsin_id=tsinid[i],
+                role=role[i],
+                chapter=chapter[i],
+                squad=squad[i],
+                demand_type=demandtype[i],
+                tribe=tribe[i],
+                snow_id=snow_id[i],
+                aspd_date=None,
+                status="active",
+                created_at=datetime.now(),
+                modified_at=datetime.now(),
+            )
         )
-    )
     db.session.commit()
-    return redirect(url_for("main"))
+    return total+" New Roles Created"
 
 
 @app.route("/add-new-profile", methods=["GET", "POST"])

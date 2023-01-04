@@ -277,13 +277,13 @@ label{
           {% for j in candidates[i.tsin_id] %}
           <tr>
             {% if j['color'] == "gray" %}
-            <td style="background-color:lightgray;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            <td style="background-color:#E6EDE9;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
             {% elif j['color'] == "green" %}
             <td style="background-color:#1DF516;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
             {% elif j['color'] == "yellow" %}
-            <td  style="background-color:#ffffbf;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            <td  style="background-color:#F5B216;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
             {% elif j['color'] == "red" %}
-            <td  style="background-color:#ffbfbf;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+            <td  style="background-color:#FF2F00;"><svg style="width:18px;" class="view-profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
             {% endif %}
             <td>{{j['candidate_name']}}</td>
             <td>{{j['current_stage']}}</td>
@@ -330,8 +330,8 @@ label{
               </div>
             {% if j['current_stage'].strip() =='Profile Upload' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>In Process</b>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>Resume Screened on - {{j['resume_screened_date']}}</b></b>
                     <li class="mno">Stage 3 - L1 Interview in Process <br></li>
                     <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
                     <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
@@ -341,9 +341,9 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() =='Resume Screened for Interview' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>In Process</b></li>
                     <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
                     <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
                     <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
@@ -352,10 +352,10 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br><b>In Process</b></li>
                     <li class="mno">Stage 5 - L3 Interview in Process  <br>&nbsp;</li>
                     <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
                     <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
@@ -363,61 +363,61 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>L2 Interview Done on - {{j['l2_interview_date']}}</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>In Process</b></li>
                     <li class="mno">Stage 6 - Offer RollOut   <br>&nbsp;</li>
                     <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
                     <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
                 </ul>
             {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno">Stage 6 - Offer RollOut  <br><b>{{j['l3_interview_date']}}</b> - <b> In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>L2 Interview Done on - {{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>L3 Interview Done on - {{j['l3_interview_date']}}</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br><b> In Process</b></li>
                     <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
                     <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Offer RollOut' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> In Process</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>L2 Interview Done on - {{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>L3 Interview Done on - {{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b> Offer Rolled Out on - {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno">Stage 7 - Buddy Assignment <br><b> In Process</b></li>
                 <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
-                <li class="mno">Stage 8 - Candidate Joined / DropOut<br><b>{{j['buddy_assignment_date']}}</b> - <b> In Process</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>L2 Interview Done on - {{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>L3 Interview Done on - {{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b> Offer Rolled Out on - {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>Buddy Assigned on - {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut<br> <b> In Process</b></li>
             </ul>
             {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>Profile Added on - {{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b> Resume Screened on - {{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>L1 Interview Done on - {{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>L2 Interview Done on - {{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>L3 Interview Done on - {{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b> Offer Rolled Out on - {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b>Buddy Assigned on - {{j['buddy_assignment_date']}}</b></li>
                 {% if j['current_stage'].strip() == 'Candidate Dropout' %}
-                <li class="mno active dropout">Stage 8 - Candidate Joined / DropOut</li>
+                <li class="mno active dropout">Stage 8 - Candidate Joined / DropOut<br><b>Candidate Joined on - {{j['candidate_joined_date']}}</b></li>
                 {% elif j['current_stage'].strip() == 'Candidate Joined' %}
-                <li class="mno active">Stage 8 - Candidate Joined / DropOut</li>
+                <li class="mno active">Stage 8 - Candidate Joined / DropOut<br><b>Candidate Droped out on - {{j['candidate_dropout_date']}}</b></li>
                 {% endif %}
             </ul>
             {% elif j['current_stage'].strip() == 'Resume Rejected' %}
@@ -675,13 +675,13 @@ label{
         {% if i.status=="inactive" %}
         <tr>
         {% if final_colors[i.tsin_id]=="green" %}
-          <td style="background-color:#16F4D0;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          <td style="background-color:#1DF516;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "yellow" %}
-          <td style="background-color:#ffffbf;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          <td style="background-color:#F5B216;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "red" %}
-          <td style="background-color:#ffbfbf;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          <td style="background-color:#FF2F00;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% else %}
-          <td style="background-color:#CBCECC;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          <td style="background-color:#E6EDE9;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
         {% endif %}
           <td>{{i.tsin_id}}</td>
           <td>{{i.snow_id}}</td>
@@ -714,13 +714,13 @@ label{
               {% for j in candidates[i.tsin_id] %}
               <tr>
               {% if j['color'] == "gray" %}
-                <td style="background-color:lightgray;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                <td style="background-color:#E6EDE9;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
                 {% elif j['color'] == "green" %}
-                <td style="background-color:#e6ffe6;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                <td style="background-color:#1DF516;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
                 {% elif j['color'] == "yellow" %}
-                <td  style="background-color:#ffffbf;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                <td  style="background-color:#F5B216;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
                 {% elif j['color'] == "red" %}
-                <td  style="background-color:#ffbfbf;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+                <td  style="background-color:#FF2F00;"><svg style="width:18px;" class="view-profile2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
                 {% endif %}
                 <td>{{j['candidate_name']}}</td>
                 <td>{{j['current_stage']}}</td>
@@ -741,8 +741,8 @@ label{
               </div>
               {% if j['current_stage'].strip() =='Profile Upload' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>In Process</b>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></b>
                     <li class="mno">Stage 3 - L1 Interview in Process <br></li>
                     <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
                     <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
@@ -752,9 +752,9 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() =='Resume Screened for Interview' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno">Stage 3 - L1 Interview in Process <br><b>In Process</b></li>
                     <li class="mno">Stage 4 - L2 Interview in Process<br>&nbsp;</li>
                     <li class="mno">Stage 5 - L3 Interview in Process <br>&nbsp;</li>
                     <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
@@ -763,10 +763,10 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() == 'L1 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno">Stage 4 - L2 Interview in Process<br><b>In Process</b></li>
                     <li class="mno">Stage 5 - L3 Interview in Process  <br>&nbsp;</li>
                     <li class="mno">Stage 6 - Offer RollOut  <br>&nbsp;</li>
                     <li class="mno">Stage 7 - Buddy Assignment <br>&nbsp;</li>
@@ -774,57 +774,57 @@ label{
                 </ul>
             {% elif j['current_stage'].strip() == 'L2 Interview Complete' %}
                 <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno">Stage 5 - L3 Interview in Process <br><b>In Process</b></li>
                     <li class="mno">Stage 6 - Offer RollOut   <br>&nbsp;</li>
                     <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
                     <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
                 </ul>
             {% elif j['current_stage'].strip() == 'L3 Interview Complete' %}
             <ul class="progressbar">
-                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno">Stage 6 - Offer RollOut  <br><b>{{j['l3_interview_date']}}</b> - <b> In Process</b></li>
+                    <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br><b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno">Stage 6 - Offer RollOut  <br><b> In Process</b></li>
                     <li class="mno">Stage 7 - Buddy Assignment  <br>&nbsp;</li>
                     <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Offer RollOut' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> In Process</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br> <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno">Stage 7 - Buddy Assignment <br><b> In Process</b></li>
                 <li class="mno">Stage 8 - Candidate Joined / DropOut <br>&nbsp;</li>
             </ul>
             {% elif j['current_stage'].strip() == 'Buddy Assignment' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                    <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                    <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
-                <li class="mno">Stage 8 - Candidate Joined / DropOut<br><b>{{j['buddy_assignment_date']}}</b> - <b> In Process</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> </li>
+                    <li class="mno active">Stage 2 - Resume Screened for Interview <br> <b>{{j['resume_screened_date']}}</b></li>
+                    <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                    <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l2_interview_date']}}</b></li>
+                    <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l3_interview_date']}}</b></li>
+                    <li class="mno active">Stage 6 - Offer RollOut <br><b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b> {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno">Stage 8 - Candidate Joined / DropOut<br> <b> In Process</b></li>
             </ul>
             {% elif j['current_stage'].strip() == 'Candidate Joined' or j['current_stage'].strip() == 'Candidate Dropout' %}
             <ul class="progressbar">
-                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b> - <b>{{j['tsin_opened_date']}}</b></li>
-                <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['tsin_opened_date']}}</b> - <b>{{j['resume_screened_date']}}</b></li>
-                <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['resume_screened_date']}}</b> - <b>{{j['l1_interview_date']}}</b></li>
-                <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l1_interview_date']}}</b> - <b>{{j['l2_interview_date']}}</b></li>
-                <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l2_interview_date']}}</b> - <b>{{j['l3_interview_date']}}</b></li>
-                <li class="mno active">Stage 6 - Offer RollOut <br><b>{{j['l3_interview_date']}}</b> - <b> {{j['offer_rollout_date']}}</b> </li>
-                <li class="mno active">Stage 7 - Buddy Assignment <br><b>{{j['offer_rollout_date']}}</b> - <b> {{j['buddy_assignment_date']}}</b></li>
+                <li class="mno active">Stage 1 - Profile Added <br><b>{{j['request_raised_date']}}</b></li>
+                <li class="mno active">Stage 2 - Resume Screened for Interview <br><b>{{j['resume_screened_date']}}</b></li>
+                <li class="mno active">Stage 3 - L1 Interview in Process <br><b>{{j['l1_interview_date']}}</b></li>
+                <li class="mno active">Stage 4 - L2 Interview in Process<br> <b>{{j['l2_interview_date']}}</b></li>
+                <li class="mno active">Stage 5 - L3 Interview in Process <br><b>{{j['l3_interview_date']}}</b></li>
+                <li class="mno active">Stage 6 - Offer RollOut <br><b> {{j['offer_rollout_date']}}</b> </li>
+                <li class="mno active">Stage 7 - Buddy Assignment <br><b> {{j['buddy_assignment_date']}}</b></li>
                 {% if j['current_stage'].strip() == 'Candidate Dropout' %}
                 <li class="mno active dropout">Stage 8 - Candidate Joined / DropOut</li>
                 {% elif j['current_stage'].strip() == 'Candidate Joined' %}
@@ -1165,17 +1165,6 @@ for (i = 0; i < download_button.length; i++) {
       complete: function( response ) {
             console.log(response.responseText);
             window.open("http://127.0.0.1:5000/static/resume.pdf");
-        /*var file = window.URL.createObjectURL(response.responseText);
-        var a = document.createElement("a");
-        a.href = file;
-        a.download = this.response.name || "detailPDF";
-        document.body.appendChild(a);
-        a.click();
-        // remove `a` following `Save As` dialog, 
-        // `window` regains `focus`
-        window.onfocus = function () {                     
-          document.body.removeChild(a)
-        }*/
         }
         });
       });

@@ -20,12 +20,10 @@ label{
     <div class="container form">
     <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
     <h1 style="color: #E20074; text-align:center; font-size:25px;">Log In</h1><hr><br><br><br><br>
-      <form id="upload-form" name="loginform"  action = "/new-position" method = "POST" enctype = "multipart/form-data">
+      <form id="upload-form" name="loginform"  action = "/loginToken" method = "POST" enctype = "multipart/form-data">
         
-        <label for="username"> Enter Username:</label>
-        <input type="text" id="username" name="username" style="width:270px;height:19px;" required><br>
-        <label for="snowid">Enter Password: </label>
-        <input type="password" id="password" name="password" style="width:270px;height:19px;" required><br>
+        <input type="email" id="email" name="email" style="width:270px;height:19px;" placeholder="Enter Email" required><br>
+        <input type="password" id="password" name="password" style="width:270px;height:19px;"  placeholder="Enter Password" required><br>
         <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-size:15px;font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:5px;">Submit</button>
       </form>
     </div>

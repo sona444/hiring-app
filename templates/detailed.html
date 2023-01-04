@@ -117,14 +117,12 @@
 </main>
 <script>
 $(document).ready(function(){
-    // Initialize select2
     $("#selUser").select2();
     $("#selUser2").select2();
     $("#selUser3").select2();
     $("#selUser4").select2();
     $("#selUser5").select2();
     $("#selUser6").select2();
-    // Read selected option
     $('#but_read').click(function(){
         var username = $('#selUser option:selected').text();
         var userid = $('#selUser').val();

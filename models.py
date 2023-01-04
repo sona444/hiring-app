@@ -215,11 +215,11 @@ class tribe(db.Model):
 
 class Users(db.Model):
     __tablename__ = "users"
-	id = db.Column(db.String(50), unique = True, primary_key=True)
-	name = db.Column(db.String(100))
-	email = db.Column(db.String(70), unique = True)
-	password = db.Column(db.String(200))
-	role = db.Column(db.String(50))
+    id = db.Column(db.String(50), unique = True, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(70), unique = True)
+    password = db.Column(db.String(200))
+    role = db.Column(db.String(50))
 
     def __init__(
         self,
