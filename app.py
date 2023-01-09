@@ -619,7 +619,7 @@ def main(user):
     tribes=tribe.query.all()
     print(colors)
     return render_template(
-        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters, user=user.role
+        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters, user=role
     )
 
 
@@ -905,7 +905,11 @@ def downloadresume():
 @token_forwarder
 def candidates1(user):
     #print(token)
-    return render_template("index.html",user=user.role)
+	if(user):
+		role=user.role
+	else:
+		role=None
+	return render_template("index.html",user=role)
 
 
 @app.route("/update-stage", methods=["GET", "POST"])
@@ -1110,7 +1114,11 @@ def tsinform(user):
     final = []
     for i in result:
         final.append(i[0])
-    return render_template("tsin_form.html", final=final, roles=roless, chapters=chapters, squads=squads, tribes=tribes, user=user.role)
+    if(user):
+        Userrole=user.role
+    else:
+        Userrole=None
+    return render_template("tsin_form.html", final=final, roles=roless, chapters=chapters, squads=squads, tribes=tribes, user=Userrole)
 
 
 @app.route("/detailed-view", methods=["GET", "POST"])
@@ -1145,10 +1153,14 @@ def detailed(user):
             if i["candidate_name"].strip() == cname.strip():
                 if i not in final:
                     final.append(i)
-    if final == []:
-        return render_template("detailed.html", final=z, user=user.role)
+    if(user):
+        role=user.role
     else:
-        return render_template("detailed.html", final=final, user=user.role)
+        role=None
+    if final == []:
+        return render_template("detailed.html", final=z, user=role)
+    else:
+        return render_template("detailed.html", final=final, user=role)
 
 @app.route("/activate-role/<tsin>", methods=["GET", "POST"])
 def activate_role(tsin):
@@ -1411,6 +1423,10 @@ def dashboard(user):
     dropouts = [dropout_weekly, dropout_montly, dropout_quarterly]
     new_positions = [new_weekly, new_monthly, new_quarterly]
     # final_z=json.dumps(z)
+    if(user):
+        role=user.role
+    else:
+        role=None
     return render_template(
         "dashboard.html",
         role_wise_offers=z,
@@ -1419,7 +1435,7 @@ def dashboard(user):
         total_offer=offers,
         total_dropouts=dropouts,
         new_positions=new_positions,
-		user=user.role
+		user=role
     )
 @app.route('/getData', methods = ['GET', 'POST'])
 def getData():
