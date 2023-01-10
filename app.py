@@ -20,7 +20,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
+] = "postgresql://abhi:TEST123@localhost:5432/hiringapp2"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
@@ -42,22 +42,45 @@ else:
 def token_required(f):
 	@wraps(f)
 	def decorated(*args, **kwargs):
-		token = None
-		if 'Authorization' in request.headers:
-			token = request.headers['Authorization']
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+			except:
+				return jsonify({
+					'message' : 'Token is invalid !!'
+				}), 401
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			#print(token.split()[1])
-			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
-			current_user = Users.query\
-				.filter_by(id = data['id'])\
-				.first()
-		except:
-			return jsonify({
-				'message' : 'Token is invalid !!'
-			}), 401
+
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def token_forwarder(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:#'Authorization' in request.headers:
+			#token = #request.headers['Authorization']
+			try:
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+    				.filter_by(id = data['id'])\
+    				.first()
+			except:
+				return jsonify({
+    				'message' : 'Token is invalid !!'
+    			}), 401
+		if not token:
+			current_user=None
+
+
 		return f(current_user, *args, **kwargs)
 
 	return decorated
@@ -65,27 +88,26 @@ def token_required(f):
 def pmoOnly(f):
 	@wraps(f)
 	def decorated(*args, **kwargs):
-		token = None
-		if 'Authorization' in request.headers:
-			token = request.headers['Authorization']
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+				if(current_user.role != 'pmo'):
+					return jsonify({
+						'message' : 'Unauthorised access to role PMO !!'
+					}), 401
+					current_user=None
+			except:
+				return jsonify({
+					'message' : 'Token is invalid !!'
+				}), 401
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			#print(token.split()[1])
-			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
-			current_user = Users.query\
-				.filter_by(id = data['id'])\
-				.first()
-			if(current_user.role != 'pmo'):
-				return jsonify({
-					'message' : 'Unauthorised access to role PMO !!'
-				}), 401
-				current_user=None
-		except:
-			return jsonify({
-				'message' : 'Token is invalid !!'
-			}), 401
 		return f(current_user, *args, **kwargs)
 
 	return decorated
@@ -93,27 +115,27 @@ def pmoOnly(f):
 def tacOnly(f):
 	@wraps(f)
 	def decorated(*args, **kwargs):
-		token = None
-		if 'Authorization' in request.headers:
-			token = request.headers['Authorization']
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+				if(current_user.role != 'tac'):
+					return jsonify({
+						'message' : 'Unauthorised access to role TAC team !!'
+					}), 401
+					current_user=None
+			except:
+				return jsonify({
+					'message' : 'Token is invalid !!'
+				}), 401
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			#print(token.split()[1])
-			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
-			current_user = Users.query\
-				.filter_by(id = data['id'])\
-				.first()
-			if(current_user.role != 'tac'):
-				return jsonify({
-					'message' : 'Unauthorised access to role TAC team !!'
-				}), 401
-				current_user=None
-		except:
-			return jsonify({
-				'message' : 'Token is invalid !!'
-			}), 401
+
 		return f(current_user, *args, **kwargs)
 
 	return decorated
@@ -121,27 +143,27 @@ def tacOnly(f):
 def interviewerOnly(f):
 	@wraps(f)
 	def decorated(*args, **kwargs):
-		token = None
-		if 'Authorization' in request.headers:
-			token = request.headers['Authorization']
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+				if(current_user.role != 'tac'):
+					return jsonify({
+						'message' : 'Unauthorised access to role Interviewer !!'
+					}), 401
+					current_user=None
+			except:
+				return jsonify({
+					'message' : 'Token is invalid !!'
+				}), 401
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			#print(token.split()[1])
-			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
-			current_user = Users.query\
-				.filter_by(id = data['id'])\
-				.first()
-			if(current_user.role != 'tac'):
-				return jsonify({
-					'message' : 'Unauthorised access to role Interviewer !!'
-				}), 401
-				current_user=None
-		except:
-			return jsonify({
-				'message' : 'Token is invalid !!'
-			}), 401
+
 		return f(current_user, *args, **kwargs)
 
 	return decorated
@@ -149,27 +171,27 @@ def interviewerOnly(f):
 def hrOnly(f):
 	@wraps(f)
 	def decorated(*args, **kwargs):
-		token = None
-		if 'Authorization' in request.headers:
-			token = request.headers['Authorization']
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+				if(current_user.role != 'hr'):
+					return jsonify({
+						'message' : 'Unauthorised access to role HR team !!'
+					}), 401
+					current_user=None
+			except:
+				return jsonify({
+					'message' : 'Token is invalid !!'
+				}), 401
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
-		try:
-			#print(token.split()[1])
-			data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
-			current_user = Users.query\
-				.filter_by(id = data['id'])\
-				.first()
-			if(current_user.role != 'hr'):
-				return jsonify({
-					'message' : 'Unauthorised access to role HR team !!'
-				}), 401
-				current_user=None
-		except:
-			return jsonify({
-				'message' : 'Token is invalid !!'
-			}), 401
+
 		return f(current_user, *args, **kwargs)
 
 	return decorated
@@ -227,8 +249,10 @@ def loginToken():
 			'id': user.id,
 			'exp' : datetime.utcnow() + timedelta(minutes = 30)
 		}, app.config['SECRET_KEY'], 'HS256')
+	resp = make_response(redirect(url_for("main")))#make_response(jsonify({'token' : token, 'user':user.role}), 201)
+	resp.set_cookie('token', token)
+	return resp
 
-		return make_response(jsonify({'token' : token}), 201)
 	return make_response(
 		'Could not verify',
 		403,
@@ -301,6 +325,8 @@ def get_abstract_data():
                     difference=datetime.now()-i.request_raised_date
                 elif i.resume_screened_date:
                     difference=datetime.now()-i.resume_screened_date
+                else:
+                    difference=timedelta(days=0)# logical error heree if both cases are false difference is not made at all
                 if i.current_stage.strip() == "Resume Screened for Interview":
                     nums[i.tsin_id.strip()]["stage1"] += 1
                     if difference.days<=8:
@@ -583,7 +609,9 @@ def get_detailed_data():
 
 
 @app.route("/")
-def main():
+@token_forwarder
+def main(user):
+    #print(user)
     result, d, nums, phones, colors= get_abstract_data()
     roless=role.query.all()
     chapters=chapter.query.all()
@@ -591,7 +619,7 @@ def main():
     tribes=tribe.query.all()
     print(colors)
     return render_template(
-        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters
+        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters, user=role
     )
 
 
@@ -814,6 +842,9 @@ def uploadDs():
                     modified_at=datetime.now(),
                     resume_remarks="",
                     status="active",
+                    l1_completion=None,
+                    l2_completion=None,
+                    l3_completion=None
                 )
             )
             db.session.commit()
@@ -871,8 +902,14 @@ def downloadresume():
 
 
 @app.route("/upload-candidates", methods=["GET", "POST"])
-def candidates1():
-    return render_template("index.html")
+@token_forwarder
+def candidates1(user):
+    #print(token)
+	if(user):
+		role=user.role
+	else:
+		role=None
+	return render_template("index.html",user=role)
 
 
 @app.route("/update-stage", methods=["GET", "POST"])
@@ -1066,7 +1103,9 @@ def updateStage():
 
 
 @app.route("/add-tsin", methods=["GET", "POST"])
-def tsinform():
+@token_forwarder
+def tsinform(user):
+    #print(token)
     result = roles.query.with_entities(roles.tsin_id).all()
     roless=role.query.all()
     chapters=chapter.query.all()
@@ -1075,11 +1114,17 @@ def tsinform():
     final = []
     for i in result:
         final.append(i[0])
-    return render_template("tsin_form.html", final=final, roles=roless, chapters=chapters, squads=squads, tribes=tribes)
+    if(user):
+        Userrole=user.role
+    else:
+        Userrole=None
+    return render_template("tsin_form.html", final=final, roles=roless, chapters=chapters, squads=squads, tribes=tribes, user=Userrole)
 
 
 @app.route("/detailed-view", methods=["GET", "POST"])
-def detailed():
+@token_forwarder
+def detailed(user):
+    #print(token)
     tsin = request.form.get("val1")
     role = request.form.get("val2")
     chapter = request.form.get("val3")
@@ -1108,10 +1153,14 @@ def detailed():
             if i["candidate_name"].strip() == cname.strip():
                 if i not in final:
                     final.append(i)
-    if final == []:
-        return render_template("detailed.html", final=z)
+    if(user):
+        role=user.role
     else:
-        return render_template("detailed.html", final=final)
+        role=None
+    if final == []:
+        return render_template("detailed.html", final=z, user=role)
+    else:
+        return render_template("detailed.html", final=final, user=role)
 
 @app.route("/activate-role/<tsin>", methods=["GET", "POST"])
 def activate_role(tsin):
@@ -1176,7 +1225,7 @@ def newposition():
         snow_id.append(request.form.get("snowid"+str(i)))
         tribe.append(request.form.get("tribe"+str(i)))
         demandtype.append(request.form.get("demand"+str(i)))
-        
+
     result = roles.query.with_entities(roles.tsin_id, roles.snow_id).all()
     for i in result:
         if i[0].strip() in tsinid:
@@ -1326,7 +1375,9 @@ def editrole():
 
 
 @app.route("/dashboard", methods=["GET", "POST"])
-def dashboard():
+@token_forwarder
+def dashboard(user):
+    #print(token)
     z, drop = total_offers()
     new_pos = get_new_profiles()
     print(z)
@@ -1372,6 +1423,10 @@ def dashboard():
     dropouts = [dropout_weekly, dropout_montly, dropout_quarterly]
     new_positions = [new_weekly, new_monthly, new_quarterly]
     # final_z=json.dumps(z)
+    if(user):
+        role=user.role
+    else:
+        role=None
     return render_template(
         "dashboard.html",
         role_wise_offers=z,
@@ -1380,6 +1435,7 @@ def dashboard():
         total_offer=offers,
         total_dropouts=dropouts,
         new_positions=new_positions,
+		user=role
     )
 @app.route('/getData', methods = ['GET', 'POST'])
 def getData():
