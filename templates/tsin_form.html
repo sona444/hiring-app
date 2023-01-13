@@ -17,15 +17,14 @@ font-size: x-small !important;
   width:46%;
   margin-left:0 !important;
 }
-select{
+td{
+  text-align:left;
+}
+select, input{
   width:80%;
-  margin-top:15px;
 }
 th{
   text-align:left !important;
-}
-#inputrow select{
-  margin-top:0;
 }
 </style>{% endblock stylesheets %}
 
@@ -54,25 +53,19 @@ th{
         {% for i in chapters %}
           <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
         {% endfor %}
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newchapter" placeholder="Enter Chapter" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addchapter" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Chapter</button><br>
-        </td>
+        </select></td>
         <td><select name="role" class="role"style="font-size:12px;">
           <option value="none">--None--</option>
           {% for i in roles %}
           <option value="{{i.role_name}}">{{i.role_name}}</option>
           {% endfor %}
-          </select></select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newrole" placeholder="Enter Role" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addrole" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Role</button><br>
-        </td>
+          </select></td>
         <td><select name="squad" class="squad"style="font-size:12px;">
           <option value="none">--None--</option>
           {% for i in squads %}
           <option value="{{i.squad_name}}">{{i.squad_name}}</option>
           {% endfor %}
-          </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" class="newsquad" placeholder="Enter Squad" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addsquad" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Squad</button><br>
-          </td>
+          </select></td>
           <td>
         <select name="demandtype" class="demandtype"style="font-size:12px; margin-top:0 !important;">
           <option value="none">--None--</option>
@@ -86,9 +79,7 @@ th{
           {% for i in tribes %}
           <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
           {% endfor %}
-        </select>&nbsp;<svg class="accordion add"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
-       <br><input type="text" id="newtribe" placeholder="Enter Tribe" style="font-size:12px;margin-left:145px;margin-top:15px;margin-bottom:15px;display:none;"><button class="addtribe" style="padding:3px;margin-top:15px;margin-bottom:15px;margin-left:2px;display:none;">Add Tribe</button><br>
-        </td>
+        </select></td>
         <td><button id="addnewrole" onclick="addrow()">Add Another Role</button></td>
         </tr>
         <tr id="inputrow" style="display:none;">
@@ -129,82 +120,10 @@ th{
         <td><button class="btnDelete" onclick="deleterow()">Remove this Role</button></td>
         </tr>
 </table>
-<div style="text-align:center;"><button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button></div>
+<div style="text-align:center;"><button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:5px;font-size:12px !important;">Submit</button></div>
 </main>
 <script>
 var acc = document.getElementsByClassName("add");
-var chapterbtn=document.getElementsByClassName("addchapter");
-var rolebtn=document.getElementsByClassName("addrole");
-var tribebtn=document.getElementsByClassName("addtribe");
-var squadbtn=document.getElementsByClassName("addsquad");
-chapterbtn[0].addEventListener("click", function() {
-chapter=$("#newchapter").val();
-jsondata={
-  "chapter":chapter
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-chapter",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-rolebtn[0].addEventListener("click", function() {
-role=$("#newrole").val();
-jsondata={
-  "role":role
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-role",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-tribebtn[0].addEventListener("click", function() {
-tribe=$("#newtribe").val();
-jsondata={
-  "tribe":tribe
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-tribe",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
-squadbtn[0].addEventListener("click", function() {
-squad=$("#newsquad").val();
-jsondata={
-  "squad":squad
-}
-$.ajax({
-      type: "POST",
-      data: jsondata,
-      url:"/add-squad",
-       complete: function( response ) {
-            Swal.fire(response.responseText);
-            $(".swal2-confirm")[0].addEventListener("click", function() {
-            window.location.reload();
-            });
-       }
-      });
-});
 for (i = 0; i < acc.length; i++) {
   acc[i].addEventListener("click", function() {
     /* Toggle between adding and removing the "active" class,

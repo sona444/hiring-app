@@ -16,6 +16,15 @@ label{
 {% block content %}
 
 <main style="padding-top:130px;">
+{% if user is not none %}
+ <div class="card col-md-3" style="text-align:center;">
+  <img src="{{url_for('static', filename='img/img_avatar.png')}}" alt="Avatar" style="width:100%">
+  <div class="container">
+    <h4><b>{{name[0]|upper}}{{name[1:]}}</b></h4>
+    <p>{{user[0]|upper}}{{user[1:]}}</p>
+  </div>
+</div> 
+{% else %}
 <section class="register-form">
     <div class="container form">
     <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
@@ -31,6 +40,7 @@ label{
   </div>
   
 </section>
+{% endif %}
 </main>
 <script>
 

@@ -39,7 +39,7 @@ label{
       <th>On Buddy Assignment</th>
       <th>On Candidate Joining</th>
       <th>On Resume Rejected</th>
-      <th style="width:154px;">Actions</th>
+       {% if user == 'pmo' %}<th style="width:154px;">Actions</th>{% endif %}
       </tr>
       {% for i in roles %}
       {% if i.status=="active" %}
@@ -69,10 +69,10 @@ label{
           <td>{{nums[i.tsin_id]['stage6']}}</td>
           <td>{{nums[i.tsin_id]['stage7']}}</td>
           <td>{{nums[i.tsin_id]['stage8']}}</td>
-           <td><svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
+           {% if user == 'pmo' %}<td><svg class="accordion addp"  style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
         &nbsp;<a href="/delete-role/{{i.tsin_id}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
-        &nbsp;<svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
+        &nbsp;<svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>
+        </td>{% endif %}
         </tr>
           
       
@@ -112,140 +112,24 @@ label{
         <input type="text" id="snowid" name="snow_id" value="{{i.snow_id}}" style="width:270px;"><br><br>
         <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
         <select name="chapter" id="chapter"style="width:270px;" value="{{i[2]}}">
-        {% if i[2]=="none" %}
-          <option value="none" selected>--None--</option>
-        {% else %}
         <option value="none">--None--</option>
-        {% endif %}
-        {% if i[2]=="Data Engineering" %}
-          <option value="Data Engineering" selected>Data Engineering</option>
-        {% else %}
-          <option value="Data Engineering">Data Engineering</option>
-        {% endif %}
-        {% if i[2]=="Devops & Infra" %}
-          <option value="Devops & Infra">Devops & Infra</option>
-        {% else %}
-          <option value="Devops & Infra">Devops & Infra</option>
-        {% endif %}
-        {% if i[2]=="Product Engineering" %}
-          <option value="Product Engineering" selected>Product Engineering</option>
-        {% else %}
-          <option value="Product Engineering">Product Engineering</option>
-        {% endif %}
-        {% if i[2]=="Data Science" %}
-          <option value="Data Science" selected>Data Science</option>
-        {% else %}
-          <option value="Data Science">Data Science</option>
-        {% endif %}
-        {% if i[2]=="Domain Expert" %}
-          <option value="Domain Expert" selected>Domain Expert</option>
-        {% else %}
-          <option value="Domain Expert">Domain Expert</option>
-        {% endif %}
-        {% if i[2]=="Delphi" %}
-          <option value="Delphi" selected>Delphi</option>
-        {% else %}
-          <option value="Delphi">Delphi</option>
-        {% endif %}
-        {% if i[2]=="AI/ML as Service" %}
-          <option value="AI/ML as Service" selected>AI/ML as Service</option>
-        {% else %}
-          <option value="AI/ML as Service">AI/ML as Service</option>
-        {% endif %}
-        {% if i[2]=="Productization" %}
-          <option value="Productization" selected>Productization</option>
-        {% else %}
-          <option value="Productization">Productization</option>
-        {% endif %}
-        {% if i[2]=="Data Architect" %}
-          <option value="Data Architect" selected>Data Architect</option>
-        {% else %}
-          <option value="Data Architect">Data Architect</option>
-        {% endif %}
-        {% if i[2]=="Assurance" %}
-          <option value="Assurance" selected>Assurance</option>
-        {% else %}
-          <option value="Assurance">Assurance</option>
-        {% endif %}
-        {% if i[2]=="Agile & Scrum" %}
-          <option value="Agile & Scrum" selected>Agile & Scrum</option>
-        {% else %}
-          <option value="Agile & Scrum">Agile & Scrum</option>
-        {% endif %}
+        {% for i in chapters %}
+          <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
+        {% endfor %}
         </select><br><br>
         <label for="role">Enter Role: <span style="color:red;">*</span></label>
         <select name="role" id="role"style="width:270px;">
-        {% if i[2]=="none" %}
-          <option value="none" selected>--None--</option>
-        {% else %}
-          <option value="none">--None--</option>
-        {% endif %}
-        {% if i[2]=="Full Stack Developer" %}
-          <option value="Full Stack Developer" selected>Full Stack Developer</option>
-        {% else %}
-          <option value="Full Stack Developer">Full Stack Developer</option>
-        {% endif %}
-        {% if i[2]=="AI/ML as Service" %}
-          <option value="Sr. Full-stack Engineer - ELSA">Sr. Full-stack Engineer - ELSA</option>
-        {% else %}
-          <option value="Agile & Scrum">Agile & Scrum</option>
-        {% endif %}
-        {% if i[2]=="AI/ML as Service" %}
-          <option value="Med. Full-stack Engineer - ELSA">Med. Full-stack Engineer - ELSA</option>
-        {% else %}
-          <option value="Agile & Scrum">Agile & Scrum</option>
-        {% endif %}
-        {% if i[2]=="AI/ML as Service" %}
-          <option value="Jr. Full-stack Engineer - ELSA">Jr. Full-stack Engineer - ELSA</option>
-        {% else %}
-          <option value="Agile & Scrum">Agile & Scrum</option>
-        {% endif %}
-        {% if i[2]=="AI/ML as Service" %}
-          <option value="Software Engineer">Software Engineer</option>
-        {% else %}
-          <option value="Agile & Scrum">Agile & Scrum</option>
-        {% endif %}
-          <option value="Business Analyst">AI/ML as Service</option>
-          <option value="Data Engineer">Data Engineer</option>
-          <option value="Sr. Data Engineer">Sr. Data Engineer</option>
-          <option value="Data Engineer with MicroStrategy skills">Data Engineer with MicroStrategy skills</option>
-          <option value="DevOps Engineer">DevOps Engineer</option>
-          <option value="DevOps - ELSA">DevOps - ELSA</option>
-          <option value="DevOps Engineer - Cloud Booster">DevOps Engineer - Cloud Booster</option>
-          <option value="DevOps Engineer- Automated Fault Detection">DevOps Engineer- Automated Fault Detection</option>
-          <option value="Data Scientist">Data Scientist</option>
-          <option value="Backend Engineer">Backend Engineer</option>
-          <option value="MLOPS Engineer">MLOPS Engineer</option>
-          <option value="Scrum Master">Scrum Master</option>
-          <option value="Front End Developer">Front End Developer</option>
-          <option value="Cloud Architect">Cloud Architect</option>
-          <option value="Product Owner">Product Owner</option>
-          <option value="UI Developer">UI Developer</option>
-          <option value="Security Engineer ">Security Engineer </option>
-          <option value="Security Engineer -GCP">Security Engineer -GCP</option>
-          <option value="QA">QA</option>
-          <option value="Jr. QA ">Jr. QA </option>
-          <option value="Senior QA">Senior QA</option>
+        <option value="none">--None--</option>
+          {% for i in roles %}
+          <option value="{{i.role_name}}">{{i.role_name}}</option>
+          {% endfor %}
         </select><br><br>
         <label for="squad">Enter Squad: <span style="color:red;">*</span></label>
          <select name="squad" id="squad"style="width:270px;">
           <option value="none">--None--</option>
-          <option value="ELSA">ELSA</option>
-          <option value="NDI Hub">NDI Hub</option>
-          <option value="Cloud Booster">Cloud Booster</option>
-          <option value="Automated Fault Detection">Automated Fault Detection</option>
-          <option value="EU Central">EU Central</option>
-          <option value="MA Persona">MA Persona</option>
-          <option value="CET">CET</option>
-          <option value="MLOps">MLOps</option>
-          <option value="Halo">Halo</option>
-          <option value="Operation Support">Operation Support</option>
-          <option value="Nemo">Nemo</option>
-          <option value="DIL">DIL</option>
-          <option value="Argus">Argus</option>
-          <option value="Magenta adtech">Magenta adtech</option>
-          <option value="NWI">NWI</option>
-          <option value="Pluto">Pluto</option>
+          {% for i in squads %}
+          <option value="{{i.squad_name}}">{{i.squad_name}}</option>
+          {% endfor %}
         </select><br><br>
         <label for="demandtype">Enter Type of Demand: </label>
         <select name="demandtype" id="demandtype"style="width:270px;">
@@ -256,12 +140,10 @@ label{
         </select><br><br>
         <label for="tribe">Enter Tribe: </label>
         <select name="tribe" id="tribe"style="width:270px;">
-          <option value="none">--None--</option>
-          <option value="NetOps">NetOps</option>
-          <option value="DEP">DEP</option>
-          <option value="Halo">Halo</option>
-          <option value="CET">CET</option>
-          <option value="Halo">Halo</option>
+           <option value="none">--None--</option>
+          {% for i in tribes %}
+          <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
+          {% endfor %}
         </select><br><br>
         <button type="submit" id="edit_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
       </form>
@@ -272,7 +154,7 @@ label{
           <th>Current Stage</th>
           <th>Update Stage</th>
           <th>View Stage</th>
-          <th>Actions</th>
+          {% if user=="pmo" %}<th>Actions</th>{% endif %}
         </tr>
       
           {% for j in candidates[i.tsin_id] %}
@@ -290,13 +172,17 @@ label{
             <td>{{j['current_stage']}}</td>
             <td>
             {% if j['status'] == "inactive" %}<a href="/activate-profile/{{j['id']}}"><button class="activate-btn2">Activate</button></a>
-            {% else %}<button class="stage-update" style="background-color:transparent;">Update Stage</button>
+            {% else %}
+            {% if user == "pmo" %}{% if j['current_stage'].strip() =='Profile Upload' %}<button class="stage-update" style="background-color:transparent;">Update Stage</button>{% else %}<button class="stage-update" style="background-color:transparent;" disabled>Update Stage</button>{% endif %}
+            {% elif user == "interviewer" %}{% if j['current_stage'].strip() =='Resume Screened for Interview' or j['current_stage'].strip() =='L1 Interview Complete' or j['current_stage'].strip() =='L2 Interview Complete' %}<button class="stage-update" style="background-color:transparent;">Update Stage</button>{% else %}<button class="stage-update" style="background-color:transparent;" disabled>Update Stage</button>{% endif %}
+            {% elif user == "hr" %}{% if j['current_stage'].strip() =='L3 Interview Complete' or j['current_stage'].strip() =='Offer RollOut' or j['current_stage'].strip() =='Buddy Assignment' %}<button class="stage-update" style="background-color:transparent;">Update Stage</button>{% else %}<button class="stage-update" style="background-color:transparent;" disabled>Update Stage</button>{% endif %}
+            {% else %}<button class="stage-update" style="background-color:transparent;" disabled>Update Stage</button>{% endif %}
             {% endif %}
             </td>
             <td><button class="candidate-row" style="background-color:transparent;" >View Status</button></td>
-            <td><a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
+            {% if user=="pmo" %}<td><a href="/delete-profile/{{j['id']}}"><svg style="width:16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></a>
         &nbsp;<svg class="resume-upload" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></a>
-        </td>
+        </td>{% endif %}
           </tr>
           <tr class="panel" style="width:100%;">
             <td colspan=6 >
@@ -674,7 +560,7 @@ label{
         </tr>
         {% for i in roles %}
         {% if i.status=="inactive" %}
-        <tr>
+        <tr id="fixed-inactive">
         {% if final_colors[i.tsin_id]=="green" %}
           <td style="background-color:#1DF516;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
           {% elif final_colors[i.tsin_id] == "yellow" %}
@@ -700,10 +586,63 @@ label{
           <td>{{nums[i.tsin_id]['stage6']}}</td>
           <td>{{nums[i.tsin_id]['stage7']}}</td>
           <td>{{nums[i.tsin_id]['stage8']}}</td>
-          <td><a href="/activate-role/{{i.tsin_id}}"><button class="activate-btn">Activate</button></a></td>
+          <td><a href="/activate-role/{{i.tsin_id}}"><button class="activate-btn">Activate</button></a>&nbsp;<button class="edit-activate-btn">Edit</button></td>
+        </tr>
+        <tr id="input-inactive" style="display:none;">
+        {% if final_colors[i.tsin_id]=="green" %}
+          <td style="background-color:#1DF516;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          {% elif final_colors[i.tsin_id] == "yellow" %}
+          <td style="background-color:#F5B216;padding:0 !important;"><svg style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          {% elif final_colors[i.tsin_id] == "red" %}
+          <td style="background-color:#FF2F00;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+          {% else %}
+          <td style="background-color:#E6EDE9;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
+        {% endif %}
+          <td>{{i.tsin_id}}</td>
+          <td><input id="snow_id" type="text" style="width:75px;" value={{i.snow_id}}></td>
+          <td><select name="role" class="role"style="font-size:12px;">
+          <option value="none">--None--</option>
+          {% for i in roless %}
+          <option value="{{i.role_name}}">{{i.role_name}}</option>
+          {% endfor %}
+          </select></td>
+          <td><select name="chapter" class="chapter"style=" font-size:12px;">
+          <option value="none">--None--</option>
+        {% for i in chapters %}
+          <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
+        {% endfor %}
+        </select></td>
+          <td><select name="squad" class="squad"style="font-size:12px;">
+          <option value="none">--None--</option>
+          {% for i in squads %}
+          <option value="{{i.squad_name}}">{{i.squad_name}}</option>
+          {% endfor %}
+          </select></td>
+          <td><select name="demandtype" class="demandtype"style="font-size:12px; margin-top:0 !important;">
+          <option value="none">--None--</option>
+          <option value="Backfill">Backfill</option>
+          <option value="New Demand">New Demand</option>
+          <option value="Proactive">Proactive</option>
+        </select></td>
+          <td><select name="tribe" class="tribe"style="font-size:12px;">
+          <option value="none">--None--</option>
+          {% for i in tribes %}
+          <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
+          {% endfor %}
+        </select></td>
+          <td>{{nums[i.tsin_id]['stage9']}}</td>
+          <td>{{nums[i.tsin_id]['stage1']}}</td>
+          <td>{{nums[i.tsin_id]['stage2']}}</td>
+          <td>{{nums[i.tsin_id]['stage3']}}</td>
+          <td>{{nums[i.tsin_id]['stage4']}}</td>
+          <td>{{nums[i.tsin_id]['stage5']}}</td>
+          <td>{{nums[i.tsin_id]['stage6']}}</td>
+          <td>{{nums[i.tsin_id]['stage7']}}</td>
+          <td>{{nums[i.tsin_id]['stage8']}}</td>
+          <td><button id="edit-activate">Activate</button></td>
         </tr>
         <tr style="display:none;">
-          <td colspan="18">
+        <td colspan="18">
             <table style="width:100%;">
             <tr>
               <th style="width:28px;"></th>
@@ -868,6 +807,7 @@ var profile=document.getElementsByClassName("resume-upload");
 var stage=document.getElementsByClassName("stage-update");
 var updateEvent=document.getElementsByClassName("stageupdation");
 var addp=document.getElementsByClassName("addp");
+var editacti=document.getElementsByClassName("edit-activate-btn");
 var i;
 for (i = 0; i < acc.length; i++) {
   acc[i].addEventListener("click", function() {
@@ -908,12 +848,37 @@ for (i = 0; i < acc.length; i++) {
       panel.style.display = "table-row";
     }*/
     }
+for (i = 0; i < editacti.length; i++) {
+  editacti[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+    var panel2=this.parentNode.parentNode
+    var panel = this.parentNode.parentNode.nextElementSibling;
+    if (panel.style.display != "none"){
+        panel.style.display = "none";
+        panel2.style.display="table-row";
+    }
+    else{
+      panel.style.display="table-row";
+      panel2.style.display="none";
+    }
+    });
+    /* Toggle between hiding and showing the active panel */
+    
+     /*{
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "table-row";
+    }*/
+    }
+  
 for (i = 0; i < inacacc.length; i++) {
   inacacc[i].addEventListener("click", function() {
     /* Toggle between adding and removing the "active" class,
     to highlight the button that controls the panel */
     this.classList.toggle("active");
-    var panel = this.parentNode.parentNode.nextElementSibling;
+    var panel = this.parentNode.parentNode.nextElementSibling.nextElementSibling;
     if (panel.style.display != "none"){
         panel.style.display = "none";
     }
@@ -1190,6 +1155,20 @@ $(document).ready(function() {
       $("#inactivetable").css("display","none");
     }
 });
+$("#edit-activate").on("click", function() {
+
+  jsondata={"id":this.name}
+  $.ajax({
+      type: "POST",
+      data: jsondata,
+      url:"/edit-role",
+      dataType: "json", 
+      complete: function( response ) {
+            console.log(response.responseText);
+            window.open("http://127.0.0.1:5000/static/resume.pdf");
+        }
+        });
+      });
 </script>
 
 {% endblock content %}

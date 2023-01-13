@@ -20,7 +20,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://abhi:TEST123@localhost:5432/hiringapp2"
+] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
@@ -73,10 +73,10 @@ def token_forwarder(f):
 				current_user = Users.query\
     				.filter_by(id = data['id'])\
     				.first()
-			except:
-				return jsonify({
-    				'message' : 'Token is invalid !!'
-    			}), 401
+			except: return render_template('login.html', user=None)
+				# return jsonify({
+    			# 	'message' : 'Token is invalid !!'
+    			# }), 401
 		if not token:
 			current_user=None
 
@@ -151,7 +151,7 @@ def interviewerOnly(f):
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
-				if(current_user.role != 'tac'):
+				if(current_user.role != 'interviewer'):
 					return jsonify({
 						'message' : 'Unauthorised access to role Interviewer !!'
 					}), 401
@@ -611,15 +611,17 @@ def get_detailed_data():
 @app.route("/")
 @token_forwarder
 def main(user):
-    #print(user)
+    if(user):
+        rolesss=user.role
+    else:
+        rolesss=None
     result, d, nums, phones, colors= get_abstract_data()
     roless=role.query.all()
     chapters=chapter.query.all()
     squads=squad.query.all()
     tribes=tribe.query.all()
-    print(colors)
     return render_template(
-        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters, user=role
+        "candidates.html", roles=result, candidates=d, nums=nums, phones=phones, final_colors=colors, roless=roless, squads=squads, tribes=tribes, chapters=chapters, user=rolesss
     )
 
 
@@ -1174,6 +1176,7 @@ def activate_role(tsin):
     return redirect(url_for("main"))
 
 @app.route("/delete-role/<tsin>", methods=["GET", "POST"])
+@pmoOnly
 def delete_role(tsin):
     db.session.query(roles).filter(roles.tsin_id == tsin).update(
         {
@@ -1196,6 +1199,7 @@ def activate_profile(id):
     return redirect(url_for("main"))
 
 @app.route("/delete-profile/<id>", methods=["GET", "POST"])
+@pmoOnly
 def delete_profile(id):
     db.session.query(candidates).filter(candidates.id == id).update(
         {
@@ -1208,6 +1212,7 @@ def delete_profile(id):
 
 
 @app.route("/new-position", methods=["GET", "POST"])
+@pmoOnly
 def newposition():
     total=request.form.get("total")
     tsinid = []
@@ -1255,6 +1260,7 @@ def newposition():
 
 
 @app.route("/add-new-profile", methods=["GET", "POST"])
+@pmoOnly
 def newprofile():
     tsin = request.form["tsin_id"]
     phone = request.form["phone"]
@@ -1351,6 +1357,7 @@ def apply_filter():
 
 
 @app.route("/edit-role", methods=["GET", "POST"])
+@pmoOnly
 def editrole():
     tsin = request.form.get("tsin_id")
     snow_id = request.form.get("snow_id")
@@ -1540,7 +1547,16 @@ def addtribe():
     return "Tribe Added Succesfully"
 
 @app.route('/login', methods = ['GET', 'POST'])
-def login():
-    return render_template("login.html")
+@token_forwarder
+def login(user):
+    if(user):
+        role=user.role
+        name=user.name
+        email=user.email
+    else:
+        role=None
+        name=None
+        email=None
+    return render_template("login.html", user=role, name=name, email=email)
 if __name__ == "__main__":
     app.run()
