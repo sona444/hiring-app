@@ -52,8 +52,7 @@
         overflow:hidden;
     }
     #chartHolder .shadow1{
-        width:33%;
-        float:left;
+        width:50%;
     }
 </style>
 {% endblock stylesheets %}
@@ -105,7 +104,22 @@ function getData(){
   if(e){
     e.remove();
   }
-  const e1='<div id="barcharts"><div class="shadow1"><canvas id="myChart"></canvas></div><div class="shadow1"><canvas id="myChart1"></canvas></div></div>'
+  const e1='<div id="barcharts">\
+      <div class="shadow1">\
+          <canvas id="myChart"></canvas>\
+          <h6 id="hpos1">Positives</h6>\
+          <ul id="chrt1Positives" style=""></ul>\
+          <h6 id="hneg1">Negatives</h6>\
+          <ul id="chrt1Negatives" style=""></ul>\
+      </div>\
+      <div class="shadow1">\
+          <canvas id="myChart1"></canvas>\
+          <h6 id="hpos2">Positives</h6>\
+          <ul id="chrt2Positives" style=""></ul>\
+          <h6 id="hneg2">Negatives</h6>\
+          <ul id="chrt2Negatives" style=""></ul>\
+      </div>\
+      </div>'
   document.getElementById("chartHolder").insertAdjacentHTML('beforeend',e1);
   tsin_id=document.getElementById("tsin_id").value || 'all';
   role=document.getElementById("role").value;
@@ -154,6 +168,7 @@ $.get(url,function(response, status){
     type: 'bar',
     data: data,
     options: {
+      indexAxis:'y',
       responsive: true,
       plugins: {
         tooltip: {
@@ -168,13 +183,14 @@ $.get(url,function(response, status){
           display: true,
           text: 'Key performance Indicator'
         }
-      }
+    },
     },
   };
   const config2 = {
     type: 'bar',
     data: SLAdata,
     options: {
+      indexAxis:'y',
       responsive: true,
       plugins: {
         tooltip: {
@@ -208,6 +224,27 @@ $.get(url,function(response, status){
     document.getElementById('myChart1'),
     config2
   );
+var chrt1posData='';
+for(let i=0;i<response["text"][0].length;i++){
+    chrt1posData=chrt1posData + '<li>'+response["text"][0][i]+'</li>';
+};
+document.getElementById("chrt1Positives").insertAdjacentHTML('beforeend',chrt1posData);
+var chrt1negData='';
+for(let i=0;i<response["text"][1].length;i++){
+    chrt1negData=chrt1negData + '<li>'+response["text"][1][i]+'</li>';
+};
+document.getElementById("chrt1Negatives").insertAdjacentHTML('beforeend',chrt1negData);
+var chrt2posData='';
+for(let i=0;i<response["text"][2].length;i++){
+    chrt2posData=chrt2posData + '<li>'+response["text"][2][i]+'</li>';
+};
+document.getElementById("chrt2Positives").insertAdjacentHTML('beforeend',chrt2posData);
+var chrt2negData='';
+for(let i=0;i<response["text"][3].length;i++){
+    chrt2negData=chrt2negData + '<li>'+response["text"][3][i]+'</li>';
+};
+document.getElementById("chrt2Negatives").insertAdjacentHTML('beforeend',chrt2negData);
+
 })}
 
 </script>
@@ -415,7 +452,7 @@ function drawChart3() {
               var options = {
                 title:'Number of Offers Rolled out in each Role',
                 is3D:true,
-                height:500, 
+                height:500,
                 width:700
               };
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartroleoffers"));
@@ -439,7 +476,7 @@ function new_profiles(rows){
               var options = {
                 title:'Number of New Profiles in each Role',
                 is3D:true,
-                height:500, 
+                height:500,
                 width:1400,
                 isStacked: true,
                 annotations: {

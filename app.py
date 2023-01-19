@@ -20,14 +20,14 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
+] = "postgresql://abhi:TEST123@localhost:5432/hiringapp2"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from models import *
 
-minioClient = Minio(
+'''minioClient = Minio(
         "play.min.io",
         access_key="Q3AM3UQ867SPQQA43P2F",
         secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
@@ -36,7 +36,7 @@ found = minioClient.bucket_exists("resume")
 if not found:
     minioClient.make_bucket("resume")
 else:
-    print("Bucket 'resume' already exists")
+    print("Bucket 'resume' already exists")'''
 
 #------------------Auth and roles access implementation--------------
 def token_required(f):
@@ -46,7 +46,7 @@ def token_required(f):
 		if token:
 			try:
 				#print(token.split()[1])
-				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
@@ -92,7 +92,7 @@ def pmoOnly(f):
 		if token:
 			try:
 				#print(token.split()[1])
-				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
@@ -102,9 +102,7 @@ def pmoOnly(f):
 					}), 401
 					current_user=None
 			except:
-				return jsonify({
-					'message' : 'Token is invalid !!'
-				}), 401
+				return render_template('login.html', user=None)
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
@@ -119,7 +117,7 @@ def tacOnly(f):
 		if token:
 			try:
 				#print(token.split()[1])
-				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
@@ -129,9 +127,7 @@ def tacOnly(f):
 					}), 401
 					current_user=None
 			except:
-				return jsonify({
-					'message' : 'Token is invalid !!'
-				}), 401
+				return render_template('login.html', user=None)
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
@@ -147,7 +143,7 @@ def interviewerOnly(f):
 		if token:
 			try:
 				#print(token.split()[1])
-				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
@@ -157,9 +153,7 @@ def interviewerOnly(f):
 					}), 401
 					current_user=None
 			except:
-				return jsonify({
-					'message' : 'Token is invalid !!'
-				}), 401
+				return render_template('login.html', user=None)
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
@@ -175,7 +169,7 @@ def hrOnly(f):
 		if token:
 			try:
 				#print(token.split()[1])
-				data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], 'HS256')
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
 				current_user = Users.query\
 					.filter_by(id = data['id'])\
 					.first()
@@ -185,9 +179,33 @@ def hrOnly(f):
 					}), 401
 					current_user=None
 			except:
-				return jsonify({
-					'message' : 'Token is invalid !!'
-				}), 401
+				return render_template('login.html', user=None)
+		if not token:
+			return jsonify({'message' : 'Token is missing !!'}), 401
+
+
+		return f(current_user, *args, **kwargs)
+
+	return decorated
+
+def Admin(f):
+	@wraps(f)
+	def decorated(*args, **kwargs):
+		token = request.cookies.get('token') #for python and js compatibilty
+		if token:
+			try:
+				#print(token.split()[1])
+				data = jwt.decode(token, app.config['SECRET_KEY'], 'HS256')
+				current_user = Users.query\
+					.filter_by(id = data['id'])\
+					.first()
+				if(current_user.role != 'admin'):
+					return jsonify({
+						'message' : 'Unauthorised access to role Admin !!'
+					}), 401
+					current_user=None
+			except:
+				return render_template('login.html', user=None)
 		if not token:
 			return jsonify({'message' : 'Token is missing !!'}), 401
 
@@ -205,7 +223,11 @@ def getPMO(current_user):
 	else:
 		return jsonify({'users': None})
 
-
+@app.route("/logout", methods=["GET"])
+def removeToken():
+	resp = make_response(redirect(url_for("main")))
+	resp.delete_cookie('token')
+	return resp
 # an example of logged in admin route to access all data
 @app.route('/users', methods =['GET'])
 @token_required
@@ -260,7 +282,8 @@ def loginToken():
 	)
 
 @app.route('/createUser', methods =['POST'])
-def createUser():
+@Admin
+def createUser(user):
 	data = request.form
 	name, email, role = data.get('name'), data.get('email'), data.get('role')
 	password = data.get('password')
@@ -1472,20 +1495,38 @@ def getData():
             return {"KPIlabels":["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"],
             "KPIdata":[],
             "SLAlabels":["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"],
-            "SLAdata":[]}
+            "SLAdata":[],
+            "text":[[],[],[],[]]}
         t=df[df['offer_rollout_date'].notnull()]
-        d1=np.array([df[df['resume_sharing_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('3 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('3 days')]['id'].count()])
-        d2=np.array([df[df['resume_sharing_time']<pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('5 days')]['id'].count()]) - d1
-        d3=np.array([df[df['resume_sharing_time']>pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']>pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']>pd.Timedelta('5 days')]['id'].count()])
-        return {"KPIlabels":["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"],
-        "KPIdata":(np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
+        positives_kpi=[]
+        negatives_kpi=[]
+        kpilabels=["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"]
+        kpidata=np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
         df[df['l1_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         df[df['l2_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         df[df['l3_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/t['id'].count() if len(t)>0 else 0,
-        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100).tolist(),
-        "SLAlabels":["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"],
-        "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()]}
+        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100
+        for i,j in enumerate(kpilabels):
+            if kpidata[i]>50:
+                positives_kpi.append(j+" increased upto {} %".format(kpidata[i]))
+            else:
+                negatives_kpi.append(j+" decreased to {} %".format(kpidata[i]))
+        print(positives_kpi,negatives_kpi)
+
+        slalabels=["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"]
+        slametrics=[5,3,3,3,2,30]
+        d1=np.array([df[df['resume_sharing_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('3 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('3 days')]['id'].count()])
+        d2=np.array([df[df['resume_sharing_time']<pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('5 days')]['id'].count()]) - d1
+        d3=np.array([df[df['resume_sharing_time']>pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']>pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']>pd.Timedelta('5 days')]['id'].count()])
+        positives_sla=["{} resumes were cleared in {} process under {} days".format(d1[i],j,slametrics[i]) for i,j in enumerate(slalabels) if d1[i]>0]
+        negatives_sla=["{} resumes took more than {} days in {} process".format(d3[i],slametrics[i],j) for i,j in enumerate(slalabels) if d3[i]>0]
+        print(positives_sla,negatives_sla)
+        return {"KPIlabels":kpilabels,
+        "KPIdata":kpidata.tolist(),
+        "SLAlabels":slalabels,
+        "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()],
+        "text":[positives_kpi,negatives_kpi,positives_sla,negatives_sla]}
     else:
         df=df[df['tsin_id']==int(tsin_id)]
         print(role,squad,chapter)
@@ -1499,24 +1540,38 @@ def getData():
             return {"KPIlabels":["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"],
             "KPIdata":[],
             "SLAlabels":["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"],
-            "SLAdata":[]}
+            "SLAdata":[],
+            "text":[[],[],[],[]]}
         t=df[df['offer_rollout_date'].notnull()]
         #print(df[df['resume_screened_remarks']=='selected']['id'].count())
-        d1=np.array([df[df['resume_sharing_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('3 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('3 days')]['id'].count()])
-        d2=np.array([df[df['resume_sharing_time']<pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('5 days')]['id'].count()]) - d1
-        d3=np.array([df[df['resume_sharing_time']>pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']>pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']>pd.Timedelta('5 days')]['id'].count()])
-
-        d= {"KPIlabels":["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"],
-        "KPIdata":(np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
+        kpilabels=["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"]
+        kpidata=np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
         df[df['l1_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         df[df['l2_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         df[df['l3_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
         (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/t['id'].count() if len(t)>0 else 0,
-        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100).tolist(),
+        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100
+        for i,j in enumerate(kpilabels):
+            if kpidata[i]>50:
+                positives_kpi.append(j+" increased upto {} %".format(kpidata[i]))
+            else:
+                negatives_kpi.append(j+" decreased to {} %".format(kpidata[i]))
+        print(positives_kpi,negatives_kpi)
+
+        slalabels=["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"]
+        slametrics=[5,3,3,3,2,30]
+        d1=np.array([df[df['resume_sharing_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('3 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('3 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('3 days')]['id'].count()])
+        d2=np.array([df[df['resume_sharing_time']<pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']<pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']<pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']<pd.Timedelta('5 days')]['id'].count()]) - d1
+        d3=np.array([df[df['resume_sharing_time']>pd.Timedelta('7 days')]['id'].count(),df[df['l1_completion_time']>pd.Timedelta('5 days')]['id'].count(), df[df['l2_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['l3_completion_time']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_offer']>pd.Timedelta('5 days')]['id'].count(),df[df['time_to_fill']>pd.Timedelta('5 days')]['id'].count()])
+        positives_sla=["{} resumes were cleared in {} process under {} days".format(d1[i],j,slametrics[i]) for i,j in enumerate(slalabels) if d1[i]>0]
+        negatives_sla=["{} resumes took more than {} days in {} process".format(d3[i],slametrics[i],j) for i,j in enumerate(slalabels) if d3[i]>0]
+        print(positives_sla,negatives_sla)
+
+        return {"KPIlabels":kpilabels,
+        "KPIdata":kpidata.tolist(),
         "SLAlabels":["Resume sharing","L1 completion","L2 completion","L3 completion","Buddy Assignment","Time to offer"],
-        "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()]}
-        #print(d)
-        return d
+        "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()],
+        "text":[positives_kpi,negatives_kpi,positives_sla,negatives_sla]}
 
 @app.route('/add-chapter', methods = ['GET', 'POST'])
 def addchapter():
