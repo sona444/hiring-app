@@ -22,17 +22,14 @@ label{
   <div class="container">
     <h4><b>{{name[0]|upper}}{{name[1:]}}</b></h4>
     <p>{{user[0]|upper}}{{user[1:]}}</p>
+    <a href="/logout"><button id="logoutbutton">Logout</button></a>
   </div>
 </div>
 </br>
-</br>
-<div style="display:flex;">
-<button id="logout" onclick="window.location.href='/logout'" style="padding:0 12px; border-radius:6px; margin:auto; border: 1px solid #E20074; background: white; color:#E20074;">Logout</button>
-</div>
 {% else %}
 <section class="register-form">
     <div class="container form">
-    <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px;">
+    <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px; margin:auto;">
     <h1 style="color: #E20074; text-align:center; font-size:25px;">Log In</h1><hr><br><br><br><br>
       <form id="upload-form" name="loginform"  action = "/loginToken" method = "POST" enctype = "multipart/form-data">
 

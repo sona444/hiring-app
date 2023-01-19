@@ -108,41 +108,72 @@ label{
         </form>
         <form class="form-container" id="editrole" action = "edit-role" method = "POST" enctype = "multipart/form-data">
           <input type="hidden" value="{{i.tsin_id}}" id="tsin_id" name="tsin_id">
+          <input type="hidden" value="onlyedit" id="editss" name="editss">
         <label for="snowid">Enter Snow ID: </label>
         <input type="text" id="snowid" name="snow_id" value="{{i.snow_id}}" style="width:270px;"><br><br>
         <label for="chapter"> Enter Chapter:<span style="color:red;">*</span></label>
-        <select name="chapter" id="chapter"style="width:270px;" value="{{i[2]}}">
+        <select name="chapter" id="chapter"style="width:270px;" autocomplete="off">
         <option value="none">--None--</option>
-        {% for i in chapters %}
-          <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
+          {% for k in chapters %}
+          {% if i.chapter==k.chapter_name %}
+            <option value="{{k.chapter_name}}" selected="selected">{{k.chapter_name}}</option>
+          {% else %}
+            <option value="{{k.chapter_name}}">{{k.chapter_name}}</option>
+          {% endif %}
         {% endfor %}
         </select><br><br>
         <label for="role">Enter Role: <span style="color:red;">*</span></label>
-        <select name="role" id="role"style="width:270px;">
+        <select name="role" id="role"style="width:270px;"autocomplete="off">
         <option value="none">--None--</option>
-          {% for i in roles %}
-          <option value="{{i.role_name}}">{{i.role_name}}</option>
+          {% for k in roless %}
+            {% if i.role==k.role_name %}
+              <option value="{{k.role_name}}" selected="selected">{{k.role_name}}</option>
+            {% else %}
+              <option value="{{k.role_name}}">{{k.role_name}}</option>
+            {% endif %}
           {% endfor %}
         </select><br><br>
         <label for="squad">Enter Squad: <span style="color:red;">*</span></label>
-         <select name="squad" id="squad"style="width:270px;">
+         <select name="squad" id="squad"style="width:270px;"autocomplete="off">
           <option value="none">--None--</option>
-          {% for i in squads %}
-          <option value="{{i.squad_name}}">{{i.squad_name}}</option>
+          {% for k in squads %}
+            {% if i.squad==k.squad_name %}
+              <option value="{{k.squad_name}}" selected="selected">{{k.squad_name}}</option>
+            {% else %}
+              <option value="{{k.squad_name}}">{{k.squad_name}}</option>
+            {% endif %}
           {% endfor %}
         </select><br><br>
         <label for="demandtype">Enter Type of Demand: </label>
-        <select name="demandtype" id="demandtype"style="width:270px;">
+        <select name="demandtype" id="demandtype"style="width:270px;"autocomplete="off">
           <option value="none">--None--</option>
-          <option value="Backfill">Backfill</option>
-          <option value="New Demand">New Demand</option>
-          <option value="Proactive">Proactive</option>
+          {% if i.demand_type|lower =="backfill" %}
+            <option value="Backfill"selected="selected">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% elif i.demand_type|lower=="new demand" %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand"selected="selected">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% elif i.demand_type|lower=="proactive" %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive"selected="selected">Proactive</option>
+          {% else %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% endif %}
         </select><br><br>
         <label for="tribe">Enter Tribe: </label>
-        <select name="tribe" id="tribe"style="width:270px;">
+        <select name="tribe" id="tribe"style="width:270px;"autocomplete="off">
            <option value="none">--None--</option>
-          {% for i in tribes %}
-          <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
+          {% for k in tribes %}
+            {% if i.tribe==k.tribe_name %}
+              <option value="{{k.tribe_name}}"selected="selected">{{k.tribe_name}}</option>
+            {% else %}
+              <option value="{{k.tribe_name}}">{{k.tribe_name}}</option>
+            {% endif %}
           {% endfor %}
         </select><br><br>
         <button type="submit" id="edit_tsin" class="new_tsin btn" style="margin-top:20px; font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:10px;">Submit</button>
@@ -556,7 +587,7 @@ label{
         <th>On Buddy Assignment</th>
         <th>On Candidate Joining</th>
         <th>On Resume Rejected</th>
-        <th style="width:154px;">Actions</th>
+        <th style="width:154px;">Activate</th>
         </tr>
         {% for i in roles %}
         {% if i.status=="inactive" %}
@@ -586,7 +617,7 @@ label{
           <td>{{nums[i.tsin_id]['stage6']}}</td>
           <td>{{nums[i.tsin_id]['stage7']}}</td>
           <td>{{nums[i.tsin_id]['stage8']}}</td>
-          <td><a href="/activate-role/{{i.tsin_id}}"><button class="activate-btn">Activate</button></a>&nbsp;<button class="edit-activate-btn">Edit</button></td>
+          <td><button class="edit-activate-btn">Activate</button></td>
         </tr>
         <tr id="input-inactive" style="display:none;">
         {% if final_colors[i.tsin_id]=="green" %}
@@ -598,36 +629,66 @@ label{
           {% else %}
           <td style="background-color:#E6EDE9;padding:0 !important;"><svg  style="width:18px;" class="accordion eye2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg></td>
         {% endif %}
-          <td>{{i.tsin_id}}</td>
+          <td><input type="hidden" id="tsinids" value="{{i.tsin_id}}">{{i.tsin_id}}</td>
           <td><input id="snow_id" type="text" style="width:75px;" value={{i.snow_id}}></td>
-          <td><select name="role" class="role"style="font-size:12px;">
+          <td><select name="role" id="roles" class="role"style="font-size:12px;"autocomplete="off" >
           <option value="none">--None--</option>
-          {% for i in roless %}
-          <option value="{{i.role_name}}">{{i.role_name}}</option>
+          {% for k in roless %}
+            {% if i.role==k.role_name %}
+              <option value="{{k.role_name}}" selected="selected">{{k.role_name}}</option>
+            {% else %}
+              <option value="{{k.role_name}}">{{k.role_name}}</option>
+            {% endif %}
           {% endfor %}
           </select></td>
-          <td><select name="chapter" class="chapter"style=" font-size:12px;">
+          <td><select name="chapter" id="chapters" class="chapter"style=" font-size:12px;"autocomplete="off">
           <option value="none">--None--</option>
-        {% for i in chapters %}
-          <option value="{{i.chapter_name}}">{{i.chapter_name}}</option>
+        {% for k in chapters %}
+          {% if i.chapter==k.chapter_name %}
+            <option value="{{k.chapter_name}}" selected="selected">{{k.chapter_name}}</option>
+          {% else %}
+            <option value="{{k.chapter_name}}">{{k.chapter_name}}</option>
+          {% endif %}
         {% endfor %}
         </select></td>
-          <td><select name="squad" class="squad"style="font-size:12px;">
+          <td><select name="squad" id="squads" class="squad"style="font-size:12px;"autocomplete="off">
           <option value="none">--None--</option>
-          {% for i in squads %}
-          <option value="{{i.squad_name}}">{{i.squad_name}}</option>
+          {% for k in squads %}
+            {% if i.squad==k.squad_name %}
+              <option value="{{k.squad_name}}" selected="selected">{{k.squad_name}}</option>
+            {% else %}
+              <option value="{{k.squad_name}}">{{k.squad_name}}</option>
+            {% endif %}
           {% endfor %}
           </select></td>
-          <td><select name="demandtype" class="demandtype"style="font-size:12px; margin-top:0 !important;">
+          <td><select name="demandtype" id="demandtypes" class="demandtype"style="font-size:12px; margin-top:0 !important;"autocomplete="off">
           <option value="none">--None--</option>
-          <option value="Backfill">Backfill</option>
-          <option value="New Demand">New Demand</option>
-          <option value="Proactive">Proactive</option>
+          {% if i.demand_type|lower =="backfill" %}
+            <option value="Backfill"selected="selected">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% elif i.demand_type|lower=="new demand" %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand"selected="selected">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% elif i.demand_type|lower=="proactive" %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive"selected="selected">Proactive</option>
+          {% else %}
+            <option value="Backfill">Backfill</option>
+            <option value="New Demand">New Demand</option>
+            <option value="Proactive">Proactive</option>
+          {% endif %}
         </select></td>
-          <td><select name="tribe" class="tribe"style="font-size:12px;">
+          <td><select name="tribe" id="tribes" class="tribe"style="font-size:12px;"autocomplete="off">
           <option value="none">--None--</option>
-          {% for i in tribes %}
-          <option value="{{i.tribe_name}}">{{i.tribe_name}}</option>
+          {% for k in tribes %}
+            {% if i.tribe==k.tribe_name %}
+              <option value="{{k.tribe_name}}"selected="selected">{{k.tribe_name}}</option>
+            {% else %}
+              <option value="{{k.tribe_name}}">{{k.tribe_name}}</option>
+            {% endif %}
           {% endfor %}
         </select></td>
           <td>{{nums[i.tsin_id]['stage9']}}</td>
@@ -639,7 +700,7 @@ label{
           <td>{{nums[i.tsin_id]['stage6']}}</td>
           <td>{{nums[i.tsin_id]['stage7']}}</td>
           <td>{{nums[i.tsin_id]['stage8']}}</td>
-          <td><button id="edit-activate">Activate</button></td>
+          <td><button id="edit-activate">Confirm</button></td>
         </tr>
         <tr style="display:none;">
         <td colspan="18">
@@ -879,6 +940,7 @@ for (i = 0; i < inacacc.length; i++) {
     to highlight the button that controls the panel */
     this.classList.toggle("active");
     var panel = this.parentNode.parentNode.nextElementSibling.nextElementSibling;
+    console.log(panel);
     if (panel.style.display != "none"){
         panel.style.display = "none";
     }
@@ -1156,8 +1218,23 @@ $(document).ready(function() {
     }
 });
 $("#edit-activate").on("click", function() {
-
-  jsondata={"id":this.name}
+  var tsin_id=$("#tsinids").val();
+  var snow_id=$("#snow_id").val();
+  var chapter=$("#chapters").val();
+  var role=$("#roles").val();
+  var demand_type=$("#demandtypes").val();
+  var squad=$("#squads").val();
+  var tribe=$("#tribes").val();
+  jsondata={
+    "tsin_id":tsin_id,
+    "snow_id":snow_id,
+    "chapter":chapter,
+    "role":role,
+    "demandtype":demand_type,
+    "squad":squad,
+    "tribe":tribe
+    };
+    console.log(jsondata)
   $.ajax({
       type: "POST",
       data: jsondata,
@@ -1165,10 +1242,11 @@ $("#edit-activate").on("click", function() {
       dataType: "json", 
       complete: function( response ) {
             console.log(response.responseText);
-            window.open("http://127.0.0.1:5000/static/resume.pdf");
+            window.open("/");
         }
         });
       });
+
 </script>
 
 {% endblock content %}

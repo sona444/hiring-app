@@ -20,6 +20,7 @@
         position:static !important;
         float:left ;
     }
+    
     #myChartmonthly{
         float:left;
         width:32vw;
@@ -89,9 +90,14 @@
 <div id="chartHolder">
 
 </div>
-<div id="myChartweekly" width="400" height="300" style=" width:31%; text-align:center; display:block; height:350px !important;"></div>
-<!--<div id="myChartmonthly" width="400" height="300" style="width:31%; text-align:center; display:block; height:350px !important;"></div>
-<div id="myChartquarterly" width="400" height="300" style="width:31%; text-align:center; display:block;height:350px !important;"></div>-->
+<select id="mySelect" onchange="mychangeFunction()" style="margin-left: 118px;width: 253px;padding:5px; background-color:white; border:1px solid black;">
+  <option value="week" selected="selected">2 Weeks Insights</option>
+  <option value="month">Last 1 Month's Insights</option>
+  <option value="quarter">Last 1 Quarter's Insights</option>
+</select>
+<div id="myChartweekly" width="469" height="350" style=" width:100%; text-align:center;"></div>
+<div id="myChartmonthly" width="400" height="300" style="width:100%; text-align:center; "></div>
+<div id="myChartquarterly" width="400" height="300" style="width:100%; text-align:center;"></div>
 <div id="myChartrolenew" width="500" height="400" style="text-align:center; display:inline-table; width:400px !important; height:400px !important;"></div>
 
 </main>
@@ -490,6 +496,23 @@ function new_profiles(rows){
     }
     google.charts.setOnLoadCallback(drawChart4);
 }
-
+function mychangeFunction(){
+  if($("#mySelect").val()=='week'){
+    $("#myChartweekly").css("display","block");
+    $("#myChartmonthly").css("display","none");
+    $("#myChartquarterly").css("display","none");
+  }
+  else if($("#mySelect").val()=='month'){
+    $("#myChartweekly").css("display","none");
+    $("#myChartmonthly").css("display","block");
+    $("#myChartquarterly").css("display","none");
+  }
+  else if($("#mySelect").val()=='quarter'){
+    $("#myChartweekly").css("display","none");
+    $("#myChartmonthly").css("display","none");
+    $("#myChartquarterly").css("display","block");
+  }
+}
+mychangeFunction();
 </script>
 {% endblock content %}

@@ -20,23 +20,27 @@ load_dotenv()
 app = Flask(__name__)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "postgresql://abhi:TEST123@localhost:5432/hiringapp2"
+] = "postgresql://sonakshi:sonakshi@localhost:5432/hiringapp"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config['SECRET_KEY']='something'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from models import *
+from sqlalchemy import create_engine, select, MetaData, Table, and_
 
-'''minioClient = Minio(
-        "play.min.io",
-        access_key="Q3AM3UQ867SPQQA43P2F",
-        secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
-    )
-found = minioClient.bucket_exists("resume")
-if not found:
-    minioClient.make_bucket("resume")
-else:
-    print("Bucket 'resume' already exists")'''
+engine = create_engine("postgresql://sonakshi:sonakshi@localhost:5432/hiringapp")
+metadata = MetaData(bind=None)
+# minioClient = Minio(
+#         "play.min.io",
+#         access_key="Q3AM3UQ867SPQQA43P2F",
+#         secret_key="zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG",
+#         secure=True,
+#     )
+# found = minioClient.bucket_exists("resume")
+# if not found:
+#     minioClient.make_bucket("resume")
+# else:
+#     print("Bucket 'resume' already exists")
 
 #------------------Auth and roles access implementation--------------
 def token_required(f):
@@ -631,6 +635,7 @@ def get_detailed_data():
     return d
 
 
+
 @app.route("/")
 @token_forwarder
 def main(user):
@@ -892,11 +897,11 @@ def profileUpload():
     )
     if resume:
         resume.save("static/resume")
-        minioClient.fput_object(
-            "resume",
-            "resume" + str(result2[0][0]).strip(),
-            "static/resume",
-        )
+        # minioClient.fput_object(
+        #     "resume",
+        #     "resume" + str(result2[0][0]).strip(),
+        #     "static/resume",
+        # )
         print(
             "resume is successfully uploaded as "
             "object 'resume" + str(result2[0][0]).strip() + "' to bucket 'resume'."
@@ -915,15 +920,15 @@ def profileUpload():
     return redirect(url_for("main"))
 
 
-@app.route("/download-resume", methods=["GET", "POST"])
-def downloadresume():
-    id = request.form.get("id")
-    res = (
-        candidates.query.with_entities(candidates.candidate_name).filter_by(id=id).all()
-    )
-    z = minioClient.get_object("resume", "resume" + res[0][0])
-    minioClient.fget_object("resume", "resume" + res[0][0], "static/resume.pdf")
-    return z.data
+# @app.route("/download-resume", methods=["GET", "POST"])
+# def downloadresume():
+#     id = request.form.get("id")
+#     res = (
+#         candidates.query.with_entities(candidates.candidate_name).filter_by(id=id).all()
+#     )
+#     z = minioClient.get_object("resume", "resume" + res[0][0])
+#     minioClient.fget_object("resume", "resume" + res[0][0], "static/resume.pdf")
+#     return z.data
 
 
 @app.route("/upload-candidates", methods=["GET", "POST"])
@@ -1155,37 +1160,40 @@ def detailed(user):
     chapter = request.form.get("val3")
     squad = request.form.get("val4")
     cname = request.form.get("val5")
+    print(tsin, role, chapter, squad, cname)
     z = get_detailed_data()
     final = []
     for i in z:
         if tsin:
-            if i["tsinid"].strip() == tsin.strip():
+            if i["tsinid"].lower().strip() == tsin.lower().strip():
                 if i not in final:
                     final.append(i)
         if role:
-            if i["role"].strip() == role.strip():
+            if i["role"].lower().strip() == role.lower().strip():
                 if i not in final:
                     final.append(i)
         if chapter:
-            if i["chapter"].strip() == chapter.strip():
+            if i["chapter"].lower().strip() == chapter.lower().strip():
                 if i not in final:
                     final.append(i)
         if squad:
-            if i["squad"].strip() == squad.strip():
+            if i["squad"].lower().strip() == squad.lower().strip():
                 if i not in final:
                     final.append(i)
         if cname:
-            if i["candidate_name"].strip() == cname.strip():
+            if i["candidate_name"].lower().strip() == cname.lower().strip():
                 if i not in final:
                     final.append(i)
     if(user):
         role=user.role
     else:
         role=None
-    if final == []:
+    if final==[]:
+        print('abc')
         return render_template("detailed.html", final=z, user=role)
     else:
-        return render_template("detailed.html", final=final, user=role)
+        print('def')
+        return render_template("filtered_details.html", final=final)
 
 @app.route("/activate-role/<tsin>", methods=["GET", "POST"])
 def activate_role(tsin):
@@ -1199,7 +1207,6 @@ def activate_role(tsin):
     return redirect(url_for("main"))
 
 @app.route("/delete-role/<tsin>", methods=["GET", "POST"])
-@pmoOnly
 def delete_role(tsin):
     db.session.query(roles).filter(roles.tsin_id == tsin).update(
         {
@@ -1338,11 +1345,11 @@ def newprofile():
 
     if resume:
         resume.save("static/resume")
-        minioClient.fput_object("resume", "resume" + str(name), "static/resume")
-        print(
-            "resume is successfully uploaded as "
-            "object 'resume" + str(name) + "' to bucket 'resume'."
-        )
+        # minioClient.fput_object("resume", "resume" + str(name), "static/resume")
+        # print(
+        #     "resume is successfully uploaded as "
+        #     "object 'resume" + str(name) + "' to bucket 'resume'."
+        # )
     return redirect(url_for("main"))
 
 
@@ -1389,6 +1396,7 @@ def editrole():
     squad = request.form.get("squad")
     demandtype = request.form.get("demandtype")
     tribe = request.form.get("tribe")
+    edit_check=request.form.get("editss")
     db.session.query(roles).filter(roles.tsin_id == tsin).update(
         {
             "snow_id": snow_id,
@@ -1397,11 +1405,14 @@ def editrole():
             "squad": squad,
             "demand_type": demandtype,
             "tribe": tribe,
+            "status":"active",
             "modified_at": datetime.now(),
         }
     )
     db.session.commit()
-    return redirect(url_for("main"))
+    if edit_check=="onlyedit":
+        return redirect(url_for("main"))
+    return "Succesfully updated Role"
 
 
 @app.route("/dashboard", methods=["GET", "POST"])
@@ -1473,24 +1484,22 @@ def getData():
     role = request.args.get('role')
     chapter = request.args.get('chapter')
     squad = request.args.get('squad')
-    con=sqlite3.connect('db/data2.db')
-    df=pd.read_sql_query("SELECT * FROM candidates",con)#db.engine)
-    #print(df.head())
-    #print(df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count())
+    df=pd.read_sql_query("SELECT * FROM candidates JOIN roles on candidates.tsin_id=roles.tsin_id",engine)#db.engine)
     df=df.astype({'tsin_opened_date':'datetime64[ns]','resume_screened_date':'datetime64[ns]','l1_interview_date':'datetime64[ns]','l2_interview_date':'datetime64[ns]','l3_interview_date':'datetime64[ns]','offer_rollout_date':'datetime64[ns]','buddy_assignment_date':'datetime64[ns]','joining_date':'datetime64[ns]','candidate_dropout_date':'datetime64[ns]'})
-    df['resume_sharing_time']=df['resume_screened_date']-df['tsin_opened_date']
-    df['l1_completion_time']=df['l1_interview_date']-df['resume_screened_date']
+    df['resume_sharing_time']=df['tsin_opened_date']-df['request_raised_date']
+    df['l1_completion_time']=df['resume_screened_date']-df['l1_interview_date']
     df['l2_completion_time']=df['l2_interview_date']-df['l1_interview_date']
     df['l3_completion_time']=df['l3_interview_date']-df['l2_interview_date']
-    df['time_to_offer']=df['offer_rollout_date']-df['tsin_opened_date']
-    df['time_to_fill']=df['joining_date']-df['tsin_opened_date']
+    df['time_to_offer']=df['offer_rollout_date']-df['request_raised_date']
+    df['time_to_fill']=df['joining_date']-df['request_raised_date']
+    
     if tsin_id=='all':
         if(role):
-            df=df[df['roles']==role]
+            df=df[df['role']==role]
         if(chapter):
             df=df[df['chapter']==chapter]
         if(squad):
-            df=df[df['squads']==squad]
+            df=df[df['squad']==squad]
         if(df.empty):
             return {"KPIlabels":["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"],
             "KPIdata":[],
@@ -1501,12 +1510,12 @@ def getData():
         positives_kpi=[]
         negatives_kpi=[]
         kpilabels=["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"]
-        kpidata=np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
-        df[df['l1_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
-        df[df['l2_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
-        df[df['l3_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
+        kpidata=np.array([df[df['resume_remarks']=='selected']['id'].count()/df['id'].count(),
+        df[df['l1_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
+        df[df['l2_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
+        df[df['l3_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
         (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/t['id'].count() if len(t)>0 else 0,
-        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100
+        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_result']=='passed']['id'].count() if len(t)>0 else 0])*100
         for i,j in enumerate(kpilabels):
             if kpidata[i]>50:
                 positives_kpi.append(j+" increased upto {} %".format(kpidata[i]))
@@ -1528,7 +1537,7 @@ def getData():
         "SLAdata":[d1.astype('int').tolist(),d2.astype('int').tolist(),d3.astype('int').tolist()],
         "text":[positives_kpi,negatives_kpi,positives_sla,negatives_sla]}
     else:
-        df=df[df['tsin_id']==int(tsin_id)]
+        df=df[df['tsin_id']==tsin_id]
         print(role,squad,chapter)
         if(role):
             df=df[df['roles']==role]
@@ -1545,12 +1554,12 @@ def getData():
         t=df[df['offer_rollout_date'].notnull()]
         #print(df[df['resume_screened_remarks']=='selected']['id'].count())
         kpilabels=["Resume Selection Rate","L1 Selection Rate","L2 Selection Rate","L3 Selection Rate","Joining rate","Offer ratio"]
-        kpidata=np.array([df[df['resume_screened_remarks']=='selected']['id'].count()/df['id'].count(),
-        df[df['l1_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
-        df[df['l2_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
-        df[df['l3_interview_remarks']=='selected']['id'].count()/df[df['resume_screened_remarks'].notnull()]['id'].count(),
+        kpidata=np.array([df[df['resume_remarks']=='selected']['id'].count()/df['id'].count(),
+        df[df['l1_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
+        df[df['l2_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
+        df[df['l3_interview_result']=='passed']['id'].count()/df[df['resume_remarks'].notnull()]['id'].count(),
         (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/t['id'].count() if len(t)>0 else 0,
-        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_remarks']=='selected']['id'].count() if len(t)>0 else 0])*100
+        (t['id'].count()-t[t['candidate_dropout_date'].notnull()]['id'].count())/df[df['l1_interview_result']=='passed']['id'].count() if len(t)>0 else 0])*100
         for i,j in enumerate(kpilabels):
             if kpidata[i]>50:
                 positives_kpi.append(j+" increased upto {} %".format(kpidata[i]))
@@ -1613,5 +1622,10 @@ def login(user):
         name=None
         email=None
     return render_template("login.html", user=role, name=name, email=email)
+
+@app.route('/signup', methods = ['GET', 'POST'])
+def signup():
+    users = Users.query.all()
+    return render_template("signup.html", users=users)
 if __name__ == "__main__":
     app.run()

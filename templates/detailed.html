@@ -12,7 +12,7 @@
 <main style="padding-top:130px;">
 <input type="hidden" id="user" value="{{user}}">
 <div class="info" style="width:100vw; overflow:auto;">
-      <table class="roles" style="font-size:11px;">
+      <table class="roles" id="detailed" style="font-size:11px;">
       <tr>
       <th>TSIN ID<br> <select id='selUser' style='width: 104px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
@@ -40,7 +40,7 @@
       {% for i in final %}
         {% if i['chapter'] not in chapter %}
           {{ chapter.append( i['chapter'] ) }}
-          <option value="i['chapter']">{{i['chapter']}}</option> 
+          <option value="{{i['chapter']}}">{{i['chapter']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
@@ -50,7 +50,7 @@
       {% for i in final %}
         {% if i['squad'] not in squad %}
           {{ squad.append( i['squad'] ) }}
-          <option value="i['squad']">{{i['squad']}}</option> 
+          <option value="{{i['squad']}}">{{i['squad']}}</option> 
         {% endif %}
       {% endfor %}
       </select></th>
@@ -84,9 +84,8 @@
       <th>Candidate Dropout</th>
       <th>Dropout Reason</th>
       </tr>
-      
       {% for i in final %}
-      <tr>
+      <tr class="datarows">
       <td>{{i['tsinid']}}</td>
       <td>{{i['role']}}</td>
       <td>{{i['chapter']}}</td>
@@ -178,8 +177,10 @@ function applyfilter(){
       data: jsondata,
       url:"/detailed-view",
       complete: function(response){
-        document.getElementsByTagName("body")[0].innerHTML="";
-        document.getElementsByTagName("body")[0].innerHTML=response.responseText;
+        $('.datarows').remove();
+        $('#detailed').append(response.responseText);
+        /*document.getElementsByTagName("body")[0].innerHTML="";
+        document.getElementsByTagName("body")[0].innerHTML=response.responseText;*/
       }
       });
 }

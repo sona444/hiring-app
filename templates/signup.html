@@ -1,0 +1,50 @@
+{% extends "layout/base.html" %}
+
+{% block title %}HIREUP{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}<style>
+label{
+  width:17%;
+  text-align:right;
+  font-size:12px;
+}
+@media (min-width:1025px){
+  .reg-form{
+    width:30vw !important;
+  }
+}
+</style>{% endblock stylesheets %}
+
+{% block body_class %} landing-page {% endblock body_class %}
+
+{% block content %}
+
+<main style="padding-top:130px;">
+<section class="register-form">
+    <div class="container form">
+    <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px; margin:auto;">
+    <h1 style="color: #E20074; text-align:center; font-size:25px;">Create new user</h1><hr><br><br><br><br>
+      <form id="signup-form" name="loginform"  action = "/createUser" method = "POST" enctype = "multipart/form-data" style="padding-left:0;text-align:center;">
+        
+        <input type="text" id="name" name="name" style="font-size:12px;height:20px; width: 100%;"  placeholder="Enter Name" required><br>
+        <input type="email" id="email" name="email" style="font-size:12px;height:20px; width: 100%;" placeholder="Enter Email" required><br>
+        <select name="role" class="role"style="font-size:12px;height:20px; width: 100%;">
+          <option value="none">Select Role</option>
+          {% for i in users %}
+          <option value="{{i.role}}">{{i.role|upper}}</option>
+          {% endfor %}
+        </select>
+        <input type="password" id="password" name="password" style="height:20px;font-size:12px; width: 100%;"  placeholder="Enter Password" required><br>
+        <button type="submit" id="add_tsin" class="new_tsin btn" style="margin-top:20px; font-size:15px;font-weight:800;background-color:white;color:#E20074;border:1px solid #E20074;padding:5px;">Submit</button>
+      </form>
+    </div>
+    
+  </div>
+  
+</section>
+</main>
+<script>
+
+</script>
+{% endblock content %}
