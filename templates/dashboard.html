@@ -67,19 +67,9 @@
 {{dropout}}
 <form>
 <input type="hidden" id="user" value="{{user}}">
-<input type="hidden" id="offer-weekly" value="{{total_offer[0]}}">
-<input type="hidden" id="offer-monthly" value="{{total_offer[1]}}">
-<input type="hidden" id="offer-quarterly" value="{{total_offer[2]}}">
-<input type="hidden" id="dropout-weekly" value="{{total_dropouts[0]}}">
-<input type="hidden" id="dropout-monthly" value="{{total_dropouts[1]}}">
-<input type="hidden" id="dropout-quarterly" value="{{total_dropouts[2]}}">
-<input type="hidden" id="offer-rolewise" value="{{role_wise_offers}}">
-<input type="hidden" id="new-weekly" value="{{new_positions[0]}}">
-<input type="hidden" id="new-monthly" value="{{new_positions[1]}}">
-<input type="hidden" id="new-quarterly" value="{{new_positions[2]}}">
 <input type="hidden" id="new-rolewise" value="{{role_wise_new}}">
 </form>
-<button id="new_profile_add" onclick="new_profiles({{role_wise_new}})"></button>
+<button id="new_profile_add" onclick="new_profiles({{role_wise_new}},{{profile_upload}}, {{resume}}, {{l1_interview}},{{l2_interview}},{{l3_interview}},{{offer}},{{buddy}},{{candidate_joined}})"></button>
 <div style="display:block; margin:auto;">
 <input id="tsin_id" placeholder="Enter TSIN ID">
 <input id="role" placeholder="Enter Role">
@@ -90,18 +80,20 @@
 <div id="chartHolder">
 
 </div>
-<select id="mySelect" onchange="mychangeFunction()" style="margin-left: 118px;width: 253px;padding:5px; background-color:white; border:1px solid black;">
+<select id="mySelect" onchange="mychangeFunction()" style="margin-left: 118px;width: 253px;padding:5px; background-color:white; border:1px solid black; display:none;">
   <option value="week" selected="selected">2 Weeks Insights</option>
   <option value="month">Last 1 Month's Insights</option>
   <option value="quarter">Last 1 Quarter's Insights</option>
 </select>
-<div id="myChartweekly" width="469" height="350" style=" width:100%; text-align:center;"></div>
-<div id="myChartmonthly" width="400" height="300" style="width:100%; text-align:center; "></div>
-<div id="myChartquarterly" width="400" height="300" style="width:100%; text-align:center;"></div>
-<div id="myChartrolenew" width="500" height="400" style="text-align:center; display:inline-table; width:400px !important; height:400px !important;"></div>
+<div id="myChartweekly" width="469" height="350" style=" display:none;width:100%; text-align:center;"></div>
+<div id="myChartmonthly" width="400" height="300" style="display:none;width:100%; text-align:center; "></div>
+<div id="myChartquarterly" width="400" height="300" style="display:none;width:100%; text-align:center;"></div>
+<div id="" width="500" height="400" style="text-align:center; display:inline-table; width:90% !important; height:400px !important;">
+<canvas id="myChartrolenew" style="width:100%;"></canvas></div>
 
 </main>
 <script>
+
 $(document).ready(function() {
     document.getElementById("new_profile_add").click();
 });
@@ -111,19 +103,19 @@ function getData(){
     e.remove();
   }
   const e1='<div id="barcharts">\
-      <div class="shadow1">\
+      <div class="shadow1" style="float:left; width:48%;text-align:center;">\
           <canvas id="myChart"></canvas>\
           <h6 id="hpos1">Positives</h6>\
-          <ul id="chrt1Positives" style=""></ul>\
+          <ul id="chrt1Positives" style="list-style:none;"></ul>\
           <h6 id="hneg1">Negatives</h6>\
-          <ul id="chrt1Negatives" style=""></ul>\
+          <ul id="chrt1Negatives" style="list-style:none;"></ul>\
       </div>\
-      <div class="shadow1">\
+      <div class="shadow1" style="float:left; width:48%;text-align:center;">\
           <canvas id="myChart1"></canvas>\
           <h6 id="hpos2">Positives</h6>\
-          <ul id="chrt2Positives" style=""></ul>\
+          <ul id="chrt2Positives" style="list-style:none;"></ul>\
           <h6 id="hneg2">Negatives</h6>\
-          <ul id="chrt2Negatives" style=""></ul>\
+          <ul id="chrt2Negatives" style="list-style:none;""></ul>\
       </div>\
       </div>'
   document.getElementById("chartHolder").insertAdjacentHTML('beforeend',e1);
@@ -464,8 +456,76 @@ function drawChart3() {
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartroleoffers"));
               chart.draw(data, options);
           }
-function new_profiles(rows){
-    function drawChart4() {
+
+function new_profiles(rows, profile, screening, l1,l2,l3, offer, buddy, joining){
+
+  const ctx = document.getElementById('myChartrolenew');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows,
+      datasets: [{
+        label: 'Profile Upload',
+        data: profile,
+        borderWidth: 1,
+      },
+      {
+        label: 'Resume Screened for Interview',
+        data: screening,
+        borderWidth: 1
+      },
+      {
+        label: 'L1 Interview Complete',
+        data: l1,
+        borderWidth: 1
+      },
+      {
+        label: 'L2 Interview Complete',
+        data: l2,
+        borderWidth: 1
+      },
+      {
+        label: 'L3 Interview Complete',
+        data: l3,
+        borderWidth: 1
+      },
+      {
+        label: 'Offer Rollout',
+        data: offer,
+        borderWidth: 1
+      },
+      {
+        label: 'Buddy Assignment',
+        data: buddy,
+        borderWidth: 1
+      },{
+        label: 'Candidate Joined/Dropout',
+        data: joining,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive:true,
+      scales: {
+        x:{
+          stacked:true
+        },
+        y: {
+          beginAtZero: true,
+          stacked: true
+        }
+      },
+      plugins: {
+      title: {
+        display: true,
+        text: 'Active Candidates Position wise'
+      },
+    },
+    }
+  });
+    /*function drawChart4() {
               var data = new google.visualization.DataTable();
               data.addColumn('string', 'Role');
               data.addColumn('number', 'Profile Added');
@@ -494,9 +554,11 @@ function new_profiles(rows){
               var chart = new google.visualization.ColumnChart(document.getElementById("myChartrolenew"));
               chart.draw(data, options);
     }
-    google.charts.setOnLoadCallback(drawChart4);
+    google.charts.setOnLoadCallback(drawChart4);*/
 }
-function mychangeFunction(){
+
+
+/*function mychangeFunction(){
   if($("#mySelect").val()=='week'){
     $("#myChartweekly").css("display","block");
     $("#myChartmonthly").css("display","none");
@@ -513,6 +575,6 @@ function mychangeFunction(){
     $("#myChartquarterly").css("display","block");
   }
 }
-mychangeFunction();
+mychangeFunction();*/
 </script>
 {% endblock content %}

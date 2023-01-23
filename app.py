@@ -549,36 +549,43 @@ def get_role_wise_profiles():
         candidates.tsin_id, candidates.current_stage
     ).all()
     final = {}
+    roless=roles.query.distinct(roles.role).all()
+    print(roless)
+    final_roles=[]
+    profile_upload, resume_screened,l1_interview, l2_interview, l3_interview, offer_rollout, buddy_assignment, candidate_joined=[0]*len(roless), [0]*len(roless), [0]*len(roless) , [0]*len(roless), [0]*len(roless), [0]*len(roless), [0]*len(roless), [0]*len(roless)
+    for i in roless:
+        final_roles.append(i.role)
     for i in result:
         j = roles.query.with_entities(roles.role).filter_by(tsin_id=i.tsin_id).all()
-        if j[0][0] not in final.keys():
-            final[j[0][0]] = [0, 0, 0, 0, 0, 0, 0, 0]
+        print(j)
+        z=final_roles.index(j[0][0])
+        print(j,z)
         if i.current_stage == "Profile Upload":
-            final[j[0][0]][0] += 1
+            profile_upload[z]+=1
         elif i.current_stage == "Resume Screened for Interview":
-            final[j[0][0]][1] += 1
+            resume_screened[z]+=1
         elif i.current_stage == "L1 Interview Complete":
-            final[j[0][0]][2] += 1
+            l1_interview[z]+=1
         elif i.current_stage == "L2 Interview Complete":
-            final[j[0][0]][3] += 1
+            l2_interview[z]+=1
         elif i.current_stage == "L3 Interview Complete":
-            final[j[0][0]][4] += 1
+            l3_interview[z]+=1
         elif i.current_stage == "Offer RollOut":
-            final[j[0][0]][5] += 1
+            offer_rollout[z]+=1
         elif i.current_stage == "Buddy Assignment":
-            final[j[0][0]][6] += 1
+            buddy_assignment[z]+=1
         elif (
             i.current_stage == "Candidate Joined"
             or i.current_stage == "Candidate Dropout"
         ):
-            final[j[0][0]][7] += 1
+            candidate_joined[z]+=1
     final2 = []
     for i in final:
         final3 = [i] + final[i]
         final2.append(final3)
     print(final2)
 
-    return final2
+    return final_roles, profile_upload,resume_screened,l1_interview,l2_interview,l3_interview,offer_rollout,buddy_assignment,candidate_joined
 
 
 def get_detailed_data():
@@ -961,9 +968,11 @@ def updateStage():
     joining_stage_time = request.form.get("joiningstageupdatetime")
     dropout_stage_time = request.form.get("dropoutstageupdatetime")
     dropout_reason = request.form.get("dropout_reason")
+    print(update_time, result, resume_remarks)
     candidate=candidates.query.filter_by(id = cand_id).first()
     if stage == "resumescreened":
         if result == "passed":
+            print('abc')
             db.session.query(candidates).filter(candidates.id == cand_id).update(
                 {
                     "current_stage": "Resume Screened for Interview",
@@ -980,6 +989,7 @@ def updateStage():
                     "modified_at": datetime.now(),
                 }
             )
+        db.session.commit()
     if stage == "l1complete":
         if result == "passed":
             if candidate.l1_interview_date!=None:
@@ -1160,6 +1170,7 @@ def detailed(user):
     chapter = request.form.get("val3")
     squad = request.form.get("val4")
     cname = request.form.get("val5")
+    stage = request.form.get("val6")
     print(tsin, role, chapter, squad, cname)
     z = get_detailed_data()
     final = []
@@ -1182,6 +1193,10 @@ def detailed(user):
                     final.append(i)
         if cname:
             if i["candidate_name"].lower().strip() == cname.lower().strip():
+                if i not in final:
+                    final.append(i)
+        if stage:
+            if i["current_stage"].lower().strip() == stage.lower().strip():
                 if i not in final:
                     final.append(i)
     if(user):
@@ -1229,7 +1244,6 @@ def activate_profile(id):
     return redirect(url_for("main"))
 
 @app.route("/delete-profile/<id>", methods=["GET", "POST"])
-@pmoOnly
 def delete_profile(id):
     db.session.query(candidates).filter(candidates.id == id).update(
         {
@@ -1242,7 +1256,6 @@ def delete_profile(id):
 
 
 @app.route("/new-position", methods=["GET", "POST"])
-@pmoOnly
 def newposition():
     total=request.form.get("total")
     tsinid = []
@@ -1290,7 +1303,6 @@ def newposition():
 
 
 @app.route("/add-new-profile", methods=["GET", "POST"])
-@pmoOnly
 def newprofile():
     tsin = request.form["tsin_id"]
     phone = request.form["phone"]
@@ -1309,20 +1321,20 @@ def newprofile():
             candidate_email=email,
             current_stage="Profile Upload",
             status="active",
-            request_raised_date="",
-            tsin_opened_date="",
-            resume_screened_date="",
-            l1_interview_date="",
+            request_raised_date=None,
+            tsin_opened_date=None,
+            resume_screened_date=None,
+            l1_interview_date=None,
             l1_interviewer="",
-            l2_interview_date="",
+            l2_interview_date=None,
             l2_interviewer="",
-            l3_interview_date="",
+            l3_interview_date=None,
             l3_interviewer="",
-            offer_rollout_date="",
-            joining_date="",
-            buddy_assignment_date="",
+            offer_rollout_date=None,
+            joining_date=None,
+            buddy_assignment_date=None,
             buddy_name="",
-            candidate_dropout_date="",
+            candidate_dropout_date=None,
             candidate_dropout_reason="",
             resume="",
             resume_screened_remarks="",
@@ -1332,11 +1344,15 @@ def newprofile():
             l2_interview_result="",
             l3_interview_result="",
             l3_interview_remarks="",
+            resume_remarks="",
+            l1_completion=None, 
+            l2_completion=None,
+            l3_completion=None,
             phone=phone,
             current_location=location,
             current_company=company,
             experience=experience,
-            candidate_joined_date="",
+            candidate_joined_date=None,
             created_at=datetime.now(),
             modified_at=datetime.now(),
         )
@@ -1387,7 +1403,6 @@ def apply_filter():
 
 
 @app.route("/edit-role", methods=["GET", "POST"])
-@pmoOnly
 def editrole():
     tsin = request.form.get("tsin_id")
     snow_id = request.form.get("snow_id")
@@ -1419,63 +1434,63 @@ def editrole():
 @token_forwarder
 def dashboard(user):
     #print(token)
-    z, drop = total_offers()
-    new_pos = get_new_profiles()
-    print(z)
-    weekly = 0
-    montly = 0
-    quarterly = 0
-    for i in z.values():
-        for j in i:
-            if j <= 14:
-                weekly += 1
-            if j <= 30:
-                montly += 1
-            if j <= 90:
-                quarterly += 1
-    for i in z:
-        z[i] = len(z[i])
-    offers = [weekly, montly, quarterly]
-    dropout_weekly = 0
-    dropout_montly = 0
-    dropout_quarterly = 0
-    for i in drop.values():
-        for j in i:
-            if j <= 14:
-                dropout_weekly += 1
-            if j <= 30:
-                dropout_montly += 1
-            if j <= 30:
-                dropout_quarterly += 1
-    for i in drop:
-        drop[i] = len(drop[i])
-    new_weekly = 0
-    new_monthly = 0
-    new_quarterly = 0
-    for i in new_pos.values():
-        for j in i:
-            if j <= 14:
-                new_weekly += 1
-            if j <= 30:
-                new_monthly += 1
-            if j <= 90:
-                new_quarterly += 1
-    new_pos_roles = get_role_wise_profiles()
-    dropouts = [dropout_weekly, dropout_montly, dropout_quarterly]
-    new_positions = [new_weekly, new_monthly, new_quarterly]
-    # final_z=json.dumps(z)
+    # z, drop = total_offers()
+    # new_pos = get_new_profiles()
+    # weekly = 0
+    # montly = 0
+    # quarterly = 0
+    # for i in z.values():
+    #     for j in i:
+    #         if j <= 14:
+    #             weekly += 1
+    #         if j <= 30:
+    #             montly += 1
+    #         if j <= 90:
+    #             quarterly += 1
+    # for i in z:
+    #     z[i] = len(z[i])
+    # offers = [weekly, montly, quarterly]
+    # dropout_weekly = 0
+    # dropout_montly = 0
+    # dropout_quarterly = 0
+    # for i in drop.values():
+    #     for j in i:
+    #         if j <= 14:
+    #             dropout_weekly += 1
+    #         if j <= 30:
+    #             dropout_montly += 1
+    #         if j <= 30:
+    #             dropout_quarterly += 1
+    # for i in drop:
+    #     drop[i] = len(drop[i])
+    # new_weekly = 0
+    # new_monthly = 0
+    # new_quarterly = 0
+    # for i in new_pos.values():
+    #     for j in i:
+    #         if j <= 14:
+    #             new_weekly += 1
+    #         if j <= 30:
+    #             new_monthly += 1
+    #         if j <= 90:
+    #             new_quarterly += 1
+    roles, profileUpload, resume_screened, l1_interview, l2_interview, l3_interview, offer_rollout, buddy_assign, candidate_joined = get_role_wise_profiles()
+    
     if(user):
         role=user.role
     else:
         role=None
     return render_template(
         "dashboard.html",
-        role_wise_offers=z,
-        role_wise_dropout=drop,
-        role_wise_new=new_pos_roles,
-        total_offer=offers,
-        total_dropouts=dropouts,
-        new_positions=new_positions,
+        role_wise_new=roles,
+        profile_upload=profileUpload, 
+        resume=resume_screened, 
+        l1_interview=l1_interview,
+        l2_interview=l2_interview,
+        l3_interview= l3_interview,
+        offer=offer_rollout,
+        buddy=buddy_assign,
+        candidate_joined=candidate_joined,
 		user=role
     )
 @app.route('/getData', methods = ['GET', 'POST'])
@@ -1627,5 +1642,14 @@ def login(user):
 def signup():
     users = Users.query.all()
     return render_template("signup.html", users=users)
+
+@app.route('/chapter', methods = ['GET', 'POST'])
+@token_forwarder
+def addChapter(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-chapter.html", role=role)
 if __name__ == "__main__":
     app.run()

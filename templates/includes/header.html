@@ -6,12 +6,20 @@
 	</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		{% if user=="pmo" %}<a class="navbar-brand navbar-center" href="/upload-candidates"><button class="new_tsin" style="font-size:15px;">Upload history data</button></a>{% endif %}
+		{% if user=="pmo" or user == 'admin'%}<a class="navbar-brand navbar-center" href="/upload-candidates"><button class="new_tsin" style="font-size:15px;">Upload history data</button></a>{% endif %}
 		<a class="navbar-brand navbar-center"href="/"><button class="new_tsin" style="font-size:15px;">Abstract View</button></a>
 		<a class="navbar-brand navbar-center"href="/detailed-view"><button class="new_tsin" style="font-size:15px;">Detailed View</button></a>
-		{% if user=="pmo" %}<a class="navbar-brand navbar-center"href="/add-tsin"><button class="new_tsin" style="font-size:15px;">Add Position</button></a>{% endif %}
+		{% if user=="pmo"or user == 'admin'%}<a class="navbar-brand navbar-center"href="/add-tsin"><button class="new_tsin" style="font-size:15px;">Add Position</button></a>{% endif %}
 		<a class="navbar-brand navbar-center"href="/dashboard"><button class="dashboard" style="font-size:15px;">Dashboard</button></a>
-	
+	  <!-- <div class="dropdown">
+        <button class="dropbtn">Data Catalog</button>
+        <div class="dropdown-content">
+          <a href="/chapter">Add Chapter</a>
+          <a href="#">Add Role</a>
+          <a href="#">Add Squad</a>
+          <a href="#">Add Tribe</a>
+        </div>
+      </div> -->
 	</div>
 	
 	</nav>

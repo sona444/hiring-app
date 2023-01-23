@@ -64,9 +64,18 @@
         {% endif %}
       {% endfor %}
       </select></th>
+      <th>Current Stage<br><select id='selUser6' style='width: 153px;' onchange="applyfilter();">
+      <option value='none'>--None--</option>
+      {% set stage= [] %}
+      {% for i in final %}
+        {% if i['current_stage'] not in stage %}
+          {{ stage.append( i['current_stage'] ) }}
+          <option value="{{i['current_stage']}}">{{i['current_stage']}}</option> 
+        {% endif %}
+      {% endfor %}
+      </select></th>
       <th>PAN Number</th>
       <th>Cadidate Email</th>
-      <th>Current Stage</th>
       <th>Request Rasied</th>
       <th>TSIN Opened</th>
       <th>Resume Screened</th>
@@ -91,9 +100,9 @@
       <td>{{i['chapter']}}</td>
       <td>{{i['squad']}}</td>
       <td>{{i['candidate_name']}}</td>
+      <td>{{i['current_stage']}}</td>
       <td>{{i['pan']}}</td>
       <td>{{i['candidate_email']}}</td>
-      <td>{{i['current_stage']}}</td>
       <td>{{i['request_raised_date']}}</td>
       <td>{{i['tsin_opened_date']}}</td>
       <td>{{i['resume_screened_date']}}</td>
@@ -158,6 +167,13 @@ $(document).ready(function(){
         $('#result').html("id : " + userid + ", name : " + username);
 
     });
+    $('#but_read').click(function(){
+        var username = $('#selUser6 option:selected').text();
+        var userid = $('#selUser6').val();
+
+        $('#result').html("id : " + userid + ", name : " + username);
+
+    });
 });
 function applyfilter(){
   val1=$('#selUser').val();
@@ -165,12 +181,14 @@ function applyfilter(){
   val3=$('#selUser3').val();
   val4=$('#selUser4').val();
   val5=$('#selUser5').val();
+  val6=$('#selUser6').val();
   jsondata={
       "val1":val1,
       "val2":val2,
       "val3":val3,
       "val4":val4,
       "val5":val5,
+      "val6":val6,
     }
     $.ajax({
       type: "POST",

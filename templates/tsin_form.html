@@ -200,7 +200,7 @@ $("#add_tsin").on("click", function() {
       dataType: "json", 
       complete: function( response ) {
             console.log(response.responseText);
-            Swal.fire(response.responseText);
+            window.open("/");
         }
         });
       });
