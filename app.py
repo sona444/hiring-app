@@ -1600,30 +1600,68 @@ def getData():
 @app.route('/add-chapter', methods = ['GET', 'POST'])
 def addchapter():
     Chapter=request.form.get("chapter")
-    db.session.add(chapter(chapter_name=Chapter))
+    chaps=Chapter.split(',')
+    print(chaps)
+    objects=[]
+    for i in chaps:
+        objects.append(chapter(chapter_name=i.strip()))
+    db.session.bulk_save_objects(objects)
     db.session.commit()
     return "Chapter Added Succesfully"
 
 @app.route('/add-role', methods = ['GET', 'POST'])
 def addroler():
     Role=request.form.get("role")
-    db.session.add(role(role_name=Role))
+    roless=Role.split(',')
+    objects=[]
+    for i in roless:
+        objects.append(role(role_name=i.strip()))
+    db.session.bulk_save_objects(objects)
     db.session.commit()
     return "Role Added Succesfully"
 
 @app.route('/add-squad', methods = ['GET', 'POST'])
 def addsquad():
     Squad=request.form.get("squad")
-    db.session.add(squad(squad_name=Squad))
+    squads=Squad.split(",")
+    objects=[]
+    for i in squads:
+        objects.append(squad(squad_name=i.strip()))
+    db.session.bulk_save_objects(objects)
     db.session.commit()
     return "Squad Added Succesfully"
 
 @app.route('/add-tribe', methods = ['GET', 'POST'])
 def addtribe():
     Tribe=request.form.get("tribe")
-    db.session.add(tribe(tribe_name=Tribe))
+    tribes=Tribe.split(',')
+    objects=[]
+    for i in tribes:
+        objects.append(tribe(tribe_name=i.strip()))
+    db.session.bulk_save_objects(objects)
     db.session.commit()
     return "Tribe Added Succesfully"
+
+@app.route('/add-program', methods = ['GET', 'POST'])
+def addprogram():
+    Program=request.form.get("program")
+    programs=Program.split(',')
+    objects=[]
+    for i in programs:
+        objects.append(program(program_name=i.strip()))
+    db.session.bulk_save_objects(objects)
+    db.session.commit()
+    return "Program Added Succesfully"
+
+
+@app.route('/add-project', methods = ['GET', 'POST'])
+def addproject():
+    Project=request.form.get("project")
+    project_start=request.form.get("startdate")
+    project_end=request.form.get("enddate")
+    db.session.add(project(project_name=Project,start_date=project_start,end_date=project_end))
+    db.session.commit()
+    return "Project Added Succesfully"
 
 @app.route('/login', methods = ['GET', 'POST'])
 @token_forwarder
@@ -1650,6 +1688,52 @@ def addChapter(user):
         role=user.role
     else:
         role=None
-    return render_template("add-chapter.html", role=role)
+    return render_template("add-chapter.html", user=role)
+
+@app.route('/role', methods = ['GET', 'POST'])
+@token_forwarder
+def addRole(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-role.html", user=role)
+    
+@app.route('/squad', methods = ['GET', 'POST'])
+@token_forwarder
+def addSquad(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-squad.html", user=role)
+
+@app.route('/tribe', methods = ['GET', 'POST'])
+@token_forwarder
+def addTribe(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-tribe.html", user=role)
+
+@app.route('/program', methods = ['GET', 'POST'])
+@token_forwarder
+def addProgram(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-program.html", user=role)
+
+@app.route('/project', methods = ['GET', 'POST'])
+@token_forwarder
+def addProject(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    return render_template("add-project.html", user=role)
+
 if __name__ == "__main__":
     app.run()

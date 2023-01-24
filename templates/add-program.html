@@ -19,9 +19,9 @@ label{
 <section class="register-form">
     <div class="container form">
     <div class="row reg-form" style="color:#E20074;padding:30px;border: 3px dashed #E20074; border-radius:10px; margin:auto;">
-    <h1 style="color: #E20074; text-align:center; font-size:25px;">Add New Chapter</h1><hr><br><br><br><br>
+    <h1 style="color: #E20074; text-align:center; font-size:25px;">Add New program</h1><hr><br><br><br><br>
     <form id="upload-form" name="loginform"  method = "POST" enctype = "multipart/form-data">
-        <input type="text" id="newchapter" name="chapter" placeholder="Enter Chapter Name" style="font-size:12px;"><br><button class="addchapter" style="padding:3px;margin-top:15px;">Add Chapter</button><br>
+        <input type="text" id="newprogram" name="program" placeholder="Enter program Name" style="font-size:12px;"><br><button class="addprogram" style="padding:3px;margin-top:15px;">Add program</button><br>
         
     </form>
     </div>
@@ -31,16 +31,16 @@ label{
 </section>
 </main>
 <script>
-var chapterbtn=document.getElementsByClassName("addchapter");
-chapterbtn[0].addEventListener("click", function() {
-chapter=$("#newchapter").val();
+var programbtn=document.getElementsByClassName("addprogram");
+programbtn[0].addEventListener("click", function() {
+program=$("#newprogram").val();
 jsondata={
-  "chapter":chapter
+  "program":program
 }
 $.ajax({
       type: "POST",
       data: jsondata,
-      url:"/add-chapter",
+      url:"/add-program",
        complete: function( response ) {
             Swal.fire(response.responseText);
             $(".swal2-confirm")[0].addEventListener("click", function() {

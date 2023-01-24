@@ -1,5 +1,5 @@
 from app import db
-
+from sqlalchemy import ForeignKey
 
 class candidates(db.Model):
     __tablename__ = "candidates"
@@ -213,6 +213,35 @@ class tribe(db.Model):
     ):
         self.tribe_name = tribe_name
 
+
+class project(db.Model):
+    __tablename__ = "project"
+    id = db.Column(db.Integer, primary_key=True)
+    project_name = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+
+    def __init__(
+        self,
+        project_name,
+        start_date,
+        end_date
+    ):
+        self.project_name = project_name
+        self.start_date = start_date
+        self.end_date = end_date
+
+class program(db.Model):
+    __tablename__ = "program"
+    id = db.Column(db.Integer, primary_key=True)
+    program_name = db.Column(db.String, nullable=False)
+
+    def __init__(
+        self,
+        program_name
+    ):
+        self.program_name = program_name
+
 class Users(db.Model):
     __tablename__ = "users"
     id = db.Column(db.String(50), unique = True, primary_key=True)
@@ -234,3 +263,47 @@ class Users(db.Model):
         self.email = email
         self.password = password
         self.role= role
+
+class Allocations(db.Model):
+    __tablename__ = "allocations"
+    id = db.Column(db.Integer, unique = True, primary_key=True)
+    user_id = db.Column(db.String(50), ForeignKey("users.id"), nullable=False)
+    project_id = db.Column(db.Integer, ForeignKey("project.id"), nullable=False)
+    chapter_id = db.Column(db.Integer, ForeignKey("chapter.id"), nullable=False)
+    project_start_date = db.Column(db.DateTime, nullable=False)
+    project_end_date = db.Column(db.DateTime)
+    allocation_percentage = db.Column(db.Integer, nullable=False)
+
+    def __init__(
+        self,
+        user_id,
+        project_id,
+        chapter_id,
+        project_start_date,
+        project_end_date,
+        allocation_percentage
+    ):
+        self.user_id=user_id,
+        self.project_id=project_id,
+        self.chapter_id=chapter_id,
+        self.project_start_date=project_start_date,
+        self.project_end_date=project_end_date,
+        allocation_percentage=allocation_percentage
+
+
+class future_resources(db.Model):
+    __tablename__ = "future_resources"
+    id = db.Column(db.Integer, primary_key=True)
+    designation = db.Column(db.String, nullable=False)
+    number_of_requirements = db.Column(db.Integer, nullable=False)
+    project_id = db.Column(db.Integer, ForeignKey("project.id"), nullable=False)
+
+    def __init__(
+        self,
+        designation,
+        number_of_requirements,
+        project_id
+    ):
+        self.designation=designation,
+        self.number_of_requirements=number_of_requirements,
+        self.project_id=project_id
