@@ -14,7 +14,9 @@ from jose import JWTError, jwt
 from functools import wraps
 import json
 import numpy as np
-
+import math
+import random
+ 
 load_dotenv()
 
 app = Flask(__name__)
@@ -1734,6 +1736,155 @@ def addProject(user):
     else:
         role=None
     return render_template("add-project.html", user=role)
+
+@app.route('/hired-candidates', methods = ['GET', 'POST'])
+@token_forwarder
+def cands(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    ename = request.form.get("val1")
+    erole = request.form.get("val2")
+    eprogram = request.form.get("val3")
+    eproject = request.form.get("val4")
+    roles= Employee.query.with_entities(Employee.role).distinct(Employee.role).all()
+    unique_roles=[i[0] for i in roles]
+    names= Employee.query.with_entities(Employee.name).distinct(Employee.name).all()
+    unique_names=[i[0] for i in names]
+    programs=program.query.with_entities(program.program_name).distinct(program.program_name).all()
+    unique_programs=[i[0] for i in programs]
+    projects=project.query.with_entities(project.project_name).distinct(project.project_name).all()
+    unique_projects=[i[0] for i in projects]
+    final=[]
+    current_year=datetime.now().year
+    # alloc=Allocations.query.join(project, Employee).filter(Allocations.year>=current_year, Allocations.year<=current_year+1).all()
+    alloc=db.session.query(Allocations, project, Employee).filter(Allocations.emp_id == Employee.id,Allocations.project_id==project.id, Allocations.year>=current_year, Allocations.year<=current_year+1).all()
+    print(current_year)
+    user_wise={}
+    # for i in unique_names:
+    #     user_wise[i]={current_year:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0},current_year+1:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}}
+    print(user_wise)
+    for a,p,e in alloc:
+        user_wise[e.name+ p.project_name]={current_year:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0},current_year+1:{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0}}
+    for a,p,e in alloc:
+        if a.status=='inactive':
+            continue
+        # project_name=project.query.with_entities(project.project_name).filter_by(id=i.project_id).first()
+        program_name=program.query.with_entities(program.program_name).filter_by(id=a.program_id).first()
+        # user=Employee.query.filter_by(id=i.emp_id).first()
+        user_wise[e.name+ p.project_name][a.year][a.month]=a.allocation_percentage
+        user_l=[e.name, e.role, program_name[0], p.project_name]
+        if user_l not in final:
+            final.append(user_l)
+    for i in final:
+        i.append(user_wise[i[0]+i[3]])
+    secfinal=[]
+    if ename:
+        secf=[j for j in final if j[0]==ename]
+        secfinal+=secf
+    if erole:
+        secf=[j for j in final if j[1]==erole]
+        secfinal+=secf
+    if eprogram:
+        print('yes')
+        secf=[j for j in final if j[2]==eprogram]
+        secfinal+=secf
+    if eproject:
+        secf=[j for j in final if j[3]==eproject]
+        secfinal+=secf
+    print(secfinal)
+    if ename or erole or eprogram or eproject:
+        return render_template("details_emp.html", user=role, emp=secfinal, names=unique_names, roles=unique_roles, programs=unique_programs, projects=unique_projects, year=current_year)
+    return render_template("hired_employees.html", user=role, emp=final, names=unique_names, roles=unique_roles, programs=unique_programs, projects=unique_projects, year=current_year)
+
+
+@app.route("/upload-resource", methods=["GET", "POST"])
+def uploadDr():
+    f = request.files["file"]  # File input
+    if not f:
+        return "No file attached"
+
+    global filename
+    filename = f.filename  # changing global value of filename
+
+    path = "{}/{}".format("static", filename)
+    f.save(path)
+    x = path.split(".")[-1]
+
+    # reading filedata start
+    if x == "xlsx":
+        new_wb = load_workbook(path)
+        Dataframe = pd.read_excel(new_wb, engine="openpyxl")
+    elif x == "csv":
+        Dataframe = pd.read_csv(path, encoding="ISO-8859-1")
+    else:
+        return "Please upload the file in xlsx or csv only"
+    # reading filedata end
+    dict_of_records = Dataframe.to_dict(orient="records")
+    print(Dataframe.columns)
+    for i in dict_of_records:
+        id=i['Employee code']
+        name=i['Employee Name']
+        role=i['Role']
+        programm=i['Program']
+        projectt=i['Project/Use case']
+        if i['Employee code']==0 or pd.isna(projectt) or pd.isna(i['Employee code']):
+            continue
+        names=Employee.query.with_entities(Employee.id).all()
+        exist=False
+        for j in names:
+            if str(id)==str(j[0]):
+                print('yes')
+                exist=True
+        if exist==False:
+            db.session.add(Employee(id=id, name = name, role=role))
+            db.session.commit()
+        
+        year_wise=[i['2023 Jan'],i['2023 Feb'],i['2023 Mar'],i['2023 April'],i['2023 May'],i['2023 June'],i['2023 Jul'],i['2023 Aug'],i['2023 Sep'],i['2023 Oct'],i['2023 Nov'],i['2023 Dec']]
+        x = float("nan")
+        start=None
+        end=None
+        year=2023
+        project_id=project.query.with_entities(project.id).filter_by(project_name=str(projectt)).first()
+        program_id=program.query.with_entities(program.id).filter_by(program_name=str(programm)).first()
+        squad_id=squad.query.with_entities(squad.id).filter_by(squad_name=str(programm)).first()
+        if project_id:
+            project_id=project_id[0]
+        if program_id:
+            program_id=program_id[0]
+        if squad_id:
+            squad_id=squad_id[0]
+        for j in range(len(year_wise)):
+            if pd.isna(year_wise[j]) or isinstance(year_wise[j], str):
+                continue
+            else:
+                month=int(j)+1
+                if year_wise[j]=='=30%*0+100%':
+                    percentage_alloc=100
+                elif year_wise[j]=='=70%*0' or year_wise[j]=='=25%*0':
+                    percentage_alloc=0
+                elif pd.isna(year_wise[j]):
+                    percentage_alloc=0
+                else:
+                    percentage_alloc=year_wise[j]*100
+                db.session.add(Allocations(emp_id=id,project_id=project_id, program_id=program_id,squad_id=squad_id, month=month,year=year,allocation_percentage=percentage_alloc, status="active"))
+                db.session.commit()
+        
+        # db.session.flush()
+        print(project_id,squad_id, program_id)
+    print("added to db")
+    return "ok"
+
+
+@app.route('/billing', methods = ['GET', 'POST'])
+def generate_billing():
+    users=Employee.query.with_entities(Employee.id).all()
+    for i in users:
+        bill=random.randint(10,20)
+        db.session.add(Billing(emp_id=i[0], billing_rate=bill))
+        db.session.commit()
+    return "done"
 
 if __name__ == "__main__":
     app.run()

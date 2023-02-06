@@ -12,7 +12,7 @@
 		{% if user=="pmo"or user == 'admin'%}<a class="navbar-brand navbar-center"href="/add-tsin"><button class="new_tsin" style="font-size:15px;">Add Position</button></a>{% endif %}
 		<a class="navbar-brand navbar-center"href="/dashboard"><button class="dashboard" style="font-size:15px;">Dashboard</button></a>
 	  {% if user=="pmo"or user == 'admin'%}<div class="dropdown">
-        <button class="dropbtn">Data Catalog</button>
+        <a class="navbar-brand navbar-center"href="#"><button class="dropbtn">Data Catalog</button>
         <div class="dropdown-content">
           <a href="/chapter">Add Chapter</a>
           <a href="/role">Add Role</a>
@@ -21,12 +21,17 @@
           <a href="/project">Add Project</a>
           <a href="/program">Add Program</a>
         </div>
-      </div>{% endif %}
+      </div></a>
+      {% endif %}
+  <a class="navbar-brand navbar-center"href="/hired-candidates" ><button class="dashboard" style="font-size:15px;">Resource Allocation</button></a>  
 	</div>
 	
 	</nav>
 	{% if url_for(request.endpoint) == '/detailed-view'%}
 		<a class="navbar-brand navbar-center resetfilters"href="/detailed-view" style="float:right;margin-top:0px;"><button class="new_tsin" style="text-decoration:none !important; font-size:13px; border: 1px solid lightgray;padding:5px; margin-top:-20px !important; border-radius: 8px;"><b>Reset Filters</b></button></a>
+		{% endif %}
+	{% if url_for(request.endpoint) == '/hired-candidates'%}
+		<a class="navbar-brand navbar-center resetfilters"href="/hired-candidates" style="float:right;margin-top:0px;"><button class="new_tsin" style="text-decoration:none !important; font-size:13px; border: 1px solid lightgray;padding:5px; margin-top:-20px !important; border-radius: 8px;"><b>Reset Filters</b></button></a>
 		{% endif %}
 	{% if url_for(request.endpoint) == '/'%}
 		<label class="switch">

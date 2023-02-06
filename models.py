@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey
 class candidates(db.Model):
     __tablename__ = "candidates"
     id = db.Column(db.Integer, primary_key=True)
-    tsin_id = db.Column(db.String, nullable=False)
+    tsin_id = db.Column(db.String, ForeignKey("roles.tsin_id"),nullable=False)
     candidate_name = db.Column(db.String, nullable=False)
     candidate_email = db.Column(db.String, nullable=False)
     current_stage = db.Column(db.String, nullable=False)
@@ -218,8 +218,8 @@ class project(db.Model):
     __tablename__ = "project"
     id = db.Column(db.Integer, primary_key=True)
     project_name = db.Column(db.String, nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    end_date = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=True)
+    end_date = db.Column(db.DateTime, nullable=True)
 
     def __init__(
         self,
@@ -264,31 +264,50 @@ class Users(db.Model):
         self.password = password
         self.role= role
 
+class Employee(db.Model):
+    __tablename__ = "employee"
+    id = db.Column(db.String(50), unique = True, primary_key=True)
+    name = db.Column(db.String(100), unique = True)
+    role = db.Column(db.String(50))
+
+
+class Billing(db.Model):
+    __tablename__ = "billing"
+    id = db.Column(db.Integer, primary_key=True)
+    emp_id = db.Column(db.String(50), ForeignKey("employee.id"), nullable=False)
+    billing_rate = db.Column(db.Integer)
+
 class Allocations(db.Model):
     __tablename__ = "allocations"
     id = db.Column(db.Integer, unique = True, primary_key=True)
-    user_id = db.Column(db.String(50), ForeignKey("users.id"), nullable=False)
-    project_id = db.Column(db.Integer, ForeignKey("project.id"), nullable=False)
-    chapter_id = db.Column(db.Integer, ForeignKey("chapter.id"), nullable=False)
-    project_start_date = db.Column(db.DateTime, nullable=False)
-    project_end_date = db.Column(db.DateTime)
-    allocation_percentage = db.Column(db.Integer, nullable=False)
+    emp_id = db.Column(db.String(50), ForeignKey("employee.id"), nullable=False)
+    project_id = db.Column(db.Integer, ForeignKey("project.id"))
+    program_id=db.Column(db.Integer, ForeignKey("program.id"))
+    squad_id = db.Column(db.Integer, ForeignKey("squad.id"))
+    month = db.Column(db.Integer)
+    year = db.Column(db.Integer)
+    allocation_percentage = db.Column(db.Integer)
+    status =db.Column(db.String(50), nullable=False)
 
     def __init__(
         self,
-        user_id,
+        emp_id,
         project_id,
-        chapter_id,
-        project_start_date,
-        project_end_date,
-        allocation_percentage
+        program_id,
+        squad_id,
+        month,
+        year,
+        allocation_percentage,
+        status
     ):
-        self.user_id=user_id,
+        self.emp_id=emp_id,
         self.project_id=project_id,
-        self.chapter_id=chapter_id,
-        self.project_start_date=project_start_date,
-        self.project_end_date=project_end_date,
-        allocation_percentage=allocation_percentage
+        self.squad_id=squad_id,
+        self.program_id=program_id,
+        self.month=month,
+        self.year=year,
+        self.allocation_percentage=allocation_percentage,
+        self.status=status
 
 
 class future_resources(db.Model):
