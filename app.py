@@ -1679,9 +1679,14 @@ def login(user):
     return render_template("login.html", user=role, name=name, email=email)
 
 @app.route('/signup', methods = ['GET', 'POST'])
-def signup():
+@token_forwarder
+def signup(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
     users = Users.query.all()
-    return render_template("signup.html", users=users)
+    return render_template("signup.html", users=users, user=role)
 
 @app.route('/chapter', methods = ['GET', 'POST'])
 @token_forwarder
@@ -1877,13 +1882,182 @@ def uploadDr():
     return "ok"
 
 
+@app.route('/edit-allocation', methods = ['GET', 'POST'])
+def update_allocations():
+    empdetails=request.form.get('emp_details')
+    jan1=request.form.get('jan1')
+    feb1=request.form.get('feb1')
+    mar1=request.form.get('mar1')
+    apr1=request.form.get('apr1')
+    may1=request.form.get('may1')
+    jun1=request.form.get('jun1')
+    jul1=request.form.get('jul1')
+    aug1=request.form.get('aug1')
+    sep1=request.form.get('sep1')
+    oct1=request.form.get('oct1')
+    nov1=request.form.get('nov1')
+    dec1=request.form.get('dec1')
+    jan2=request.form.get('jan2')
+    feb2=request.form.get('feb2')
+    mar2=request.form.get('mar2')
+    apr2=request.form.get('apr2')
+    may2=request.form.get('may2')
+    jun2=request.form.get('jun2')
+    jul2=request.form.get('jul2')
+    aug2=request.form.get('aug2')
+    sep2=request.form.get('sep2')
+    oct2=request.form.get('oct2')
+    nov2=request.form.get('nov2')
+    dec2=request.form.get('dec2')
+    first=[jan1, feb1, mar1, apr1, may1, jun1, jul1, aug1, sep1, oct1, nov1, dec1]
+    second=[jan2, feb2, mar2, apr2, may2, jun2, jul2, aug2, sep2, oct2, nov2, dec2]
+    year=[datetime.now().year, datetime.now().year+1]
+    empname, project_name=empdetails.split('_')
+    empid=Employee.query.with_entities(Employee.id).filter_by(name=empname).first()
+    project_id=project.query.with_entities(project.id).filter_by(project_name=project_name).first()
+    print(empid,project_id)
+    for i in range(2):
+        for j in range(1,13):
+            if i==0:
+                check=db.session.query(Allocations).filter(
+                            Allocations.emp_id==empid[0],
+                            Allocations.project_id==project_id[0],
+                            Allocations.month==j,
+                            Allocations.year==year[i]
+                        ).first()
+                print(check)
+                if check:
+                    db.session.query(Allocations).filter(
+                                Allocations.emp_id==empid[0],
+                                Allocations.project_id==project_id[0],
+                                Allocations.month==j,
+                                Allocations.year==year[i]
+                            ).update(
+                                {
+                                    "allocation_percentage":first[j-1]
+                                }
+                    )
+                else:
+                    program=Allocations.query.with_entities(Allocations.program_id, Allocations.squad_id).filter_by(
+                        emp_id=empid[0],
+                        project_id=project_id[0]
+                    ).first()
+                    print(program)
+                    db.session.add(Allocations(emp_id=empid[0],program_id=program[0], squad_id=program[1], project_id=project_id[0], allocation_percentage= first[j-1], month=j, year=year[i], status="active" ))
+                db.session.commit()
+            else:
+                check=db.session.query(Allocations).filter(
+                            Allocations.emp_id==empid[0],
+                            Allocations.project_id==project_id[0],
+                            Allocations.month==j,
+                            Allocations.year==year[i]
+                        ).first()
+                print(check)
+                if check:
+                    db.session.query(Allocations).filter(
+                                Allocations.emp_id==empid[0],
+                                Allocations.project_id==project_id[0],
+                                Allocations.month==j,
+                                Allocations.year==year[i]
+                            ).update(
+                                {
+                                    "allocation_percentage":second[j-1]
+                                }
+                    )
+                else:
+                    program=Allocations.query.with_entities(Allocations.program_id,  Allocations.squad_id).filter_by(
+                        emp_id=empid[0],
+                        project_id=project_id[0]
+                    ).first()
+                    print(program)
+                    db.session.add(Allocations(emp_id=empid[0],program_id=program[0], squad_id=program[1], project_id=project_id[0], allocation_percentage= second[j-1], month=j, year=year[i], status="active" ))
+                db.session.commit()
+    return "done"
+
+
+@app.route('/add-new-allocation', methods = ['GET', 'POST'])
+def add_allocations():
+    ename=request.form.get("name")
+    erole=request.form.get("role")
+    eprogram=request.form.get("program")
+    eproject=request.form.get("project")
+    jan1=request.form.get('jan1')
+    feb1=request.form.get('feb1')
+    mar1=request.form.get('mar1')
+    apr1=request.form.get('apr1')
+    may1=request.form.get('may1')
+    jun1=request.form.get('jun1')
+    jul1=request.form.get('jul1')
+    aug1=request.form.get('aug1')
+    sep1=request.form.get('sep1')
+    oct1=request.form.get('oct1')
+    nov1=request.form.get('nov1')
+    dec1=request.form.get('dec1')
+    jan2=request.form.get('jan2')
+    feb2=request.form.get('feb2')
+    mar2=request.form.get('mar2')
+    apr2=request.form.get('apr2')
+    may2=request.form.get('may2')
+    jun2=request.form.get('jun2')
+    jul2=request.form.get('jul2')
+    aug2=request.form.get('aug2')
+    sep2=request.form.get('sep2')
+    oct2=request.form.get('oct2')
+    nov2=request.form.get('nov2')
+    dec2=request.form.get('dec2')
+    first=[jan1, feb1, mar1, apr1, may1, jun1, jul1, aug1, sep1, oct1, nov1, dec1]
+    second=[jan2, feb2, mar2, apr2, may2, jun2, jul2, aug2, sep2, oct2, nov2, dec2]
+    year=[datetime.now().year, datetime.now().year+1]
+    names=Employee.query.with_entities(Employee.name).all()
+    exist=False
+    for j in names:
+        if str(ename)==str(j[0]):
+            print('yes')
+            exist=True
+    if exist==False:
+        db.session.add(Employee(id="2020002181", name = ename, role=erole))
+        db.session.commit()
+    eid=Employee.query.with_entities(Employee.id).filter_by(name=ename).first()
+    program_id=program.query.with_entities(program.id).filter_by(program_name=eprogram).first()
+    project_id=project.query.with_entities(project.id).filter_by(project_name=eproject).first()
+    squad_id=squad.query.with_entities(squad.id).filter_by(squad_name=eproject).first()
+    if not squad_id:
+        squad_id=None
+    else:
+        squad_id=squad_id[0]
+    for i in range(2):
+        for j in range(1,13):
+            if i==0:
+                db.session.add(Allocations(emp_id=eid[0], program_id=program_id[0],project_id=project_id[0],squad_id=squad_id,status="active", month=j, year=year[i],allocation_percentage=first[j-1]))
+            else:
+                db.session.add(Allocations(emp_id=eid[0], program_id=program_id[0],project_id=project_id[0],squad_id=squad_id,status="active", month=j, year=year[i],allocation_percentage=second[j-1]))
+            db.session.commit()
+    return "New Allocation Added"
+
 @app.route('/billing', methods = ['GET', 'POST'])
 def generate_billing():
-    users=Employee.query.with_entities(Employee.id).all()
-    for i in users:
-        bill=random.randint(10,20)
-        db.session.add(Billing(emp_id=i[0], billing_rate=bill))
-        db.session.commit()
+    f = request.files["file"]  # File input
+    if not f:
+        return "No file attached"
+
+    global filename
+    filename = f.filename  # changing global value of filename
+
+    path = "{}/{}".format("static", filename)
+    f.save(path)
+    x = path.split(".")[-1]
+
+    # reading filedata start
+    if x == "xlsx":
+        new_wb = load_workbook(path)
+        Dataframe = pd.read_excel(new_wb, engine="openpyxl")
+    elif x == "csv":
+        Dataframe = pd.read_csv(path, encoding="ISO-8859-1")
+    else:
+        return "Please upload the file in xlsx or csv only"
+    # reading filedata end
+    dict_of_records = Dataframe.to_dict(orient="records")
+    print(Dataframe.columns)
     return "done"
 
 if __name__ == "__main__":

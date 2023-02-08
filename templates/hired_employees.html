@@ -14,7 +14,7 @@
 <div class="info" style="width:100vw; overflow:auto;">
 <table class="roles" id="detailed" style="font-size:11px;table-layout:inherit;">
     <tr>
-      <th></th>
+      <th style="font-size:30px;font-weight:300;cursor:pointer;" id="addnew">+</th>
       <th>Employee Name<select id='selUser' style='width: 104px;' onchange="applyfilter();">
       <option value='none'>--None--</option>
       {% for i in names %}
@@ -54,6 +54,42 @@
         <th style="border-right:1px solid #E20074;" id="12{{i}}">Dec {{i}}</th>
       {% endfor %}
     </tr>
+    <tr class="datarows" id="newalloc" style="display:none;">
+    <td><svg id="confirm-add" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg></td>
+      <td><input id="ename" placeholder="Employee Name" style="width:101px;"></td>
+      <td><select style='width: 104px;' id="erole">
+      <option value='none'>--None--</option>
+      {% for i in roles %}
+          <option value='{{i}}'>{{i}}</option> 
+      {% endfor %}
+      </select></td>
+      <td><select style='width: 104px;' id="eprogram">
+      <option value='none'>--None--</option>
+      {% for i in programs %}
+          <option value='{{i}}'>{{i}}</option> 
+      {% endfor %}
+      </select></td>
+      <td><select style='width: 104px;' id="eproject">
+      <option value='none'>--None--</option>
+      {% for i in projects %}
+          <option value='{{i}}'>{{i}}</option> 
+      {% endfor %}
+      </select></td>
+      {% for l in range(year, year+2) %}
+      <td style="border-left:1px solid #E20074;"><input type=text id="jan{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="feb{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="mar{{ loop.index }}" value="0"style="text-align:center;width:22px;"></td>
+      <td><input type=text id="apr{{ loop.index }}" value="0"style="text-align:center;width:22px;"></td>
+      <td><input type=text id="may{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="jun{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="jul{{ loop.index }}" value="0"style="text-align:center;width:22px;"></td>
+      <td><input type=text id="aug{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="sep{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="oct{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td><input type=text id="nov{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      <td style="border-right:1px solid #E20074;"><input type=text id="dec{{ loop.index }}" value="0" style="text-align:center;width:22px;"></td>
+      {% endfor %}
+    </tr>
     {% for i in emp %}
     <tr class="datarows">
     <td><svg class="accordion edit" style="width:18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.8 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg></td>
@@ -77,7 +113,7 @@
       {% endfor %}
       </tr>
       <tr class="datarows" style="display:none;">
-    <td><svg class="confirm-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg></td>
+    <td><svg class="confirm-edit" id="{{i[0]}}_{{i[3]}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg></td>
       <td>{{i[0]}}</td>
       <td>{{i[1]}}</td>
       <td>{{i[2]}}</td>
@@ -181,29 +217,72 @@ var edit= document.getElementsByClassName("edit");
 var i;
 for (i = 0; i < editacti.length; i++) {
   editacti[i].addEventListener("click", function() {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
     this.classList.toggle("active");
-    var panel3=this.closest('input.11');
-    console.log(panel3);
-    var panel = this.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.childNodes[0];
-    console.log(panel)
-    if (panel.style.display != "none"){
-        panel.style.display = "none";
-        panel2.style.display="table-row";
-    }
-    else{
-      panel.style.display="table-row";
-      panel2.style.display="none";
-    }
+    var empdetails= this.id;
+    var jan1 = this.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.childNodes[0];
+    var feb1 = jan1.parentNode.nextElementSibling.childNodes[0];
+    var mar1 = feb1.parentNode.nextElementSibling.childNodes[0];
+    var apr1 = mar1.parentNode.nextElementSibling.childNodes[0];
+    var may1 = apr1.parentNode.nextElementSibling.childNodes[0];
+    var jun1 = may1.parentNode.nextElementSibling.childNodes[0];
+    var jul1 = jun1.parentNode.nextElementSibling.childNodes[0];
+    var aug1 = jul1.parentNode.nextElementSibling.childNodes[0];
+    var sep1 = aug1.parentNode.nextElementSibling.childNodes[0];
+    var oct1 = sep1.parentNode.nextElementSibling.childNodes[0];
+    var nov1 = oct1.parentNode.nextElementSibling.childNodes[0];
+    var dec1 = nov1.parentNode.nextElementSibling.childNodes[0];
+    var jan2 = dec1.parentNode.nextElementSibling.childNodes[0];
+    var feb2 = jan2.parentNode.nextElementSibling.childNodes[0];
+    var mar2 = feb2.parentNode.nextElementSibling.childNodes[0];
+    var apr2 = mar2.parentNode.nextElementSibling.childNodes[0];
+    var may2 = apr2.parentNode.nextElementSibling.childNodes[0];
+    var jun2 = may2.parentNode.nextElementSibling.childNodes[0];
+    var jul2 = jun2.parentNode.nextElementSibling.childNodes[0];
+    var aug2 = jul2.parentNode.nextElementSibling.childNodes[0];
+    var sep2 = aug2.parentNode.nextElementSibling.childNodes[0];
+    var oct2 = sep2.parentNode.nextElementSibling.childNodes[0];
+    var nov2 = oct2.parentNode.nextElementSibling.childNodes[0];
+    var dec2 = nov2.parentNode.nextElementSibling.childNodes[0];
+    jsondata={
+        "emp_details":empdetails,
+        "jan1":jan1.value,
+        "feb1":feb1.value,
+        "mar1":mar1.value,
+        "apr1":apr1.value,
+        "may1":may1.value,
+        "jun1":jun1.value,
+        "jul1":jul1.value,
+        "aug1":aug1.value,
+        "sep1":sep1.value,
+        "oct1":oct1.value,
+        "nov1":nov1.value,
+        "dec1":dec1.value,
+        "jan2":jan2.value,
+        "feb2":feb2.value,
+        "mar2":mar2.value,
+        "apr2":apr2.value,
+        "may2":may2.value,
+        "jun2":jun2.value,
+        "jul2":jul2.value,
+        "aug2":aug2.value,
+        "sep2":sep2.value,
+        "oct2":oct2.value,
+        "nov2":nov2.value,
+        "dec2":dec2.value,
+        }
+        console.log(jsondata)
+    $.ajax({
+        type: "POST",
+        data: jsondata,
+        url:"/edit-allocation",
+        complete: function( response ) {
+                Swal.fire(response.responseText);
+                $(".swal2-confirm")[0].addEventListener("click", function() {
+                window.location.reload();
+                });
+        }
     });
-    /* Toggle between hiding and showing the active panel */
-    
-     /*{
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "table-row";
-    }*/
+    });
     }
   
 for (i = 0; i < edit.length; i++) {
@@ -224,6 +303,85 @@ for (i = 0; i < edit.length; i++) {
     }
     });
 }
+$("#addnew").on("click", function() {
+var row= document.getElementById("newalloc");
+if (row.style.display=="none"){
+    row.style.display="table-row";
+}
+else{
+    row.style.display="none";
+} 
+});
+$("#confirm-add").on("click", function() {
+var name=$("#ename").val();
+var role=$("#erole").val();
+var program=$("#eprogram").val();
+var project=$("#eproject").val();
+var jan1 = $("#jan1").val();
+var feb1 =$("#feb1").val();
+var mar1 = $("#mar1").val();
+var apr1 = $("#apr1").val();
+var may1 = $("#may1").val();
+var jun1 = $("#jun1").val();
+var jul1 = $("#jul1").val();
+var aug1 = $("#aug1").val();
+var sep1 = $("#sep1").val();
+var oct1 = $("#oct1").val();
+var nov1 = $("#nov1").val();
+var dec1 = $("#dec1").val();
+var jan2 = $("#jan2").val();
+var feb2 = $("#feb2").val();
+var mar2 = $("#mar2").val();
+var apr2 = $("#apr2").val();
+var may2 = $("#may2").val();
+var jun2 = $("#jun2").val();
+var jul2 = $("#jul2").val();
+var aug2 = $("#aug2").val();
+var sep2 = $("#sep2").val();
+var oct2 = $("#oct2").val();
+var nov2 = $("#nov2").val();
+var dec2 = $("#dec2").val();
 
+jsondata={
+    "name":name,
+    "role":role,
+    "program":program,
+    "project":project,
+    "jan1":jan1,
+    "feb1":feb1,
+    "mar1":mar1,
+    "apr1":apr1,
+    "may1":may1,
+    "jun1":jun1,
+    "jul1":jul1,
+    "aug1":aug1,
+    "sep1":sep1,
+    "oct1":oct1,
+    "nov1":nov1,
+    "dec1":dec1,
+    "jan2":jan2,
+    "feb2":feb2,
+    "mar2":mar2,
+    "apr2":apr2,
+    "may2":may2,
+    "jun2":jun2,
+    "jul2":jul2,
+    "aug2":aug2,
+    "sep2":sep2,
+    "oct2":oct2,
+    "nov2":nov2,
+    "dec2":dec2,
+    }
+    $.ajax({
+        type: "POST",
+        data: jsondata,
+        url:"/add-new-allocation",
+        complete: function( response ) {
+                /*Swal.fire(response.responseText);
+                $(".swal2-confirm")[0].addEventListener("click", function() {*/
+                window.location.reload();
+        }
+    });
+});
 </script>
 {% endblock content %}
