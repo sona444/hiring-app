@@ -2057,8 +2057,49 @@ def generate_billing():
         return "Please upload the file in xlsx or csv only"
     # reading filedata end
     dict_of_records = Dataframe.to_dict(orient="records")
-    print(Dataframe.columns)
+    print(dict_of_records, Dataframe.columns)
+    l=Billing.query.with_entities(Billing.emp_id).all()
+    m=[]
+    for i in l:
+        m.append(i[0])
+    print(m,'hnjkmkkkkk')
+    for i in dict_of_records:
+        if i['Employee code'] !=0 and not pd.isna(i['Project/Use case']) and not pd.isna(i['Employee code']):
+            if str(i['Employee code']) not in m:
+                m.append(i['Employee code'])
+                db.session.add(Billing(emp_id=i['Employee code'], billing_rate=i['Billing Rate']))
+                db.session.commit()
     return "done"
 
+
+@app.route('/squad-wise-billing', methods = ['GET', 'POST'])
+@token_forwarder
+def squad_billing(user):
+    if(user):
+        role=user.role
+    else:
+        role=None
+    allocs=Allocations.query.all()
+    project_wise={}
+    for i in allocs:
+        project_name=project.query.with_entities(project.project_name).filter_by(id=i.project_id).first()
+        if project_name[0] in project_wise:
+            if i.emp_id in project_wise[project_name[0]]:
+                project_wise[project_name[0]][i.emp_id]+=(i.allocation_percentage/100)
+            else:
+                project_wise[project_name[0]][i.emp_id]=i.allocation_percentage/100
+        else:
+            project_wise[project_name[0]]={i.emp_id:i.allocation_percentage/100}
+    final_billing={i:0 for i in project_wise.keys()}
+
+    for i in project_wise:
+        for j in project_wise[i]:
+            billing=Billing.query.filter_by(emp_id=j).first()
+            if not billing:
+                continue
+            rate=billing.billing_rate
+            final_billing[i]=final_billing[i]+(rate*160*project_wise[i][j])
+
+    return render_template('billing.html',billing=final_billing, user=role)
 if __name__ == "__main__":
     app.run()

@@ -274,8 +274,8 @@ class Employee(db.Model):
 class Billing(db.Model):
     __tablename__ = "billing"
     id = db.Column(db.Integer, primary_key=True)
-    emp_id = db.Column(db.String(50), ForeignKey("employee.id"), nullable=False)
-    billing_rate = db.Column(db.Integer)
+    emp_id = db.Column(db.String(50), ForeignKey("employee.id"), unique=True, nullable=False)
+    billing_rate = db.Column(db.Float,nullable=False )
 
 class Allocations(db.Model):
     __tablename__ = "allocations"

@@ -1,0 +1,68 @@
+{% extends "layout/base.html" %}
+
+{% block title %}HIREUP{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+    .shadow1{
+        margin:auto;
+        width:700px;
+        padding:1em;
+        border-radius:5px;
+        display: block;
+        overflow:hidden;
+    }
+    #chartHolder .shadow1{
+        width:50%;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block body_class %} landing-page {% endblock body_class %}
+
+{% block content %}
+
+<main style="padding-top:130px;">
+<input type="hidden" id="billing" value="{{billing}}">
+<canvas id="chartHolder" style="height:500px !important; text-align:center;">
+
+</div>
+</main>
+<script>
+var mystr=document.getElementById('billing').value;
+console.log(mystr);
+mystr=mystr.replace(/'/g,'"');
+console.log(mystr);
+const data = JSON.parse(mystr);
+
+var keys=Object.keys(data);
+            new Chart(document.getElementById('chartHolder'), {
+              type: 'bar',
+              data: {
+                labels: keys,
+                datasets: [{
+                    label:"Overall Billing",
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(255, 159, 64)',
+      'rgb(255, 205, 86)',
+      'rgb(75, 192, 192)',
+      'rgb(54, 162, 235)',
+      'rgb(153, 102, 255)',
+      'rgb(201, 203, 207)'
+    ],
+                  data: Object.values(data),
+                }]
+              },
+              options: {
+                indexAxis:'y',
+                legend: {display: false},
+                title: {
+                  display: true,
+                  text: "Vendas por Categoria em %"
+                }
+              }
+            });
+</script>
+{% endblock content %}
